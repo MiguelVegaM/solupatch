@@ -30,7 +30,7 @@ export const Cotizador = () => {
       <div className="cotizador__navbar">
         <img
           className="cotizador__navbar--img"
-          src="../../../public/logo-solupatch.webp"
+          src="/logo-solupatch.webp"
           alt="Solupatch Logo"
         />
       </div>
