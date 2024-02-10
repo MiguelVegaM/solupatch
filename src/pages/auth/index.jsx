@@ -28,7 +28,7 @@ export const Auth = () => {
       <div className="auth__navbar">
         <img
           className="auth__navbar--img"
-          src="../../../public/logo-solupatch.webp"
+          src="/logo-solupatch.webp"
           alt="Solupatch Logo"
         />
       </div>
@@ -55,13 +55,12 @@ export const Auth = () => {
                   Ingrese un correo valido
                 </p>
               )}
-              {/* // todo message error email no valid */}
+              {/* // TODO: message error email no valid */}
               {/* {errors?.email?.type === "pattern" && (
                 <p className="auth__form--error-message">
                   Este correo no está registrado en la base de datos
                 </p>
               )} */}
-              {/* //todo ------------------------- */}
             </div>
             <div className="auth__input--pair">
               <label className="auth__inputs--label">Contraseña</label>
