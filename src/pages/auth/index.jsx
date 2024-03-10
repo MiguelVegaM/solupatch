@@ -1,34 +1,91 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { auth } from "../../firebase/firebase-config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
-
+import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
 
 export const Auth = () => {
+  const navigate = useNavigate();
+  const { isAuth } = useGetUserInfo();
+
   const [passwordShown, setPasswordShown] = useState(false);
+
   const tooglePasswordShow = (e) => {
     e.preventDefault();
     setPasswordShown(!passwordShown);
   };
-  console.log("passwordShown:", passwordShown);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    getValues,
+    formState: { errors, isDirty },
   } = useForm({ defaultValues: { email: "", password: "" } });
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
+
+  const onSubmit = (data, e) => {
+    // console.log("</> → data:", JSON.stringify(data));
+
+    const emailValue = getValues("email");
+    const passwordValue = getValues("password");
+
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, emailValue, passwordValue)
+      .then((userCredential) => {
+        // console.log(userCredential);
+        const authInfo = {
+          emailValue: userCredential.user.email,
+          userID: userCredential.user.uid,
+          isAuth: true,
+        };
+        // console.log("</> → authInfo.isAuth:", authInfo.isAuth);
+        // console.log(authInfo);
+        localStorage.setItem("auth", JSON.stringify(authInfo));
+        navigate("/cotizador");
+      })
+      .catch((error) => {
+        console.log(error.code);
+      });
   };
 
   console.log("errors:", errors, "isDirty:", isDirty);
+
+  // const singIn = (e) => {
+  //   const emailValue = getValues("email");
+  //   const passwordValue = getValues("password");
+
+  //   e.preventDefault();
+  //   signInWithEmailAndPassword(auth, emailValue, passwordValue)
+  //     .then((userCredential) => {
+  //       // console.log(userCredential);
+  //       const authInfo = {
+  //         emailValue: userCredential.user.email,
+  //         userID: userCredential.user.uid,
+  //         isAuth: true,
+  //       };
+  //       // console.log("</> → authInfo.isAuth:", authInfo.isAuth);
+  //       // console.log(authInfo);
+  //       localStorage.setItem("auth", JSON.stringify(authInfo));
+  //       navigate("/cotizador");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.code);
+  //     });
+  // };
+
+  if (isAuth) {
+    return <Navigate to="/cotizador" />;
+  }
 
   return (
     <div className="auth">
       <div className="auth__navbar">
         <img
           className="auth__navbar--img"
-          src="/logo-solupatch.webp"
+          src={logoPrincipal}
           alt="Solupatch Logo"
         />
       </div>
@@ -77,10 +134,16 @@ export const Auth = () => {
                 className="auth__inputs--input"
                 type={passwordShown ? "text" : "password"}
               />
+              {errors?.password?.type === "required" && (
+                <p className="auth__form--error-message">
+                  Este campo es requerido
+                </p>
+              )}
             </div>
           </div>
           <button
-            disabled={!isDirty || isSubmitting}
+            // onClick={singIn}
+            disabled={!isDirty}
             type="submit"
             className="auth__form--button"
           >

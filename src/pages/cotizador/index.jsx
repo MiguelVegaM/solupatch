@@ -1,38 +1,86 @@
+import { useEffect, useState } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase/firebase-config";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAddCotizacion } from "../../hooks/useAddCotizacion";
+import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 
+import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
 
 export const Cotizador = () => {
+  const [tipo, setTipo] = useState("");
+  // console.log("</> → tipo:", tipo);
+
+  const { isAuth } = useGetUserInfo();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    reset,
+    formState: { errors, isSubmitting, isDirty, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
       nombre: "",
       empresa: "",
       celular: "",
-      correo: "",
+      email: "",
       seleccione: "",
       cantidad: "",
       precio: "",
       entrega: "",
     },
   });
-  const onSubmit = (data) => {
-    // alert(JSON.stringify(data));
-    console.log(data);
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    addCotizacion(data);
+    // console.log(data);
   };
+  // console.log("</> → errors:", errors);
   // console.log("errors:", errors, "isDirty:", isDirty);
 
+  const { addCotizacion } = useAddCotizacion();
+
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+      // setTimeout(() => navigate("/cotizaciones"), 4000);
+      // navigate("/cotizaciones");
+    }
+  }, [isSubmitSuccessful, navigate, reset]);
+
+  if (!isAuth) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="cotizador">
       <div className="cotizador__navbar">
+        <div className="cotizador__navbar--space"></div>
         <img
           className="cotizador__navbar--img"
-          src="/logo-solupatch.webp"
+          src={logoPrincipal}
           alt="Solupatch Logo"
         />
+        <div className="navbar__buttons">
+          <a href="/cotizaciones">
+            <button className="navbar__button--cotizador">Cotizaciones</button>
+          </a>
+          <button className="navbar__button--cotizador" onClick={logout}>
+            Salir
+          </button>
+        </div>
       </div>
       <div className="cotizador__body">
         <div className="cotizador__hero">
@@ -89,19 +137,19 @@ export const Cotizador = () => {
             <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Correo</label>
               <input
-                {...register("correo", {
+                {...register("email", {
                   required: true,
                   pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 })}
                 className="cotizador__inputs--input"
                 type="text"
               />
-              {errors?.correo?.type === "required" && (
+              {errors?.email?.type === "required" && (
                 <p className="cotizador__form--error-message">
                   Este campo es requerido
                 </p>
               )}
-              {errors?.correo?.type === "pattern" && (
+              {errors?.email?.type === "pattern" && (
                 <p className="cotizador__form--error-message">
                   Ingrese un correo valido
                 </p>
@@ -109,15 +157,19 @@ export const Cotizador = () => {
             </div>
             <div className="cotizador__input--pair cotizador__input--pair--select">
               <label className="cotizador__inputs--label">
-                Seleccione una cantidad
+                Seleccione un tipo
               </label>
               <select
                 {...register("seleccione", {
                   required: true,
                 })}
                 className="cotizador__inputs--select"
+                onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="25kg">Solupatch Bultos 25kgs</option>
+                <option value="Solupatch Bultos 25kg">
+                  Solupatch Bultos 25kgs
+                </option>
+                <option value="Solupatch a Granel">Solupatch a Granel</option>
               </select>
               {errors?.seleccione?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -131,9 +183,15 @@ export const Cotizador = () => {
                 {...register("cantidad", {
                   required: true,
                 })}
-                className="cotizador__inputs--input"
+                className="cotizador__inputs--input cantidad"
                 type="number"
               />
+              {tipo === "Solupatch Bultos 25kg" && (
+                <span className="cotizador__input--placeholder">Bultos</span>
+              )}
+              {tipo === "Solupatch a Granel" && (
+                <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
               {errors?.cantidad?.type === "required" && (
                 <p className="cotizador__form--error-message">
                   Este campo es requerido
@@ -142,12 +200,17 @@ export const Cotizador = () => {
             </div>
             <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Precio</label>
+              <span>$</span>
               <input
                 {...register("precio", {
                   required: true,
                 })}
-                className="cotizador__inputs--input"
+                className="cotizador__inputs--input precio"
                 type="number"
+                value={
+                  (tipo === "Solupatch Bultos 25kg" && 219) ||
+                  (tipo === "Solupatch a Granel" && 1500)
+                }
               />
               {errors?.precio?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -159,11 +222,12 @@ export const Cotizador = () => {
               <label className="cotizador__inputs--label">
                 Servicio de entrega
               </label>
+              <span>$</span>
               <input
                 {...register("entrega", {
                   required: true,
                 })}
-                className="cotizador__inputs--input"
+                className="cotizador__inputs--input precio"
                 type="number"
               />
               {errors?.entrega?.type === "required" && (
