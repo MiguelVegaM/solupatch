@@ -9,7 +9,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "../cotizaciones/styles.scss";
-import { PDF } from "../../components/PDF/PDF";
+import { PDF } from "../../components/pdf/PDF";
 
 export const Cotizaciones = () => {
   const { isAuth } = useGetUserInfo();
