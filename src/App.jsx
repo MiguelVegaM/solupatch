@@ -4,7 +4,7 @@ import { Cotizador } from "./pages/cotizador";
 import { Cotizaciones } from "./pages/cotizaciones";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { PDF } from "./components/PDF/PDF";
+import { PDF } from "./components/pdf/PDF";
 
 function App() {
   return (
