@@ -203,7 +203,7 @@ export const Cotizador = () => {
               <span>$</span>
               <input
                 {...register("precio", {
-                  // required: true,
+                  required: true,
                 })}
                 className="cotizador__inputs--input precio"
                 type="number"
