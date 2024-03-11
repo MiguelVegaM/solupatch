@@ -1,15 +1,19 @@
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
-import { NavLink, Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  NavLink,
+  Navigate,
+  useNavigate,
+  // useParams
+} from "react-router-dom";
 import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 import moment from "moment";
 import Table from "react-bootstrap/Table";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "../cotizaciones/styles.scss";
-import { PDF } from "../../components/pdf/PDF";
+// import { PDF } from "../../components/pdf/PDF";
 
 export const Cotizaciones = () => {
   const { isAuth } = useGetUserInfo();
@@ -28,11 +32,11 @@ export const Cotizaciones = () => {
     }
   };
 
-  let { cotizacionId } = useParams();
+  // let { cotizacionId } = useParams();
 
-  let cotizacionSeleccionada = cotizaciones.find(
-    (cotizacion) => cotizacion?.id === cotizacionId
-  );
+  // let cotizacionSeleccionada = cotizaciones.find(
+  //   (cotizacion) => cotizacion?.id === cotizacionId
+  // );
 
   if (!isAuth) {
     return <Navigate to="/" />;
@@ -97,18 +101,9 @@ export const Cotizaciones = () => {
 
                     <td>
                       <NavLink to={cotizacion?.id}>
-                        <PDFDownloadLink
-                          document={
-                            <PDF
-                              cotizacionSeleccionada={cotizacionSeleccionada}
-                            />
-                          }
-                          fileName={`${cotizacion?.id}.pdf`}
-                        >
-                          <button className="cotizador__button--descargar">
-                            Descargar
-                          </button>
-                        </PDFDownloadLink>
+                        <button className="cotizador__button--descargar">
+                          Descargar
+                        </button>
                       </NavLink>
                     </td>
                   </tr>
