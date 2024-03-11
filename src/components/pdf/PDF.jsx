@@ -153,7 +153,7 @@ export const PDF = () => {
         </div>
       </section>
       <button className="pdf__button" onClick={downloadPDF}>
-        Download PDF
+        Descargar PDF
       </button>
     </div>
   );

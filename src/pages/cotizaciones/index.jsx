@@ -102,7 +102,7 @@ export const Cotizaciones = () => {
                     <td>
                       <NavLink to={cotizacion?.id}>
                         <button className="cotizador__button--descargar">
-                          Descargar
+                          Ver PDF
                         </button>
                       </NavLink>
                     </td>
