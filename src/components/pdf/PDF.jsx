@@ -80,16 +80,18 @@ export const PDF = () => {
         <div className="pdf__header__title">
           <div className="pdf__header__title1">COTIZACIÓN</div>
           <div>
-            {(cotizacionSeleccionada) => {
-              const { seconds, nanoseconds } = cotizacionSeleccionada.createdAt;
-              const Date = moment
-                .unix(seconds)
-                .add(nanoseconds / 1000000, "milliseconds");
-              moment.locale("es-mx");
-              const Fordate = Date.format("lll") || "";
-              console.log(Date);
-              return Fordate;
-            }}
+            {/* {(cotizacionSeleccionada) => {
+                const { seconds, nanoseconds } =
+                  cotizacionSeleccionada.createdAt;
+                const Date = moment
+                  .unix(seconds)
+                  .add(nanoseconds / 1000000, "milliseconds");
+                moment.locale("es-mx");
+                const Fordate = Date.format("lll") || "";
+                console.log(Date);
+                return Fordate;
+              }} */}
+            Marzo 11 2024
           </div>
         </div>
       </section>
