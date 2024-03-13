@@ -53,29 +53,6 @@ export const Auth = () => {
 
   console.log("errors:", errors, "isDirty:", isDirty);
 
-  // const singIn = (e) => {
-  //   const emailValue = getValues("email");
-  //   const passwordValue = getValues("password");
-
-  //   e.preventDefault();
-  //   signInWithEmailAndPassword(auth, emailValue, passwordValue)
-  //     .then((userCredential) => {
-  //       // console.log(userCredential);
-  //       const authInfo = {
-  //         emailValue: userCredential.user.email,
-  //         userID: userCredential.user.uid,
-  //         isAuth: true,
-  //       };
-  //       // console.log("</> → authInfo.isAuth:", authInfo.isAuth);
-  //       // console.log(authInfo);
-  //       localStorage.setItem("auth", JSON.stringify(authInfo));
-  //       navigate("/cotizador");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.code);
-  //     });
-  // };
-
   if (isAuth) {
     return <Navigate to="/cotizador" />;
   }
@@ -142,7 +119,6 @@ export const Auth = () => {
             </div>
           </div>
           <button
-            // onClick={singIn}
             disabled={!isDirty}
             type="submit"
             className="auth__form--button"

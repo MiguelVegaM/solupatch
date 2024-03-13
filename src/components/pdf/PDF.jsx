@@ -43,9 +43,13 @@ export const PDF = () => {
 
   let entrega = cotizacionSeleccionada?.entrega * 1;
 
+  // let iva = (Math.round((importe + entrega) * 0.16) / 100).toFixed(2) * 1;
+
   let iva = (importe + entrega) * 0.16;
 
   let total = importe + entrega + iva;
+
+  console.log(importe, entrega, iva, total);
 
   const downloadPDF = () => {
     const input = pdfRef.current;
@@ -67,7 +71,7 @@ export const PDF = () => {
         imgWidth * ratio,
         imgHeight * ratio
       );
-      pdf.save(`${cotizacionSeleccionada?.empresa}-Cotizacion.pdf`);
+      pdf.save(`${cotizacionSeleccionada?.nombre}-Cotizacion.pdf`);
     });
   };
 

@@ -107,43 +107,43 @@ export const Cotizador = () => {
               <label className="cotizador__inputs--label">Empresa</label>
               <input
                 {...register("empresa", {
-                  required: true,
+                  required: false,
                 })}
                 className="cotizador__inputs--input"
                 type="text"
               />
-              {errors?.empresa?.type === "required" && (
+              {/* {errors?.empresa?.type === "required" && (
                 <p className="cotizador__form--error-message">
                   Este campo es requerido
                 </p>
-              )}
+              )} */}
             </div>
             <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Celular</label>
               <input
                 {...register("celular", {
-                  required: true,
+                  // required: true,
                 })}
                 className="cotizador__inputs--input"
                 type="tel"
               />
-              {errors?.celular?.type === "required" && (
+              {/* {errors?.celular?.type === "required" && (
                 <p className="cotizador__form--error-message">
                   Este campo es requerido
                 </p>
-              )}
+              )} */}
             </div>
             <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Correo</label>
               <input
                 {...register("email", {
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  // required: true,
+                  // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 })}
                 className="cotizador__inputs--input"
                 type="text"
               />
-              {errors?.email?.type === "required" && (
+              {/* {errors?.email?.type === "required" && (
                 <p className="cotizador__form--error-message">
                   Este campo es requerido
                 </p>
@@ -152,7 +152,7 @@ export const Cotizador = () => {
                 <p className="cotizador__form--error-message">
                   Ingrese un correo valido
                 </p>
-              )}
+              )} */}
             </div>
             <div className="cotizador__input--pair cotizador__input--pair--select">
               <label className="cotizador__inputs--label">
@@ -206,10 +206,10 @@ export const Cotizador = () => {
                 })}
                 className="cotizador__inputs--input precio"
                 type="number"
-                value={
-                  (tipo === "Solupatch a Granel" && 1500) ||
-                  (tipo === "Solupatch Bultos 25kg" && 219)
-                }
+                // value={
+                //   (tipo === "Solupatch a Granel" && 1500) ||
+                //   (tipo === "Solupatch Bultos 25kg" && 219)
+                // }
               />
               {errors?.precio?.type === "required" && (
                 <p className="cotizador__form--error-message">
