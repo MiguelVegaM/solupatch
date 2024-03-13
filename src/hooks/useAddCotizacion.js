@@ -8,6 +8,8 @@ export const useAddCotizacion = () => {
   const { userID, emailValue } = useGetUserInfo();
   // console.log("</> → userID:", userID);
 
+  const createdAt = serverTimestamp();
+
   const addCotizacion = async (
     // request,
     // response,
@@ -26,7 +28,7 @@ export const useAddCotizacion = () => {
       cantidad,
       precio,
       entrega,
-      createdAt: serverTimestamp(),
+      createdAt,
     });
   };
 

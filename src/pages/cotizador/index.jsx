@@ -36,10 +36,9 @@ export const Cotizador = () => {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     addCotizacion(data);
+    // navigate("/cotizaciones");
     // console.log(data);
   };
-  // console.log("</> → errors:", errors);
-  // console.log("errors:", errors, "isDirty:", isDirty);
 
   const { addCotizacion } = useAddCotizacion();
 
@@ -56,14 +55,14 @@ export const Cotizador = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
-      // setTimeout(() => navigate("/cotizaciones"), 4000);
-      // navigate("/cotizaciones");
+      navigate("/cotizaciones");
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
   if (!isAuth) {
     return <Navigate to="/" />;
   }
+
   return (
     <div className="cotizador">
       <div className="cotizador__navbar">
@@ -208,8 +207,8 @@ export const Cotizador = () => {
                 className="cotizador__inputs--input precio"
                 type="number"
                 value={
-                  (tipo === "Solupatch Bultos 25kg" && 219) ||
-                  (tipo === "Solupatch a Granel" && 1500)
+                  (tipo === "Solupatch a Granel" && 1500) ||
+                  (tipo === "Solupatch Bultos 25kg" && 219)
                 }
               />
               {errors?.precio?.type === "required" && (

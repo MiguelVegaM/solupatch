@@ -6,6 +6,8 @@ import {
   useNavigate,
   // useParams
 } from "react-router-dom";
+// import html2canvas from "html2canvas";
+// import jsPDF from "jspdf";
 import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 import moment from "moment";
@@ -19,8 +21,12 @@ export const Cotizaciones = () => {
   const { isAuth } = useGetUserInfo();
   const navigate = useNavigate();
 
+  // let { cotizacionId } = useParams();
   const { cotizaciones } = useGetCotizaciones();
   // console.log("</> → cotizaciones:", cotizaciones);
+  // let cotizacionSeleccionada = cotizaciones.find(
+  //   (cotizacion) => cotizacion?.id === cotizacionId
+  // );
 
   const logout = async () => {
     try {
@@ -37,6 +43,30 @@ export const Cotizaciones = () => {
   // let cotizacionSeleccionada = cotizaciones.find(
   //   (cotizacion) => cotizacion?.id === cotizacionId
   // );
+
+  // const downloadPDF = () => {
+  //   const input = pdfRef.current;
+  //   html2canvas(input).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "mm", "a4", true);
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = pdf.internal.pageSize.getHeight();
+  //     const imgWidth = canvas.width;
+  //     const imgHeight = canvas.height;
+  //     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+  //     const imgX = (pdfWidth - imgWidth * ratio) / 2;
+  //     const imgY = 0;
+  //     pdf.addImage(
+  //       imgData,
+  //       "PNG",
+  //       imgX,
+  //       imgY,
+  //       imgWidth * ratio,
+  //       imgHeight * ratio
+  //     );
+  //     pdf.save(`${cotizacionSeleccionada?.empresa}-Cotizacion.pdf`);
+  //   });
+  // };
 
   if (!isAuth) {
     return <Navigate to="/" />;
@@ -74,7 +104,7 @@ export const Cotizaciones = () => {
           <tbody>
             {cotizaciones
               ?.map((cotizacion) => {
-                const { seconds, nanoseconds } = cotizacion.createdAt;
+                const { seconds, nanoseconds } = cotizacion.createdAt || {};
                 const Date = moment
                   .unix(seconds)
                   .add(nanoseconds / 1000000, "milliseconds");
@@ -105,6 +135,12 @@ export const Cotizaciones = () => {
                           Ver PDF
                         </button>
                       </NavLink>
+                      <button
+                        // onClick={downloadPDF}
+                        className="cotizador__button--descargar"
+                      >
+                        Descargar PDF
+                      </button>
                     </td>
                   </tr>
                 );

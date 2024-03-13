@@ -1,7 +1,9 @@
 .pdf {
-  // padding-inline: 150px;
-  width: 1100px;
-  margin: 0 auto;
+  padding-inline: 150px;
+  font-size: 20px;
+
+  // width: 1100px;
+  // margin: 0 auto;
 }
 
 .pdf__header {
@@ -10,9 +12,10 @@
   padding-block: 100px 50px;
   .pdf__header__img {
     height: 100px;
+    margin-top: 17.5px;
   }
   .pdf__header__datos {
-    // margin-left: -100px;
+    margin-left: -250px;
     font-size: 0.75rem;
     :first-child {
       font-size: 1.2rem;
@@ -27,10 +30,14 @@
     max-width: 350px;
     :first-child {
       background-color: #414245;
+      padding-bottom: 20px;
       color: #fff;
       font-size: 1.2rem;
       font-weight: 700;
       text-align: center;
+    }
+    :nth-child(2) {
+      font-size: 1rem;
     }
   }
 }
@@ -39,6 +46,7 @@
   padding-bottom: 20px;
   .cliente__title__bar {
     background-color: #fde802;
+    padding-bottom: 17.5px;
     font-size: 1rem;
     font-weight: 700;
     text-align: center;
@@ -56,6 +64,7 @@
       background-color: #fde802;
       .cotizacion__title__th {
         padding-left: 30px;
+        padding-bottom: 17.5px;
       }
     }
     .cotizacion__title__tbody {
@@ -73,8 +82,8 @@
 }
 
 .total {
-  font-size: 0.9rem;
-  width: 300px;
+  font-size: 1.2rem;
+  width: 350px;
   margin-left: auto;
   display: flex;
   flex-direction: column;
@@ -92,6 +101,7 @@
 .pdf__button {
   /* display: block; */
   background-color: #fbc512;
+  padding-bottom: 17.5px;
   font-size: 1rem;
   font-weight: 800;
   border: none;
