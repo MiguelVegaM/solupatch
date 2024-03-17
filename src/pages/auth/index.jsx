@@ -13,6 +13,7 @@ export const Auth = () => {
   const { isAuth } = useGetUserInfo();
 
   const [passwordShown, setPasswordShown] = useState(false);
+  const [credencialesEquivocadas, setCredencialesEquivocadas] = useState("");
 
   const tooglePasswordShow = (e) => {
     e.preventDefault();
@@ -48,6 +49,10 @@ export const Auth = () => {
       })
       .catch((error) => {
         console.log(error.code);
+        console.log(error.message);
+        if (error.code === "auth/invalid-credential") {
+          setCredencialesEquivocadas("Correo y/o contraseña equivocados");
+        }
       });
   };
 
@@ -125,6 +130,9 @@ export const Auth = () => {
           >
             Entrar
           </button>
+          <p className="auth__form--error-credentials">
+            {credencialesEquivocadas}
+          </p>
         </form>
       </div>
     </div>

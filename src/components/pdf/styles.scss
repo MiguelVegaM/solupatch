@@ -1,6 +1,6 @@
 .pdf {
-  padding-inline: 50px;
-  font-size: 20px;
+  padding: 0px 50px 80px 50px;
+  // font-size: 20px;
 
   width: 1000px;
   margin: 0 auto;
@@ -26,18 +26,27 @@
     }
   }
   .pdf__header__title {
+    > * {
+      margin-top: -5px;
+      text-align: center;
+    }
     padding-top: 15px;
     max-width: 350px;
     :first-child {
+      margin-top: 10px;
       background-color: #414245;
       padding-bottom: 20px;
       color: #fff;
       font-size: 1.2rem;
       font-weight: 700;
-      text-align: center;
     }
-    :nth-child(2) {
-      font-size: 1rem;
+    :nth-child(3) {
+      margin-top: 10px;
+      background-color: #414245;
+      padding-bottom: 20px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 700;
     }
   }
 }
@@ -54,6 +63,11 @@
   .cliente__datos {
     display: flex;
     justify-content: space-between;
+  }
+  .cliente__datos__pair:nth-child(2) {
+    :first-child {
+      text-align: end;
+    }
   }
 }
 
@@ -98,18 +112,22 @@
   }
 }
 
+.pdf__button__container {
+  position: absolute;
+  top: 40px;
+  right: 200px;
+}
+
 .pdf__button {
-  /* display: block; */
   background-color: #fbc512;
-  padding-bottom: 17.5px;
   font-size: 1rem;
   font-weight: 800;
   border: none;
-  margin-top: 53px;
   border-radius: 30px;
-  height: 57px;
-  width: 100%;
-  /* padding-inline: 220px; */
+  height: 40px;
+  width: 150px;
+  margin-left: 10px;
+
   &:hover {
     background-color: #2c2c2c;
     color: #fff;

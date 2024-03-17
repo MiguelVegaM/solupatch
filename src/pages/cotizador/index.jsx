@@ -11,7 +11,24 @@ import "./styles.scss";
 
 export const Cotizador = () => {
   const [tipo, setTipo] = useState("");
-  // console.log("</> → tipo:", tipo);
+
+  const { addCotizacion } = useAddCotizacion();
+
+  const [precio, setPrecio] = useState("");
+  const [entrega, setEntrega] = useState("");
+
+  const handlePrecioChange = (e) => {
+    const formattedNumber = Number(
+      e.target.value.replace(/,/g, "")
+    ).toLocaleString();
+    setPrecio(formattedNumber);
+  };
+  const handleEntregaChange = (e) => {
+    const formattedNumber = Number(
+      e.target.value.replace(/,/g, "")
+    ).toLocaleString();
+    setEntrega(formattedNumber);
+  };
 
   const { isAuth } = useGetUserInfo();
   const navigate = useNavigate();
@@ -36,11 +53,7 @@ export const Cotizador = () => {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     addCotizacion(data);
-    // navigate("/cotizaciones");
-    // console.log(data);
   };
-
-  const { addCotizacion } = useAddCotizacion();
 
   const logout = async () => {
     try {
@@ -201,15 +214,14 @@ export const Cotizador = () => {
               <label className="cotizador__inputs--label">Precio</label>
               <span>$</span>
               <input
+                // TODO: Revisar cunado el input se quite focus (isDirty) agregar funcion formato para miles (,) para despues setear ese nuevo valor en el input (setValue )
                 {...register("precio", {
                   required: true,
                 })}
                 className="cotizador__inputs--input precio"
-                type="number"
-                // value={
-                //   (tipo === "Solupatch a Granel" && 1500) ||
-                //   (tipo === "Solupatch Bultos 25kg" && 219)
-                // }
+                type="text"
+                value={precio}
+                onChange={handlePrecioChange}
               />
               {errors?.precio?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -227,7 +239,9 @@ export const Cotizador = () => {
                   required: true,
                 })}
                 className="cotizador__inputs--input precio"
-                type="number"
+                type="text"
+                value={entrega}
+                onChange={handleEntregaChange}
               />
               {errors?.entrega?.type === "required" && (
                 <p className="cotizador__form--error-message">

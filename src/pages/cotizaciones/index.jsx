@@ -15,18 +15,12 @@ import Table from "react-bootstrap/Table";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "../cotizaciones/styles.scss";
-// import { PDF } from "../../components/pdf/PDF";
 
 export const Cotizaciones = () => {
   const { isAuth } = useGetUserInfo();
   const navigate = useNavigate();
 
-  // let { cotizacionId } = useParams();
   const { cotizaciones } = useGetCotizaciones();
-  // console.log("</> → cotizaciones:", cotizaciones);
-  // let cotizacionSeleccionada = cotizaciones.find(
-  //   (cotizacion) => cotizacion?.id === cotizacionId
-  // );
 
   const logout = async () => {
     try {
@@ -74,6 +68,7 @@ export const Cotizaciones = () => {
 
   return (
     <div>
+      {/* <PDF pdfRef={pdfRef} /> */}
       <div className="cotizaciones__navbar">
         <div className="cotizaciones__navbar--space"></div>
         <img
@@ -95,9 +90,12 @@ export const Cotizaciones = () => {
         <Table striped>
           <thead>
             <tr>
+              <th>Folio</th>
               <th>Cliente</th>
               <th>Fecha de Creación</th>
-              <th>Empleado</th>
+              <th>Vendedor</th>
+              <th>Cantidad</th>
+              <th>Total de Cotizacion</th>
               <th></th>
             </tr>
           </thead>
@@ -114,33 +112,49 @@ export const Cotizaciones = () => {
                   nombre,
                   id,
                   emailValue,
+                  cantidad,
+                  precio,
+                  entrega,
+                  seleccione,
                   // empresa,
                   // celular,
                   // email,
-                  // seleccione,
-                  // cantidad,
-                  // precio,
-                  // entrega,
                 } = cotizacion;
+
+                let importe = cantidad * 1 * (precio.replace(/,/g, "") * 1);
+                let iva = (importe + entrega.replace(/,/g, "") * 1) * 0.16;
+                let total = importe + iva + entrega.replace(/,/g, "") * 1;
+                let totalFormated = total.toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                });
 
                 return (
                   <tr key={id}>
+                    <td>{id.split("", 8)}</td>
                     <td>{nombre}</td>
                     <td>{Fordate}</td>
                     <td>{emailValue}</td>
 
+                    <td>
+                      {cantidad}{" "}
+                      {seleccione === "Solupatch Bultos 25kg"
+                        ? "Bultos"
+                        : "Toneladas"}
+                    </td>
+                    <td>$ {totalFormated}</td>
                     <td>
                       <NavLink to={cotizacion?.id}>
                         <button className="cotizador__button--descargar">
                           Ver PDF
                         </button>
                       </NavLink>
-                      <button
+                      {/* <button
                         // onClick={downloadPDF}
                         className="cotizador__button--descargar"
                       >
                         Descargar PDF
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 );
