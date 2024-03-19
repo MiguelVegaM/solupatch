@@ -144,7 +144,7 @@ export const Cotizaciones = () => {
                     </td>
                     <td>$ {totalFormated}</td>
                     <td>
-                      <NavLink to={cotizacion?.id}>
+                      <NavLink to={cotizacion?.id} target="_blank">
                         <button className="cotizador__button--descargar">
                           Ver PDF
                         </button>

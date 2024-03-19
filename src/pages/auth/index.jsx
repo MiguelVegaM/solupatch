@@ -4,6 +4,7 @@ import { auth } from "../../firebase/firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useGetUserInfo } from "../../hooks/useGetUserInfo";
+import { Toaster, toast } from "sonner";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
@@ -13,7 +14,7 @@ export const Auth = () => {
   const { isAuth } = useGetUserInfo();
 
   const [passwordShown, setPasswordShown] = useState(false);
-  const [credencialesEquivocadas, setCredencialesEquivocadas] = useState("");
+  // const [credencialesEquivocadas, setCredencialesEquivocadas] = useState("");
 
   const tooglePasswordShow = (e) => {
     e.preventDefault();
@@ -51,7 +52,8 @@ export const Auth = () => {
         console.log(error.code);
         console.log(error.message);
         if (error.code === "auth/invalid-credential") {
-          setCredencialesEquivocadas("Correo y/o contraseña equivocados");
+          // setCredencialesEquivocadas("Correo y/o contraseña equivocados");
+          toast.warning("Correo y/o contraseña equivocados");
         }
       });
   };
@@ -130,9 +132,10 @@ export const Auth = () => {
           >
             Entrar
           </button>
-          <p className="auth__form--error-credentials">
+          <Toaster position="bottom-center" richColors />
+          {/* <p className="auth__form--error-credentials">
             {credencialesEquivocadas}
-          </p>
+          </p> */}
         </form>
       </div>
     </div>
