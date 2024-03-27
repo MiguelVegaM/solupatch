@@ -19,13 +19,16 @@ export const Cotizador = () => {
 
   const handlePrecioChange = (e) => {
     const formattedNumber = Number(
-      e.target.value.replace(/,/g, "")
+      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
     ).toLocaleString();
     setPrecio(formattedNumber);
+    // setValue("precio", { formattedNumber });
   };
+
+  // console.log(precio);
   const handleEntregaChange = (e) => {
     const formattedNumber = Number(
-      e.target.value.replace(/,/g, "")
+      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
     ).toLocaleString();
     setEntrega(formattedNumber);
   };
@@ -37,6 +40,7 @@ export const Cotizador = () => {
     register,
     handleSubmit,
     reset,
+    // setValue,
     formState: { errors, isSubmitting, isDirty, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
@@ -178,8 +182,8 @@ export const Cotizador = () => {
                 className="cotizador__inputs--select"
                 onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="Solupatch Bultos 25kg">
-                  Solupatch Bultos 25kgs
+                <option value="25kg Solupatch Bultos">
+                  25kgs Solupatch Bultos
                 </option>
                 <option value="Solupatch a Granel">Solupatch a Granel</option>
               </select>
@@ -198,7 +202,7 @@ export const Cotizador = () => {
                 className="cotizador__inputs--input cantidad"
                 type="number"
               />
-              {tipo === "Solupatch Bultos 25kg" && (
+              {tipo === "25kg Solupatch Bultos" && (
                 <span className="cotizador__input--placeholder">Bultos</span>
               )}
               {tipo === "Solupatch a Granel" && (
@@ -213,6 +217,7 @@ export const Cotizador = () => {
             <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Precio</label>
               <span>$</span>
+              {/* <span>.00</span> */}
               <input
                 // TODO: Revisar cunado el input se quite focus (isDirty) agregar funcion formato para miles (,) para despues setear ese nuevo valor en el input (setValue )
                 {...register("precio", {
@@ -234,6 +239,8 @@ export const Cotizador = () => {
                 Servicio de entrega
               </label>
               <span>$</span>
+              {/* <span>.00</span> */}
+
               <input
                 {...register("entrega", {
                   required: true,

@@ -6,6 +6,10 @@ import jsPDF from "jspdf";
 // import { useNavigate } from "react-router-dom";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
+import wwwCursor from "../../assets/imgs/web-www-trazo-de-icono-de-cursor.png";
+import empaqueSolupatch from "../../assets/imgs/empaque-solupatch.png";
+import fbIcon from "../../assets/imgs/fb-icon.png";
+import igIcon from "../../assets/imgs/ig-icon.png";
 
 import "../pdf/styles.scss";
 import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
@@ -80,6 +84,11 @@ export const PDF = () => {
   // useEffect(() => {
   const downloadPDF = () => {
     const input = pdfRef.current;
+    const style = document.createElement("style");
+    document.head.appendChild(style);
+    style.sheet?.insertRule(
+      "body > div:last-child img { display: inline-block; }"
+    );
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4", true);
@@ -153,28 +162,39 @@ export const PDF = () => {
       </div>
       <div ref={pdfRef} className="pdf">
         <section className="pdf__header">
-          <img
-            className="pdf__header__img"
-            src={logoPrincipal}
-            alt="Solupatch Logo"
-          />
-          <div className="pdf__header__datos">
-            <div className="pdf__header__datos1">SOLUPATCH</div>
-            <div className="pdf__header__datos2">SOL231030DX0</div>
-            <div>(601) General de Ley Personas Morales</div>
-            <div>
-              AV REVOLUCIÓN 4055 LOCAL 15, CONTRY C.P. 64860
-              <br />
-              MONTERREY, Nuevo León, México
-              <br />
-              Tel. 8261299100, 8123691537
+          <div className="pdf__header__img__datos">
+            <img
+              className="pdf__header__img"
+              src={logoPrincipal}
+              alt="Solupatch Logo"
+            />
+            <div className="pdf__header__datos">
+              <div className="pdf__header__datos1">SOLUPATCH S.A. DE C.V.</div>
+              <div className="pdf__header__datos2">RFC: SOL231030DX0</div>
+              <div>
+                <span>Dirección:</span> Av.Revolución,4055,Local 15,
+                <br />
+                ContryCP64860Monterey,Nuevo León,
+                <br />
+                México
+              </div>
             </div>
           </div>
           <div className="pdf__header__title">
             <div>COTIZACIÓN</div>
             <div>{datePdf}</div>
-            <div>Folio:</div>
-            <div>{cotizacionSeleccionada?.id.split("", 8)}</div>
+            <div>Folio:{cotizacionSeleccionada?.id.split("", 8)}</div>
+            <div>
+              <span>Teléfonos:</span> 8261299100, 8123691537
+            </div>
+            <div>
+              <a href="https://www.solupatch.com">
+                <img src={wwwCursor} alt="" />
+              </a>
+              <span>
+                <a href="www.solupatch.com">solupatch.com</a>
+              </span>
+            </div>
           </div>
         </section>
         <section className="cliente">
@@ -204,7 +224,7 @@ export const PDF = () => {
             </thead>
             <tbody className="cotizacion__title__tbody">
               <tr className="cotizacion__title__tr">
-                <td>
+                <td className="cotizacion__title__td">
                   {cotizacionSeleccionada?.cantidad}{" "}
                   {cotizacionSeleccionada?.seleccione === "Solupatch a Granel"
                     ? "Toneladas"
@@ -237,6 +257,41 @@ export const PDF = () => {
           <div className="cotizacion__total__div">
             <span className="cotizacion__total__span">TOTAL: </span>$
             {totalFormated}
+          </div>
+        </section>
+        <section className="banco">
+          <div className="banco__title__bar">
+            INFORMACIÓN PARA DEPOSITO O TRANSFERENCIA
+          </div>
+          <div className="banco__datos__img">
+            <div>
+              <div>Banco: BBVA</div>
+              <div>Nombre: SOLUPATCH. S.A. de C.V.</div>
+              <div>ClaveInterbancaria: 012580001219422986</div>
+              <div>No.Tarjeta: 455513012605665</div>
+              <div>No.Cuenta: 0121942298</div>
+              <div>Coreo: facturacion@solupatch.com</div>
+            </div>
+            <img src={empaqueSolupatch} alt="" />
+          </div>
+        </section>
+        <section className="footer">
+          <div className="footer__title">
+            <a
+              href="https://www.facebook.com/solupatch"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={fbIcon} alt="" />
+            </a>
+            <a
+              href="https://www.instagram.com/solupatch"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={igIcon} alt="" />
+            </a>
+            <div> /solupatch</div>
           </div>
         </section>
       </div>

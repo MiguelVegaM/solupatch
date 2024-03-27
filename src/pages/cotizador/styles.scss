@@ -88,14 +88,22 @@
     }
 
     .cotizador__input--pair {
+      // border: 1px solid blue;
       position: relative;
       display: flex;
       flex-direction: column;
-      span {
+
+      span:nth-of-type(1) {
         color: #000;
         position: absolute;
-        top: 81px;
+        top: 82px;
         left: 23px;
+      }
+      span:nth-of-type(2) {
+        color: #000;
+        position: absolute;
+        top: 82px;
+        right: 20px;
       }
       .cantidad::-webkit-outer-spin-button,
       .cantidad::-webkit-inner-spin-button {
@@ -103,7 +111,12 @@
         margin-left: 70px;
       }
       .cotizador__input--placeholder {
+        // border: 1px solid red;
         color: #535353;
+        margin-left: 130px;
+        width: 80px;
+        // align-items: flex-end;
+        // position: absolute;
         top: 81px;
         left: 150px;
         right: 20px;
@@ -176,6 +189,11 @@
       .cotizador__form--inputs {
         grid-template-columns: repeat(1, 1fr);
         width: 90%;
+        .cotizador__input--placeholder {
+          // border: 1px solid blue;
+          margin-left: 60%;
+          text-align: right;
+        }
       }
       .cotizador__form--button {
         width: 90%;

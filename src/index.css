@@ -23,12 +23,12 @@ body {
 }
 
 /* responsive images/videos */
-img,
+/* img,
 picture,
 svg,
 video {
   display: block;
   max-width: 100%;
-}
+} */
 
 /* TODO: import font-family */
