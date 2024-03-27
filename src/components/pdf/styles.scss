@@ -20,9 +20,9 @@
     }
     .pdf__header__datos {
       // margin-left: -150px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       :first-child {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 700;
       }
       :nth-child(2) {
@@ -36,24 +36,24 @@
       margin-top: -10px;
       text-align: end;
     }
-    padding-top: 15px;
+    padding-top: 25px;
     max-width: 350px;
     position: relative;
     :first-child {
       margin-top: 10px;
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 700;
     }
     :nth-child(2) {
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 700;
     }
     :nth-child(3) {
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
     :nth-child(4) {
-      font-size: 1.3rem;
-      margin-top: 30px;
+      font-size: 1rem;
+      margin-top: 50px;
     }
     :nth-child(5) {
       margin-top: 30px;
@@ -61,15 +61,16 @@
         height: 40px;
         // aspect-ratio: 3/1.5;
         // object-fit: cover;
-        margin-left: 87px;
+        // margin-left: 87px;
         display: block;
         margin-bottom: -10px;
         position: absolute;
-        top: 145px;
+        top: 150px;
+        left: 42px;
       }
       span {
         a {
-          font-size: 1.98rem;
+          font-size: 1.75rem;
           color: #000;
           text-decoration: none;
         }
