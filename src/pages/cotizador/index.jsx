@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase-config";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAddCotizacion } from "../../hooks/useAddCotizacion";
-import { useGetUserInfo } from "../../hooks/useGetUserInfo";
+import { useEffect, useState } from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/firebase-config';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useAddCotizacion } from '../../hooks/useAddCotizacion';
+import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 
-import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
-import "./styles.scss";
+import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
+import './styles.scss';
 
 export const Cotizador = () => {
-  const [tipo, setTipo] = useState("");
+  const [tipo, setTipo] = useState('');
 
   const { addCotizacion } = useAddCotizacion();
+  const { cotizaciones } = useGetCotizaciones();
 
-  const [precio, setPrecio] = useState("");
-  const [entrega, setEntrega] = useState("");
+  const [precio, setPrecio] = useState('');
+  const [entrega, setEntrega] = useState('');
 
   const handlePrecioChange = (e) => {
     const formattedNumber = Number(
-      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
+      e.target.value.replace(/,/g, '').replace(/[A-Za-z]/g, '')
     ).toLocaleString();
     setPrecio(formattedNumber);
     // setValue("precio", { formattedNumber });
@@ -28,7 +30,7 @@ export const Cotizador = () => {
   // console.log(precio);
   const handleEntregaChange = (e) => {
     const formattedNumber = Number(
-      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
+      e.target.value.replace(/,/g, '').replace(/[A-Za-z]/g, '')
     ).toLocaleString();
     setEntrega(formattedNumber);
   };
@@ -44,26 +46,39 @@ export const Cotizador = () => {
     formState: { errors, isSubmitting, isDirty, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
-      nombre: "",
-      empresa: "",
-      celular: "",
-      email: "",
-      seleccione: "",
-      cantidad: "",
-      precio: "",
-      entrega: "",
+      nombre: '',
+      empresa: '',
+      celular: '',
+      email: '',
+      seleccione: '',
+      cantidad: '',
+      precio: '',
+      entrega: '',
     },
   });
+
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    addCotizacion(data);
+    if (cotizaciones.length <= 10) {
+      const dataObj = {
+        folio: '00010' + cotizaciones.length,
+        ...data,
+      };
+      addCotizacion(dataObj);
+    } else {
+      const dataObj = {
+        folio: '0001' + cotizaciones.length,
+        ...data,
+      };
+      addCotizacion(dataObj);
+    }
   };
 
   const logout = async () => {
     try {
       await signOut(auth);
       localStorage.clear();
-      navigate("/");
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
@@ -72,62 +87,62 @@ export const Cotizador = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
-      navigate("/cotizaciones");
+      navigate('/cotizaciones');
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
   if (!isAuth) {
-    return <Navigate to="/" />;
+    return <Navigate to='/' />;
   }
 
   return (
-    <div className="cotizador">
-      <div className="cotizador__navbar">
-        <div className="cotizador__navbar--space"></div>
+    <div className='cotizador'>
+      <div className='cotizador__navbar'>
+        <div className='cotizador__navbar--space'></div>
         <img
-          className="cotizador__navbar--img"
+          className='cotizador__navbar--img'
           src={logoPrincipal}
-          alt="Solupatch Logo"
+          alt='Solupatch Logo'
         />
-        <div className="navbar__buttons">
-          <a href="/cotizaciones">
-            <button className="navbar__button--cotizador">Cotizaciones</button>
+        <div className='navbar__buttons'>
+          <a href='/cotizaciones'>
+            <button className='navbar__button--cotizador'>Cotizaciones</button>
           </a>
-          <button className="navbar__button--cotizador" onClick={logout}>
+          <button className='navbar__button--cotizador' onClick={logout}>
             Salir
           </button>
         </div>
       </div>
-      <div className="cotizador__body">
-        <div className="cotizador__hero">
-          <h2 className="cotizador__header--title">COTIZADOR</h2>
-          <p className="cotizador__header--paragraph">Solupatch Versión 1.0</p>
+      <div className='cotizador__body'>
+        <div className='cotizador__hero'>
+          <h2 className='cotizador__header--title'>COTIZADOR</h2>
+          <p className='cotizador__header--paragraph'>Solupatch Versión 1.0</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="cotizador__form">
-          <div className="cotizador__form--inputs">
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Nombre</label>
+        <form onSubmit={handleSubmit(onSubmit)} className='cotizador__form'>
+          <div className='cotizador__form--inputs'>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Nombre</label>
               <input
-                {...register("nombre", {
+                {...register('nombre', {
                   required: true,
                 })}
-                className="cotizador__inputs--input"
-                type="text"
+                className='cotizador__inputs--input'
+                type='text'
               />
-              {errors?.nombre?.type === "required" && (
-                <p className="cotizador__form--error-message">
+              {errors?.nombre?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
                   Este campo es requerido
                 </p>
               )}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Empresa</label>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Empresa</label>
               <input
-                {...register("empresa", {
+                {...register('empresa', {
                   required: false,
                 })}
-                className="cotizador__inputs--input"
-                type="text"
+                className='cotizador__inputs--input'
+                type='text'
               />
               {/* {errors?.empresa?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -135,14 +150,14 @@ export const Cotizador = () => {
                 </p>
               )} */}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Celular</label>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Celular</label>
               <input
-                {...register("celular", {
+                {...register('celular', {
                   // required: true,
                 })}
-                className="cotizador__inputs--input"
-                type="tel"
+                className='cotizador__inputs--input'
+                type='tel'
               />
               {/* {errors?.celular?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -150,15 +165,15 @@ export const Cotizador = () => {
                 </p>
               )} */}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Correo</label>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Correo</label>
               <input
-                {...register("email", {
+                {...register('email', {
                   // required: true,
                   // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 })}
-                className="cotizador__inputs--input"
-                type="text"
+                className='cotizador__inputs--input'
+                type='text'
               />
               {/* {errors?.email?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -171,87 +186,87 @@ export const Cotizador = () => {
                 </p>
               )} */}
             </div>
-            <div className="cotizador__input--pair cotizador__input--pair--select">
-              <label className="cotizador__inputs--label">
+            <div className='cotizador__input--pair cotizador__input--pair--select'>
+              <label className='cotizador__inputs--label'>
                 Seleccione un tipo
               </label>
               <select
-                {...register("seleccione", {
+                {...register('seleccione', {
                   required: true,
                 })}
-                className="cotizador__inputs--select"
+                className='cotizador__inputs--select'
                 onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="25kg Solupatch Bultos">
+                <option value='25kg Solupatch Bultos'>
                   25kgs Solupatch Bultos
                 </option>
-                <option value="Solupatch a Granel">Solupatch a Granel</option>
+                <option value='Solupatch a Granel'>Solupatch a Granel</option>
               </select>
-              {errors?.seleccione?.type === "required" && (
-                <p className="cotizador__form--error-message">
+              {errors?.seleccione?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
                   Este campo es requerido
                 </p>
               )}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Cantidad</label>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Cantidad</label>
               <input
-                {...register("cantidad", {
+                {...register('cantidad', {
                   required: true,
                 })}
-                className="cotizador__inputs--input cantidad"
-                type="number"
+                className='cotizador__inputs--input cantidad'
+                type='number'
               />
-              {tipo === "25kg Solupatch Bultos" && (
-                <span className="cotizador__input--placeholder">Bultos</span>
+              {tipo === '25kg Solupatch Bultos' && (
+                <span className='cotizador__input--placeholder'>Bultos</span>
               )}
-              {tipo === "Solupatch a Granel" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
+              {tipo === 'Solupatch a Granel' && (
+                <span className='cotizador__input--placeholder'>Toneladas</span>
               )}
-              {errors?.cantidad?.type === "required" && (
-                <p className="cotizador__form--error-message">
+              {errors?.cantidad?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
                   Este campo es requerido
                 </p>
               )}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Precio</label>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>Precio</label>
               <span>$</span>
               {/* <span>.00</span> */}
               <input
                 // TODO: Revisar cunado el input se quite focus (isDirty) agregar funcion formato para miles (,) para despues setear ese nuevo valor en el input (setValue )
-                {...register("precio", {
+                {...register('precio', {
                   required: true,
                 })}
-                className="cotizador__inputs--input precio"
-                type="text"
+                className='cotizador__inputs--input precio'
+                type='text'
                 value={precio}
                 onChange={handlePrecioChange}
               />
-              {errors?.precio?.type === "required" && (
-                <p className="cotizador__form--error-message">
+              {errors?.precio?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
                   Este campo es requerido
                 </p>
               )}
             </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>
                 Servicio de entrega
               </label>
               <span>$</span>
               {/* <span>.00</span> */}
 
               <input
-                {...register("entrega", {
+                {...register('entrega', {
                   required: true,
                 })}
-                className="cotizador__inputs--input precio"
-                type="text"
+                className='cotizador__inputs--input precio'
+                type='text'
                 value={entrega}
                 onChange={handleEntregaChange}
               />
-              {errors?.entrega?.type === "required" && (
-                <p className="cotizador__form--error-message">
+              {errors?.entrega?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
                   Este campo es requerido
                 </p>
               )}
@@ -259,8 +274,8 @@ export const Cotizador = () => {
           </div>
           <button
             disabled={!isDirty || isSubmitting}
-            type="submit"
-            className="cotizador__form--button"
+            type='submit'
+            className='cotizador__form--button'
           >
             COTIZAR
           </button>
