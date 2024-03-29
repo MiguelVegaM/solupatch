@@ -1,5 +1,5 @@
 .pdf {
-  padding: 30px 50px 0px 50px;
+  padding: 0px 50px 0px 50px;
   width: 1000px;
   margin: 0 auto;
 }
@@ -7,7 +7,7 @@
 .pdf__header {
   display: flex;
   justify-content: space-between;
-  padding-block: 25px 10px;
+  padding-block: 45px 10px;
   .pdf__header__img__datos {
     display: flex;
     flex-direction: column;
@@ -162,7 +162,7 @@
       font-weight: 700;
     }
     img {
-      height: 350px;
+      height: 410px;
     }
   }
 }

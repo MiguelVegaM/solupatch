@@ -154,11 +154,9 @@ export const PDF = () => {
               <div className="pdf__header__datos1">SOLUPATCH S.A. DE C.V.</div>
               <div className="pdf__header__datos2">RFC: SOL231030DX0</div>
               <div>
-                <span>Dirección:</span> Av.Revolución,4055,Local 15,
+                <span>Dirección:</span> Av.Revolución, 4055, Local 15,
                 <br />
-                ContryCP64860Monterey,Nuevo León,
-                <br />
-                México
+                Contry C.P.64860, Monterey, Nuevo León, México
               </div>
             </div>
           </div>
