@@ -78,17 +78,15 @@ export const PDF = () => {
     maximumFractionDigits: 2,
   });
 
-  console.log(importe, entrega, iva, total);
-  // NOTE:
+  // console.log(importe, entrega, iva, total);
 
-  // useEffect(() => {
   const downloadPDF = () => {
     const input = pdfRef.current;
-    const style = document.createElement("style");
-    document.head.appendChild(style);
-    style.sheet?.insertRule(
-      "body > div:last-child img { display: inline-block; }"
-    );
+    // const style = document.createElement("style");
+    // document.head.appendChild(style);
+    // style.sheet?.insertRule(
+    //   "body > div:last-child img { display: inline-block; }"
+    // );
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4", true);
@@ -107,7 +105,6 @@ export const PDF = () => {
         imgWidth * ratio,
         imgHeight * ratio
       );
-      // window.open(pdf.output("bloburl"));
       pdf.save(`${cotizacionSeleccionada?.nombre}-Cotizacion.pdf`);
     });
   };
@@ -132,23 +129,8 @@ export const PDF = () => {
         imgHeight * ratio
       );
       window.open(pdf.output("bloburl"));
-      // pdf.save(`${cotizacionSeleccionada?.nombre}-Cotizacion.pdf`);
     });
   };
-
-  // downloadPDF();
-  // navigate("/cotizaciones");
-  // }, []);
-
-  // useEffect(() => {
-  // if (cotizacionId) {
-  //   if (cotizacionSeleccionada) {
-  //     if (datePdf) {
-  //       downloadPDF();
-  //     }
-  //   }
-  // }
-  // }, []);
 
   return (
     <div className="pdf__container">
@@ -183,7 +165,7 @@ export const PDF = () => {
           <div className="pdf__header__title">
             <div>COTIZACIÓN</div>
             <div>{datePdf}</div>
-            <div>Folio:{cotizacionSeleccionada?.id.split("", 8)}</div>
+            <div>Folio:{cotizacionSeleccionada?.folio}</div>
             <div>
               <span>Teléfonos:</span> 8261299100, 8123691537
             </div>
