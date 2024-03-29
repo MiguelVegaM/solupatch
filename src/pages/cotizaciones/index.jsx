@@ -139,7 +139,7 @@ export const Cotizaciones = () => {
 
                     <td>
                       {cantidad}{' '}
-                      {seleccione === 'Solupatch Bultos 25kg'
+                      {seleccione === '25kg Solupatch Bultos'
                         ? 'Bultos'
                         : 'Toneladas'}
                     </td>
