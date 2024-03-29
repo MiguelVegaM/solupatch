@@ -2,7 +2,6 @@
   padding: 0px 50px 0px 50px;
   width: 1000px;
   margin: 0 auto;
-  // font-size: 20px;
 }
 
 .pdf__header {
@@ -163,7 +162,7 @@
       font-weight: 700;
     }
     img {
-      height: 450px;
+      height: 350px;
     }
   }
 }
@@ -190,9 +189,6 @@
 }
 
 .pdf__button__container {
-  // display: flex;
-  // flex-direction: column;
-  // gap: 10px;
   position: absolute;
   top: 10px;
   right: 50px;
