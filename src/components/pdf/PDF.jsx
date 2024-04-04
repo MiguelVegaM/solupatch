@@ -131,37 +131,41 @@ export const PDF = () => {
       window.open(pdf.output("bloburl"));
     });
   };
-
+  // NOTE: Listado de vendedores
   const vendedores = () => {
     if (cotizacionSeleccionada?.emailValue === "aclarrea@solupatch.com") {
       return (
         <div className="pdf__header__title-vendor">
-          aclarrea@solupatch.com <br />
-          WhatsApp 81 8704 8514
+          Ana Cristina Larrea <br />
+          {/* WhatsApp 81 8704 8514 */}
+          Teléfonos: 8261299100, 8123691537
         </div>
       );
     }
     if (cotizacionSeleccionada?.emailValue === "jlramos@solupatch.com") {
       return (
         <div className="pdf__header__title-vendor">
-          jlramos@solupatch.com <br />
-          WhatsApp 81 8704 8514
+          José Luis Ramos <br />
+          {/* WhatsApp 81 8704 8514 */}
+          Teléfonos: 8261299100, 8123691537
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === "evargas@solupatch.com") {
+    if (cotizacionSeleccionada?.emailValue === "lblanco@solupatch.com") {
       return (
         <div className="pdf__header__title-vendor">
-          evargas@solupatch.com <br />
-          WhatsApp 81 8704 8514
+          Luis Blanco <br />
+          {/* WhatsApp 81 8704 8514 */}
+          Teléfonos: 8261299100, 8123691537
         </div>
       );
     }
     if (cotizacionSeleccionada?.emailValue === "rvl@solupatch.com") {
       return (
         <div className="pdf__header__title-vendor">
-          rvl@solupatch.com <br />
-          WhatsApp 81 8704 8514
+          Rodolfo Villalobos <br />
+          {/* WhatsApp 81 8704 8514 */}
+          Teléfonos: 8261299100, 8123691537
         </div>
       );
     }
