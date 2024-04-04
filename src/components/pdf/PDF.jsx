@@ -265,7 +265,7 @@ export const PDF = () => {
                       $ {entregaFormated}
                     </td>
                     <td className="cotizacion__title__td">
-                      ${importeFormated}
+                      $ {importeFormated}
                     </td>
                   </tr>
                 </tbody>
