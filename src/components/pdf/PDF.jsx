@@ -44,8 +44,6 @@ export const PDF = () => {
 
   const pdfRef = useRef();
 
-  // NOTE: COSTOS
-
   let importe =
     cotizacionSeleccionada?.cantidad *
     cotizacionSeleccionada?.precio.replace(/,/g, "");
