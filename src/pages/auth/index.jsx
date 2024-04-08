@@ -96,12 +96,6 @@ export const Auth = () => {
                   Ingrese un correo valido
                 </p>
               )}
-              {/* // TODO: message error email no valid */}
-              {/* {errors?.email?.type === "pattern" && (
-                <p className="auth__form--error-message">
-                  Este correo no está registrado en la base de datos
-                </p>
-              )} */}
             </div>
             <div className="auth__input--pair">
               <label className="auth__inputs--label">Contraseña</label>
