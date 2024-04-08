@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "Galano Grotesque"; /*Can be any text*/
+  src: local("GalanoGrotesque"),
+    url("./assets/fonts/GalanoGrotesqueRegular.otf") format("otf");
+}
+
+body {
+  font-family: "Galano Grotesque", sans-serif;
+}
