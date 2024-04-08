@@ -32,7 +32,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" exact element={<Auth />} />
+          <Route path="/autenticacion" exact element={<Auth />} />
           <Route path="/cotizador" exact element={<Cotizador />} />
           <Route path="/cotizaciones" exact element={<Cotizaciones />} />
           <Route path="/cotizaciones/:cotizacionId" exact element={<PDF />} />

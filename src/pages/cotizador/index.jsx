@@ -78,7 +78,7 @@ export const Cotizador = () => {
     try {
       await signOut(auth);
       localStorage.clear();
-      navigate("/");
+      navigate("/autenticacion");
     } catch (error) {
       console.log(error);
     }

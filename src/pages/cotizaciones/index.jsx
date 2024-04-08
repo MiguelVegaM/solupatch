@@ -1,20 +1,20 @@
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/firebase-config';
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase/firebase-config";
 import {
   NavLink,
   Navigate,
   useNavigate,
   // useParams
-} from 'react-router-dom';
+} from "react-router-dom";
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf";
-import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
-import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import moment from 'moment';
-import Table from 'react-bootstrap/Table';
+import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
+import { useGetUserInfo } from "../../hooks/useGetUserInfo";
+import moment from "moment";
+import Table from "react-bootstrap/Table";
 
-import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
-import '../cotizaciones/styles.scss';
+import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
+import "../cotizaciones/styles.scss";
 
 export const Cotizaciones = () => {
   const { isAuth } = useGetUserInfo();
@@ -26,7 +26,7 @@ export const Cotizaciones = () => {
     try {
       await signOut(auth);
       localStorage.clear();
-      navigate('/');
+      navigate("/autenticacion");
     } catch (error) {
       console.log(error);
     }
@@ -63,30 +63,30 @@ export const Cotizaciones = () => {
   // };
 
   if (!isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to="/" />;
   }
 
   return (
     <div>
       {/* <PDF pdfRef={pdfRef} /> */}
-      <div className='cotizaciones__navbar'>
-        <div className='cotizaciones__navbar--space'></div>
+      <div className="cotizaciones__navbar">
+        <div className="cotizaciones__navbar--space"></div>
         <img
-          className='cotizaciones__navbar--img'
+          className="cotizaciones__navbar--img"
           src={logoPrincipal}
-          alt='Solupatch Logo'
+          alt="Solupatch Logo"
         />
-        <div className='navbar__buttons'>
-          <a href='/cotizador'>
-            <button className='navbar__button--cotizaciones'>Cotizador</button>
+        <div className="navbar__buttons">
+          <a href="/cotizador">
+            <button className="navbar__button--cotizaciones">Cotizador</button>
           </a>
-          <button className='navbar__button--cotizaciones' onClick={logout}>
+          <button className="navbar__button--cotizaciones" onClick={logout}>
             Salir
           </button>
         </div>
       </div>
 
-      <div className='cotizaciones__body'>
+      <div className="cotizaciones__body">
         <Table striped>
           <thead>
             <tr>
@@ -105,9 +105,9 @@ export const Cotizaciones = () => {
                 const { seconds, nanoseconds } = cotizacion.createdAt || {};
                 const Date = moment
                   .unix(seconds)
-                  .add(nanoseconds / 1000000, 'milliseconds');
-                moment.locale('es-mx');
-                const Fordate = Date.format('lll') || '';
+                  .add(nanoseconds / 1000000, "milliseconds");
+                moment.locale("es-mx");
+                const Fordate = Date.format("lll") || "";
                 const {
                   nombre,
                   id,
@@ -122,10 +122,10 @@ export const Cotizaciones = () => {
                   // email,
                 } = cotizacion;
 
-                let importe = cantidad * 1 * (precio.replace(/,/g, '') * 1);
-                let iva = (importe + entrega.replace(/,/g, '') * 1) * 0.16;
-                let total = importe + iva + entrega.replace(/,/g, '') * 1;
-                let totalFormated = total.toLocaleString('en-US', {
+                let importe = cantidad * 1 * (precio.replace(/,/g, "") * 1);
+                let iva = (importe + entrega.replace(/,/g, "") * 1) * 0.16;
+                let total = importe + iva + entrega.replace(/,/g, "") * 1;
+                let totalFormated = total.toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 });
@@ -138,15 +138,15 @@ export const Cotizaciones = () => {
                     <td>{emailValue}</td>
 
                     <td>
-                      {cantidad}{' '}
-                      {seleccione === '25kg Solupatch Bultos'
-                        ? 'Bultos'
-                        : 'Toneladas'}
+                      {cantidad}{" "}
+                      {seleccione === "25kg Solupatch Bultos"
+                        ? "Bultos"
+                        : "Toneladas"}
                     </td>
                     <td>$ {totalFormated}</td>
                     <td>
-                      <NavLink to={cotizacion?.id} target='_blank'>
-                        <button className='cotizador__button--descargar'>
+                      <NavLink to={cotizacion?.id} target="_blank">
+                        <button className="cotizador__button--descargar">
                           Ver PDF
                         </button>
                       </NavLink>
