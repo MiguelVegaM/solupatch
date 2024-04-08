@@ -1,16 +1,23 @@
 /* makes sizing simpler  */
 
+@font-face {
+  font-family: "GalanoGrotesqueRegular"; /*Can be any text*/
+  src: local("GalanoGrotesqueRegular"),
+    url("./assets/fonts/GalanoGrotesqueRegular.otf") format("otf");
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+/* TODO: import font-family */
 
 /* remove default spacing */
 * {
   margin: 0;
   padding: 0;
-  font-family: "Galano Grotesque", Arial, Helvetica, sans-serif;
+  font-family: Galano Grotesque, Arial, Helvetica, sans-serif;
 }
 
 /* dark mode user-agent-styles */
@@ -31,5 +38,3 @@ video {
   display: block;
   max-width: 100%;
 } */
-
-/* TODO: import font-family */

@@ -1,4 +1,5 @@
 import "./App.css";
+import "./assets/fonts/GalanoGrotesqueRegular.otf";
 import { Auth } from "./pages/auth";
 import { Cotizador } from "./pages/cotizador";
 import { Cotizaciones } from "./pages/cotizaciones";
