@@ -12,6 +12,7 @@ import igIcon from "../../assets/imgs/ig-icon.png";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import "../pdf/styles.scss";
+import "../../../src/App.css";
 import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 
 import moment from "moment";
@@ -38,7 +39,6 @@ export const PDF = () => {
       .add(nanoseconds / 1000000, "milliseconds");
     moment.locale("es-mx");
     const Fordate = Date.format("lll") || "";
-    // console.log(Fordate);
     setDatePdf(Fordate);
   }, [cotizacionSeleccionada]);
 

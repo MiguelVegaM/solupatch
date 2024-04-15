@@ -20,16 +20,7 @@
 /* min body height */
 body {
   min-height: 100svh;
-  font-family: "GalanoGrotesqueBlack", "GalanoGrotesqueBlackItalic",
-    "GalanoGrotesqueBold", "GalanoGrotesqueBoldItalic",
-    "GalanoGrotesqueExtraBold", "GalanoGrotesqueExtraBoldItalic",
-    "GalanoGrotesqueExtraLight", "GalanoGrotesqueExtraLightItalic",
-    "GalanoGrotesqueHeavy", "GalanoGrotesqueHeavyItalic",
-    "GalanoGrotesqueItalic", "GalanoGrotesqueLight",
-    "GalanoGrotesqueLightItalic", "GalanoGrotesqueMedium",
-    "GalanoGrotesqueMediumItalic", "GalanoGrotesqueSemiBold",
-    "GalanoGrotesqueSemiBoldItalic", "GalanoGrotesqueThin",
-    "GalanoGrotesqueThinItalic", "GalanoGrotesqueRegular", sans-serif;
+  font-family: "GalanoGrotesqueRegular", sans-serif;
 }
 
 /* responsive images/videos */

@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "GalanoGrotesqueBlack";
+  /* font-family: "GalanoGrotesqueBlack";
   src: local("GalanoGrotesqueBlack"),
     url("./assets/fonts/GalanoGrotesqueBlack.otf") format("opentype");
 
@@ -73,8 +73,7 @@
 
   font-family: "GalanoGrotesqueThinItalic";
   src: local("GalanoGrotesqueThinItalic"),
-    url("./assets/fonts/GalanoGrotesqueThinItalic.otf") format("opentype");
-
+    url("./assets/fonts/GalanoGrotesqueThinItalic.otf") format("opentype"); */
   font-family: "GalanoGrotesqueRegular";
   src: local("GalanoGrotesqueRegular"),
     url("./assets/fonts/GalanoGrotesqueRegular.otf") format("opentype");

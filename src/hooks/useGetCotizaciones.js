@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  // where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
+// import { useGetUserInfo } from "./useGetUserInfo";
 
 export const useGetCotizaciones = () => {
   const [cotizaciones, setCotizaciones] = useState([]);
 
   const cotizacionCollectionRef = collection(db, "cotizaciones");
+  // const { userID } = useGetUserInfo();
 
   const getCotizaciones = async () => {
     let unsubscribe;
     try {
       const queryCotizaciones = query(
         cotizacionCollectionRef,
+        // where("userID", "==", userID),
         orderBy("createdAt")
       );
       unsubscribe = onSnapshot(queryCotizaciones, (snapshot) => {
@@ -19,13 +28,13 @@ export const useGetCotizaciones = () => {
         snapshot.forEach((doc) => {
           const data = doc.data();
           const id = doc.id;
-          // const createdAt = doc.createdAt;
-          // console.log("</> → doc:", doc, "id", id);
+          const createdAt = doc.createdAt;
+          console.log("</> → doc:", doc, "id", id);
 
           docs.push({ ...data, id });
 
-          // console.log("</> → createdAt:", createdAt);
-          // console.log("</> → docs:", docs);
+          console.log("</> → createdAt:", createdAt);
+          console.log("</> → docs:", docs);
         });
         setCotizaciones(docs);
       });

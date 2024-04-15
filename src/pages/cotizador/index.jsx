@@ -3,9 +3,11 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useAddFolio } from "../../hooks/useAddFolio";
 import { useAddCotizacion } from "../../hooks/useAddCotizacion";
-import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
+// import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 import { useGetUserInfo } from "../../hooks/useGetUserInfo";
+import { useGetFolio } from "../../hooks/useGetFolio";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
@@ -13,8 +15,11 @@ import "./styles.scss";
 export const Cotizador = () => {
   const [tipo, setTipo] = useState("");
 
+  const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
-  const { cotizaciones } = useGetCotizaciones();
+
+  // const { cotizaciones } = useGetCotizaciones();
+  const { folios } = useGetFolio();
 
   const [precio, setPrecio] = useState("");
   const [entrega, setEntrega] = useState("");
@@ -35,8 +40,10 @@ export const Cotizador = () => {
     setEntrega(formattedNumber);
   };
 
-  const { isAuth } = useGetUserInfo();
+  const { isAuth, emailValue } = useGetUserInfo();
   const navigate = useNavigate();
+
+  const folio = { num: Math.random() };
 
   const {
     register,
@@ -59,19 +66,31 @@ export const Cotizador = () => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    if (cotizaciones.length <= 10) {
+    if (folios?.length <= 9) {
       const dataObj = {
-        folio: "00010" + cotizaciones.length,
+        folio: "00010" + folios.length,
+        // total:
+        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
+        //   data.cantidad * data.precio * 1 +
+        //   data.entrega * 1 * 1,
         ...data,
       };
       addCotizacion(dataObj);
     } else {
       const dataObj = {
-        folio: "0001" + cotizaciones.length,
+        folio: "0001" + folios?.length,
+        // total:
+        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
+        //   data.cantidad * data.precio * 1 +
+        //   data.entrega * 1 * 1,
         ...data,
       };
       addCotizacion(dataObj);
     }
+    addFolio(folio);
+
+    console.log("</> → data:", data);
+    console.log("</> → folio:", folio);
   };
 
   const logout = async () => {
@@ -95,10 +114,14 @@ export const Cotizador = () => {
     return <Navigate to="/" />;
   }
 
+  console.log(emailValue);
+
   return (
     <div className="cotizador">
       <div className="cotizador__navbar">
-        <div className="cotizador__navbar--space"></div>
+        <div className="cotizador__navbar--vendedor">
+          <span>Vendedor:</span> {emailValue}
+        </div>
         <img
           className="cotizador__navbar--img"
           src={logoPrincipal}
