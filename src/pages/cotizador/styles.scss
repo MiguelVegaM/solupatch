@@ -150,6 +150,8 @@
       background-color: #c4c4c4;
       font-size: 1rem;
       padding-inline: 1.5rem;
+      -webkit-appearance: none;
+      appearance: none;
     }
     .cotizador__inputs--input:hover {
       background-color: #cacaca;
