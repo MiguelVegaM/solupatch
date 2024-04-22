@@ -31,6 +31,7 @@ export const Cotizaciones = () => {
       console.log(error);
     }
   };
+  // prueba de accesos de git
 
   // let { cotizacionId } = useParams();
 
