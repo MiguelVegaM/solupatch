@@ -309,12 +309,59 @@ export const Cotizaciones = () => {
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
                           <td>{emailValue}</td>
-
+                          <td>{seleccione}</td>
                           <td>
                             {cantidad}{" "}
-                            {seleccione === "25kg Solupatch Bultos"
-                              ? "Bultos"
-                              : "Toneladas"}
+                            {seleccione === "25kg Solupatch Bultos" && (
+                              <span className="cotizador__input--placeholder">
+                                Bultos
+                              </span>
+                            )}
+                            {seleccione === "Solupatch a Granel" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Debastado" && (
+                              <span className="cotizador__input--placeholder">
+                                M2
+                              </span>
+                            )}
+                            {seleccione === "Suministro y tendido pg64" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Suministro y tendido pg76" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Impregnación" && (
+                              <span className="cotizador__input--placeholder">
+                                Litros
+                              </span>
+                            )}
+                            {seleccione === "Suministro pg64" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Traslado carpeta" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Movimientos maquinaria" && (
+                              <span className="cotizador__input--placeholder">
+                                Flete
+                              </span>
+                            )}
+                            {seleccione === "Emulsión aslfáltica" && (
+                              <span className="cotizador__input--placeholder">
+                                Litros
+                              </span>
+                            )}
                           </td>
                           <td>$ {totalFormated}</td>
                           <td>
