@@ -23,12 +23,16 @@ export const Cotizaciones = () => {
   const navigate = useNavigate();
 
   const { cotizaciones } = useGetCotizaciones();
+  // console.log("</> → cotizaciones:", cotizaciones);
 
-  const [datePdf, setDatePdf] = useState("");
+  const [datePdf, setDatePdf] = useState([]);
+
+  // console.log(cotizaciones);
 
   useEffect(() => {
-    cotizaciones.map(
+    cotizaciones.forEach(
       (cotizacion) => {
+        // console.log(cotizacion?.createdAt);
         const { seconds, nanoseconds } = cotizacion?.createdAt || {};
         const Date = moment
           .unix(seconds)
@@ -36,6 +40,7 @@ export const Cotizaciones = () => {
         moment.locale("es-mx");
         const Fordate = Date.format("lll") || "";
         setDatePdf(Fordate);
+        // console.log(Fordate);
       },
       [cotizaciones]
     );
@@ -48,25 +53,27 @@ export const Cotizaciones = () => {
         B: "CLIENTE",
         C: "FECHA",
         D: "VENDEDOR",
-        E: "CANTIDAD",
-        F: "EMPRESA",
-        G: "EMAIL",
-        H: "CELULAR",
-        I: "TOTAL",
+        E: "MERCANCÍA",
+        F: "CANTIDAD",
+        G: "EMPRESA",
+        H: "EMAIL",
+        I: "CELULAR",
+        J: "TOTAL",
       },
     ];
-
     cotizaciones.forEach((cotizacion) => {
+      console.log(cotizacion?.createdAt);
       table.push({
         A: cotizacion.folio,
         B: cotizacion.nombre,
         C: datePdf,
         D: cotizacion.emailValue,
-        E: cotizacion.cantidad,
-        F: cotizacion.empresa,
-        G: cotizacion.email,
-        H: cotizacion.celular,
-        I: (
+        E: cotizacion.seleccione,
+        F: cotizacion.cantidad,
+        G: cotizacion.empresa,
+        H: cotizacion.email,
+        I: cotizacion.celular,
+        J: (
           (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, "")) /
             1 +
             cotizacion.entrega.replace(/,/g, "") / 1) *
@@ -85,22 +92,12 @@ export const Cotizaciones = () => {
 
     createFilter(finalData);
   };
-
   const createFilter = (finalData) => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(finalData, { skipHeader: true });
     XLSX.utils.book_append_sheet(workbook, worksheet, "Cotizaciones");
     XLSX.writeFile(workbook, "Cotizaciones SOLUPATCH.xlsx");
   };
-
-  // cotizaciones.map((cotizacion) => {
-  //   console.log(
-  //     cotizacion.total.toLocaleString("en-US", {
-  //       minimumFractionDigits: 2,
-  //       maximumFractionDigits: 2,
-  //     })
-  //   );
-  // });
 
   const logout = async () => {
     try {
@@ -151,6 +148,7 @@ export const Cotizaciones = () => {
               <th>Cliente</th>
               <th>Fecha de Creación</th>
               <th>Vendedor</th>
+              <th>Mercancia</th>
               <th>Cantidad</th>
               <th>Total de Cotizacion</th>
               <th></th>
@@ -162,7 +160,6 @@ export const Cotizaciones = () => {
               emailValue === "rvl@solupatch.com"
                 ? cotizaciones
                     .map((cotizacion) => {
-                      console.log("</> → cotizacion:", cotizacion);
                       const { seconds, nanoseconds } =
                         cotizacion.createdAt || {};
                       const Date = moment
@@ -201,12 +198,59 @@ export const Cotizaciones = () => {
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
                           <td>{emailValue}</td>
-
+                          <td>{seleccione}</td>
                           <td>
                             {cantidad}{" "}
-                            {seleccione === "25kg Solupatch Bultos"
-                              ? "Bultos"
-                              : "Toneladas"}
+                            {seleccione === "25kg Solupatch Bultos" && (
+                              <span className="cotizador__input--placeholder">
+                                Bultos
+                              </span>
+                            )}
+                            {seleccione === "Solupatch a Granel" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Debastado" && (
+                              <span className="cotizador__input--placeholder">
+                                M2
+                              </span>
+                            )}
+                            {seleccione === "Suministro y tendido pg64" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Suministro y tendido pg76" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Impregnación" && (
+                              <span className="cotizador__input--placeholder">
+                                Litros
+                              </span>
+                            )}
+                            {seleccione === "Suministro pg64" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Traslado carpeta" && (
+                              <span className="cotizador__input--placeholder">
+                                Toneladas
+                              </span>
+                            )}
+                            {seleccione === "Movimientos maquinaria" && (
+                              <span className="cotizador__input--placeholder">
+                                Flete
+                              </span>
+                            )}
+                            {seleccione === "Emulsión aslfáltica" && (
+                              <span className="cotizador__input--placeholder">
+                                Litros
+                              </span>
+                            )}
                           </td>
                           <td>$ {totalFormated}</td>
                           <td>

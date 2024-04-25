@@ -224,6 +224,20 @@ export const Cotizador = () => {
                   25kgs Solupatch Bultos
                 </option>
                 <option value="Solupatch a Granel">Solupatch a Granel</option>
+                <option value="Debastado">Debastado</option>
+                <option value="Suministro y tendido pg64">
+                  Suministro y tendido pg64
+                </option>
+                <option value="Suministro y tendido pg76">
+                  Suministro y tendido pg76
+                </option>
+                <option value="Impregnación">Impregnación</option>
+                <option value="Suministro pg64">Suministro pg64</option>
+                <option value="Traslado carpeta">Traslado carpeta</option>
+                <option value="Movimientos maquinaria">
+                  Movimientos maquinaria
+                </option>
+                <option value="Emulsión aslfáltica">Emulsión aslfáltica</option>
               </select>
               {errors?.seleccione?.type === "required" && (
                 <p className="cotizador__form--error-message">
@@ -245,6 +259,30 @@ export const Cotizador = () => {
               )}
               {tipo === "Solupatch a Granel" && (
                 <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
+              {tipo === "Debastado" && (
+                <span className="cotizador__input--placeholder">M2</span>
+              )}
+              {tipo === "Suministro y tendido pg64" && (
+                <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
+              {tipo === "Suministro y tendido pg76" && (
+                <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
+              {tipo === "Impregnación" && (
+                <span className="cotizador__input--placeholder">Litros</span>
+              )}
+              {tipo === "Suministro pg64" && (
+                <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
+              {tipo === "Traslado carpeta" && (
+                <span className="cotizador__input--placeholder">Toneladas</span>
+              )}
+              {tipo === "Movimientos maquinaria" && (
+                <span className="cotizador__input--placeholder">Flete</span>
+              )}
+              {tipo === "Emulsión aslfáltica" && (
+                <span className="cotizador__input--placeholder">Litros</span>
               )}
               {errors?.cantidad?.type === "required" && (
                 <p className="cotizador__form--error-message">

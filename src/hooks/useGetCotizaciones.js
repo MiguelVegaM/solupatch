@@ -29,12 +29,11 @@ export const useGetCotizaciones = () => {
           const data = doc.data();
           const id = doc.id;
           const createdAt = doc.createdAt;
-          console.log("</> → doc:", doc, "id", id);
 
           docs.push({ ...data, id });
 
           console.log("</> → createdAt:", createdAt);
-          console.log("</> → docs:", docs);
+          // console.log("</> → docs:", docs);
         });
         setCotizaciones(docs);
       });

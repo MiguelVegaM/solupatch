@@ -251,9 +251,64 @@ export const PDF = () => {
                     <td className="cotizacion__title__td">
                       {cotizacionSeleccionada?.cantidad}{" "}
                       {cotizacionSeleccionada?.seleccione ===
-                      "Solupatch a Granel"
-                        ? "Toneladas"
-                        : "Bultos"}
+                        "25kg Solupatch Bultos" && (
+                        <span className="cotizador__input--placeholder">
+                          Bultos
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Solupatch a Granel" && (
+                        <span className="cotizador__input--placeholder">
+                          Toneladas
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione === "Debastado" && (
+                        <span className="cotizador__input--placeholder">
+                          M2
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Suministro y tendido pg64" && (
+                        <span className="cotizador__input--placeholder">
+                          Toneladas
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Suministro y tendido pg76" && (
+                        <span className="cotizador__input--placeholder">
+                          Toneladas
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Impregnación" && (
+                        <span className="cotizador__input--placeholder">
+                          Litros
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Suministro pg64" && (
+                        <span className="cotizador__input--placeholder">
+                          Toneladas
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Traslado carpeta" && (
+                        <span className="cotizador__input--placeholder">
+                          Toneladas
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Movimientos maquinaria" && (
+                        <span className="cotizador__input--placeholder">
+                          Flete
+                        </span>
+                      )}
+                      {cotizacionSeleccionada?.seleccione ===
+                        "Emulsión aslfáltica" && (
+                        <span className="cotizador__input--placeholder">
+                          Litros
+                        </span>
+                      )}
                     </td>
                     <td className="cotizacion__title__td">
                       {cotizacionSeleccionada?.seleccione}
