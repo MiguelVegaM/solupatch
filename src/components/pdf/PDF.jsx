@@ -27,10 +27,12 @@ export const PDF = () => {
   // console.log("</> → cotizacionId:", cotizacionId);
 
   const { cotizaciones } = useGetCotizaciones();
-  // console.log("</> → cotizaciones:", cotizaciones);
+
   let cotizacionSeleccionada = cotizaciones.find(
     (cotizacion) => cotizacion?.id === cotizacionId
   );
+
+  console.log("</> → cotizacionSeleccionada:", cotizacionSeleccionada);
 
   useEffect(() => {
     const { seconds, nanoseconds } = cotizacionSeleccionada?.createdAt || {};

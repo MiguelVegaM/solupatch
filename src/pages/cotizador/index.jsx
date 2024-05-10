@@ -89,8 +89,8 @@ export const Cotizador = () => {
     }
     addFolio(folio);
 
-    console.log("</> → data:", data);
-    console.log("</> → folio:", folio);
+    // console.log("</> → data:", data);
+    // console.log("</> → folio:", folio);
   };
 
   const logout = async () => {
@@ -114,7 +114,7 @@ export const Cotizador = () => {
     return <Navigate to="/" />;
   }
 
-  console.log(emailValue);
+  // console.log(emailValue);
 
   return (
     <div className="cotizador">

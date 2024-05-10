@@ -1,38 +1,39 @@
+import { useEffect, useRef, useState } from "react";
+
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase/firebase-config";
+import { deleteDoc, doc } from "firebase/firestore";
+import { auth, db } from "../../firebase/firebase-config";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
 import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 import moment from "moment";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 import * as XLSX from "xlsx";
+import { Toaster, toast } from "sonner";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "../cotizaciones/styles.scss";
-import { useEffect, useState } from "react";
 
 export const Cotizaciones = () => {
+  const [tempId, setTempId] = useState("");
+
   const {
     isAuth,
     // userID,
     emailValue,
   } = useGetUserInfo();
-  // console.log("</> → emailValue:", emailValue);
 
   const navigate = useNavigate();
 
   const { cotizaciones } = useGetCotizaciones();
-  // console.log("</> → cotizaciones:", cotizaciones);
 
   const [datePdf, setDatePdf] = useState([]);
-
-  // console.log(cotizaciones);
 
   useEffect(() => {
     cotizaciones.forEach(
       (cotizacion) => {
-        // console.log(cotizacion?.createdAt);
         const { seconds, nanoseconds } = cotizacion?.createdAt || {};
         const Date = moment
           .unix(seconds)
@@ -109,12 +110,69 @@ export const Cotizaciones = () => {
     }
   };
 
+  const modalRef = useRef(null);
+
+  const openModal = async (id) => {
+    setTempId(id);
+    modalRef.current.showModal();
+  };
+
+  const closeModal = () => {
+    modalRef.current.close();
+  };
+
+  const closeModalOutside = (e) => {
+    const dialogDimensions = modalRef.current.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      modalRef.current.close();
+    }
+  };
+
+  const onDelete = async () => {
+    const docRef = doc(db, "cotizaciones", tempId);
+    await deleteDoc(docRef);
+    setTempId("");
+    modalRef.current.close();
+    toast.warning("Cotización eliminada");
+  };
+
   if (!isAuth) {
     return <Navigate to="/" />;
   }
 
   return (
-    <div>
+    <div className="cotizaciones">
+      {/* Delete Modal */}
+      <dialog
+        onClick={closeModalOutside}
+        ref={modalRef}
+        className="cotizaciones__modal"
+      >
+        <div>
+          <h3>Eliminar Cotización</h3>
+          <p>Si elimina esta cotización los datos no podrán ser recuperados.</p>
+
+          <div className="cotizaciones__modal--buttons-container">
+            <button
+              className="cotizaciones__modal--delete-button"
+              onClick={onDelete}
+            >
+              Eliminar
+            </button>
+            <button
+              className="cotizaciones__modal--close-button"
+              onClick={closeModal}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </dialog>
       <div className="cotizaciones__navbar">
         <div className="cotizador__navbar--vendedor">
           <span>Vendedor:</span> {emailValue}
@@ -151,6 +209,7 @@ export const Cotizaciones = () => {
               <th>Mercancia</th>
               <th>Cantidad</th>
               <th>Total de Cotizacion</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -193,12 +252,14 @@ export const Cotizaciones = () => {
                       });
 
                       return (
+                        // Table Data
                         <tr key={id}>
                           <td>{folio}</td>
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
                           <td>{emailValue}</td>
                           <td>{seleccione}</td>
+                          {/* selects seleccione */}
                           <td>
                             {cantidad}{" "}
                             {seleccione === "25kg Solupatch Bultos" && (
@@ -259,6 +320,15 @@ export const Cotizaciones = () => {
                                 Ver PDF
                               </button>
                             </NavLink>
+                          </td>
+                          <td>
+                            {/* Boton para dialogo */}
+                            <Button
+                              onClick={() => openModal(id)}
+                              className="cotizador__button--delete"
+                            >
+                              Eliminar
+                            </Button>
                           </td>
                         </tr>
                       );
@@ -310,6 +380,7 @@ export const Cotizaciones = () => {
                           <td>{Fordate}</td>
                           <td>{emailValue}</td>
                           <td>{seleccione}</td>
+                          {/* selects seleccione */}
                           <td>
                             {cantidad}{" "}
                             {seleccione === "25kg Solupatch Bultos" && (
@@ -371,6 +442,15 @@ export const Cotizaciones = () => {
                               </button>
                             </NavLink>
                           </td>
+                          <td>
+                            {/* Boton para dialogo */}
+                            <Button
+                              onClick={() => openModal(id)}
+                              className="cotizador__button--delete"
+                            >
+                              Eliminar
+                            </Button>
+                          </td>
                         </tr>
                       );
                     })
@@ -379,6 +459,7 @@ export const Cotizaciones = () => {
           </tbody>
         </Table>
       </div>
+      <Toaster position="bottom-center" richColors />
     </div>
   );
 };

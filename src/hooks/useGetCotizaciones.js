@@ -28,11 +28,11 @@ export const useGetCotizaciones = () => {
         snapshot.forEach((doc) => {
           const data = doc.data();
           const id = doc.id;
-          const createdAt = doc.createdAt;
+          // const createdAt = doc.createdAt;
 
           docs.push({ ...data, id });
 
-          console.log("</> → createdAt:", createdAt);
+          // console.log("</> → createdAt:", createdAt);
           // console.log("</> → docs:", docs);
         });
         setCotizaciones(docs);
