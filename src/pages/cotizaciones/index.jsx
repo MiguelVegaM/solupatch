@@ -27,6 +27,7 @@ import "../cotizaciones/styles.scss";
 export const Cotizaciones = () => {
   const [tempDeleteId, setTempDeleteId] = useState("");
   // const [tempUpdateId, setTempUpdateId] = useState("");
+  // const [tempUpdateId, setTempUpdateId] = useState("");
 
   const {
     isAuth,
