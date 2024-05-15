@@ -7,6 +7,7 @@ import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 import { Toaster, toast } from "sonner";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
+
 import "./styles.scss";
 
 export const Auth = () => {

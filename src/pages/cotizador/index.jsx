@@ -69,6 +69,7 @@ export const Cotizador = () => {
     if (folios?.length <= 9) {
       const dataObj = {
         folio: "00010" + folios.length,
+        status: "progreso",
         // total:
         //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
         //   data.cantidad * data.precio * 1 +
@@ -79,6 +80,7 @@ export const Cotizador = () => {
     } else {
       const dataObj = {
         folio: "0001" + folios?.length,
+        status: "progreso",
         // total:
         //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
         //   data.cantidad * data.precio * 1 +

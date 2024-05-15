@@ -1,7 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  // useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { signOut } from "firebase/auth";
-import { deleteDoc, doc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  // updateDoc
+} from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase-config";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
@@ -17,7 +25,8 @@ import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "../cotizaciones/styles.scss";
 
 export const Cotizaciones = () => {
-  const [tempId, setTempId] = useState("");
+  const [tempDeleteId, setTempDeleteId] = useState("");
+  // const [tempUpdateId, setTempUpdateId] = useState("");
 
   const {
     isAuth,
@@ -29,23 +38,24 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  const [datePdf, setDatePdf] = useState([]);
+  // const [datePdf, setDatePdf] = useState([]);
 
-  useEffect(() => {
-    cotizaciones.forEach(
-      (cotizacion) => {
-        const { seconds, nanoseconds } = cotizacion?.createdAt || {};
-        const Date = moment
-          .unix(seconds)
-          .add(nanoseconds / 1000000, "milliseconds");
-        moment.locale("es-mx");
-        const Fordate = Date.format("lll") || "";
-        setDatePdf(Fordate);
-        // console.log(Fordate);
-      },
-      [cotizaciones]
-    );
-  });
+  // useEffect(() => {
+  //   cotizaciones.forEach(
+  //     (cotizacion) => {
+  //       const { seconds, nanoseconds } = cotizacion?.createdAt || {};
+  //       const Date = moment
+  //         .unix(seconds)
+  //         .add(nanoseconds / 1000000, "milliseconds");
+  //       moment.locale("es-mx");
+  //       const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+  //       setDatePdf(Fordate);
+  //       // console.log(Fordate);
+  //       console.log(datePdf);
+  //     },
+  //     [cotizaciones]
+  //   );
+  // });
 
   const downloadExcel = () => {
     let table = [
@@ -63,11 +73,20 @@ export const Cotizaciones = () => {
       },
     ];
     cotizaciones.forEach((cotizacion) => {
-      console.log(cotizacion?.createdAt);
+      const formatedDate = () => {
+        const { seconds, nanoseconds } = cotizacion?.createdAt || {};
+        const Date = moment
+          .unix(seconds)
+          .add(nanoseconds / 1000000, "milliseconds");
+        moment.locale("es");
+        const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+        return Fordate;
+      };
+
       table.push({
         A: cotizacion.folio,
         B: cotizacion.nombre,
-        C: datePdf,
+        C: formatedDate(),
         D: cotizacion.emailValue,
         E: cotizacion.seleccione,
         F: cotizacion.cantidad,
@@ -112,12 +131,8 @@ export const Cotizaciones = () => {
 
   const modalRef = useRef(null);
 
-  const openModal = async (id) => {
-    setTempId(id);
-    modalRef.current.showModal();
-  };
-
   const closeModal = () => {
+    console.log(tempDeleteId);
     modalRef.current.close();
   };
 
@@ -133,13 +148,39 @@ export const Cotizaciones = () => {
     }
   };
 
+  // useEffect(()=>{
+
+  // })
+  const openModal = async (id) => {
+    // console.log(id);
+    setTempDeleteId(id);
+    // console.log(tempDeleteId);
+    modalRef.current.showModal();
+  };
   const onDelete = async () => {
-    const docRef = doc(db, "cotizaciones", tempId);
+    // console.log(tempDeleteId);
+    const docRef = doc(db, "cotizaciones", tempDeleteId);
     await deleteDoc(docRef);
-    setTempId("");
+    setTempDeleteId("");
+    // console.log(tempDeleteId);
     modalRef.current.close();
     toast.warning("Cotización eliminada");
   };
+
+  // const onClickUpdate = (id) => {
+  //   setTempUpdateId(id);
+  //   // console.log("hola");
+  //   console.log(tempUpdateId);
+  // };
+
+  // const onUpdate = async (e) => {
+  //   console.log(tempUpdateId);
+  //   console.log(e.target.value);
+  //   const docRef = doc(db, "cotizaciones", tempDeleteId);
+  //   await updateDoc(docRef, {
+  //     status: "hola",
+  //   });
+  // };
 
   if (!isAuth) {
     return <Navigate to="/" />;
@@ -211,6 +252,7 @@ export const Cotizaciones = () => {
               <th>Total de Cotizacion</th>
               <th></th>
               <th></th>
+              {/* <th></th> */}
             </tr>
           </thead>
           <tbody>
@@ -224,8 +266,8 @@ export const Cotizaciones = () => {
                       const Date = moment
                         .unix(seconds)
                         .add(nanoseconds / 1000000, "milliseconds");
-                      moment.locale("es-mx");
-                      const Fordate = Date.format("lll") || "";
+                      moment.locale("es");
+                      const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
                       const {
                         nombre,
                         id,
@@ -314,6 +356,19 @@ export const Cotizaciones = () => {
                             )}
                           </td>
                           <td>$ {totalFormated}</td>
+                          {/* <td>
+                            <select
+                              onClick={onClickUpdate}
+                              onChange={onUpdate}
+                              name="status"
+                              id="status"
+                            >
+                              <option value="progreso">En Progreso</option>
+                              <option value="completada">Completada</option>
+                              <option value="rechazada">Rechazada</option>
+                            </select>
+                            <button onClick={onUpdate}>update</button>
+                          </td> */}
                           <td>
                             <NavLink to={cotizacion?.id} target="_blank">
                               <button className="cotizador__button--descargar">
@@ -346,8 +401,8 @@ export const Cotizaciones = () => {
                       const Date = moment
                         .unix(seconds)
                         .add(nanoseconds / 1000000, "milliseconds");
-                      moment.locale("es-mx");
-                      const Fordate = Date.format("lll") || "";
+                      moment.locale("es");
+                      const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
                       const {
                         nombre,
                         id,

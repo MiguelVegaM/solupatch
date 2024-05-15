@@ -43,7 +43,7 @@ export const useAddCotizacion = () => {
     precio,
     entrega,
     folio,
-    // total,
+    status,
   }) => {
     await addDoc(cotizacionCollectionRef, {
       userID,
@@ -58,7 +58,7 @@ export const useAddCotizacion = () => {
       entrega,
       createdAt,
       folio,
-      // total,
+      status,
     });
   };
 

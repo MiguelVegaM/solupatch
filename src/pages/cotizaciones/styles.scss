@@ -115,6 +115,7 @@
   background-size: cover;
   color: #ffffff;
   padding: 25px;
+  font-size: 0.7rem;
   min-height: 750px;
   width: 100vw;
   overflow: scroll;
@@ -127,7 +128,7 @@
   .cotizador__button--descargar {
     background-color: #fbc512;
     color: #000;
-    font-size: 1rem;
+    // font-size: 1rem;
     padding: 5px 25px;
     font-weight: 800;
     border: none;
@@ -146,7 +147,7 @@
   .cotizador__button--delete {
     background-color: #000;
     color: #fff;
-    font-size: 1rem;
+    font-size: 0.7rem;
     padding: 5px 25px;
     font-weight: 800;
     border: none;
@@ -170,5 +171,13 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
+@media (max-width: 420px) {
+  .navbar__buttons {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 }

@@ -40,7 +40,7 @@ export const PDF = () => {
       .unix(seconds)
       .add(nanoseconds / 1000000, "milliseconds");
     moment.locale("es-mx");
-    const Fordate = Date.format("lll") || "";
+    const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
     setDatePdf(Fordate);
   }, [cotizacionSeleccionada]);
 
