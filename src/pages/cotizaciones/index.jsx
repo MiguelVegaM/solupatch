@@ -1,15 +1,7 @@
-import {
-  // useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 
 import { signOut } from "firebase/auth";
-import {
-  deleteDoc,
-  doc,
-  // updateDoc
-} from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase/firebase-config";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 
@@ -20,14 +12,24 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import * as XLSX from "xlsx";
 import { Toaster, toast } from "sonner";
+// import Dropdown from "react-bootstrap/Dropdown";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
+import {
+  FaCircleCheck,
+  FaCircleMinus,
+  FaCircleXmark,
+  FaFilePdf,
+  FaTrash,
+} from "react-icons/fa6";
+// import { CiEdit } from "react-icons/ci";
 import "../cotizaciones/styles.scss";
+import { MdSave } from "react-icons/md";
 
 export const Cotizaciones = () => {
   const [tempDeleteId, setTempDeleteId] = useState("");
-  // const [tempUpdateId, setTempUpdateId] = useState("");
-  // const [tempUpdateId, setTempUpdateId] = useState("");
+  const [tempUpdateId, setTempUpdateId] = useState("");
+  const [nuevoStatus, setNuevoStatus] = useState("");
 
   const {
     isAuth,
@@ -149,17 +151,16 @@ export const Cotizaciones = () => {
     }
   };
 
-  // useEffect(()=>{
+  // NOTE: DELETE
 
-  // })
   const openModal = async (id) => {
-    // console.log(id);
+    console.log(id);
     setTempDeleteId(id);
     // console.log(tempDeleteId);
     modalRef.current.showModal();
   };
   const onDelete = async () => {
-    // console.log(tempDeleteId);
+    console.log(tempDeleteId);
     const docRef = doc(db, "cotizaciones", tempDeleteId);
     await deleteDoc(docRef);
     setTempDeleteId("");
@@ -168,24 +169,45 @@ export const Cotizaciones = () => {
     toast.warning("Cotización eliminada");
   };
 
-  // const onClickUpdate = (id) => {
-  //   setTempUpdateId(id);
-  //   // console.log("hola");
-  //   console.log(tempUpdateId);
-  // };
+  // NOTE: UPDATE
 
-  // const onUpdate = async (e) => {
-  //   console.log(tempUpdateId);
-  //   console.log(e.target.value);
-  //   const docRef = doc(db, "cotizaciones", tempDeleteId);
-  //   await updateDoc(docRef, {
-  //     status: "hola",
-  //   });
-  // };
+  const onClickUpdate = (id) => {
+    setTempUpdateId(id);
+    console.log("</> → id:", id);
+  };
+
+  const onUpdate = async (e) => {
+    setNuevoStatus(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const onUpdateSave = async () => {
+    console.log(nuevoStatus);
+    try {
+      console.log(tempUpdateId);
+      const docRef = doc(db, "cotizaciones", tempUpdateId);
+      await updateDoc(docRef, {
+        status: nuevoStatus,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!isAuth) {
     return <Navigate to="/" />;
   }
+
+  // const onCancelado = () => {
+  //   setStatus(<FaCircleXmark />);
+  // };
+  // const onSeguimiento = () => {
+  //   setStatus(<FaCircleMinus />);
+  // };
+
+  // const onVendido = () => {
+  //   setStatus(<FaCircleCheck />);
+  // };
 
   return (
     <div className="cotizaciones">
@@ -246,14 +268,15 @@ export const Cotizaciones = () => {
             <tr>
               <th>Folio</th>
               <th>Cliente</th>
-              <th>Fecha de Creación</th>
+              <th>Fecha</th>
               <th>Vendedor</th>
-              <th>Mercancia</th>
-              <th>Cantidad</th>
+              {/* <th>Mercancia</th> */}
+              {/* <th>Cantidad</th> */}
               <th>Total de Cotizacion</th>
+              <th>Estado</th>
               <th></th>
               <th></th>
-              {/* <th></th> */}
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -268,7 +291,7 @@ export const Cotizaciones = () => {
                         .unix(seconds)
                         .add(nanoseconds / 1000000, "milliseconds");
                       moment.locale("es");
-                      const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+                      const Fordate = Date.format("DD/MM/YYYY") || "";
                       const {
                         nombre,
                         id,
@@ -276,8 +299,9 @@ export const Cotizaciones = () => {
                         cantidad,
                         precio,
                         entrega,
-                        seleccione,
                         folio,
+                        status,
+                        // seleccione,
                         // empresa,
                         // celular,
                         // email,
@@ -300,10 +324,20 @@ export const Cotizaciones = () => {
                           <td>{folio}</td>
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
-                          <td>{emailValue}</td>
-                          <td>{seleccione}</td>
-                          {/* selects seleccione */}
                           <td>
+                            {emailValue === "aclarrea@solupatch.com"
+                              ? "Ana Larrea"
+                              : emailValue === "jlramos@solupatch.com"
+                              ? "José Ramos"
+                              : emailValue === "rvl@solupatch.com"
+                              ? "Rodolfo Villalobos"
+                              : emailValue === "lblanco@solupatch.com"
+                              ? "Luis Blanco"
+                              : "Invitado"}
+                          </td>
+                          {/* <td>{seleccione}</td> */}
+                          {/* selects seleccione */}
+                          {/* <td>
                             {cantidad}{" "}
                             {seleccione === "25kg Solupatch Bultos" && (
                               <span className="cotizador__input--placeholder">
@@ -355,25 +389,117 @@ export const Cotizaciones = () => {
                                 Litros
                               </span>
                             )}
-                          </td>
+                          </td> */}
                           <td>$ {totalFormated}</td>
-                          {/* <td>
+                          <td>
+                            {status === "seguimiento" ? (
+                              <FaCircleMinus
+                                style={{
+                                  fontSize: "1.5rem",
+                                  color: "black",
+                                  backgroundColor: "#FBC512",
+                                  borderRadius: "50px",
+                                  marginLeft: "6px",
+                                }}
+                              />
+                            ) : status === "vendido" ? (
+                              <FaCircleCheck
+                                style={{
+                                  fontSize: "1.5rem",
+                                  color: "black",
+                                  backgroundColor: "green",
+                                  borderRadius: "50px",
+                                  marginLeft: "6px",
+                                }}
+                              />
+                            ) : (
+                              status === "cancelado" && (
+                                <FaCircleXmark
+                                  style={{
+                                    fontSize: "1.5rem",
+                                    color: "black",
+                                    backgroundColor: "red",
+                                    borderRadius: "50px",
+                                    marginLeft: "6px",
+                                  }}
+                                />
+                              )
+                            )}
+                          </td>
+                          <td>
                             <select
-                              onClick={onClickUpdate}
+                              onClick={() => onClickUpdate(id)}
                               onChange={onUpdate}
                               name="status"
                               id="status"
                             >
-                              <option value="progreso">En Progreso</option>
-                              <option value="completada">Completada</option>
-                              <option value="rechazada">Rechazada</option>
+                              <option value="seguimiento">Seguimiento</option>
+                              <option value="vendido">Vendido</option>
+                              <option value="cancelado">Cancelado</option>
                             </select>
-                            <button onClick={onUpdate}>update</button>
-                          </td> */}
+                            {/* <button onClick={onUpdateSave}> */}
+                            <MdSave
+                              onClick={onUpdateSave}
+                              style={{
+                                width: "25px",
+                                height: "25px",
+                                color: "white",
+                                backgroundColor: "black",
+                                borderRadius: "50px",
+                                padding: "3px",
+                                cursor: "pointer",
+                                marginLeft: "5px",
+                                fontSize: "20px",
+                              }}
+                            />
+                            {/* </button> */}
+                            {/* <Dropdown>
+                              <Dropdown.Toggle
+                                // onClick={onClickUpdate}
+                                variant="warning"
+                                id="dropdown-basic"
+                                style={{
+                                  backgroundColor: "black",
+                                  color: "white",
+                                  border: "black",
+                                  borderRadius: "50px",
+                                  padding: "0px 10px",
+                                }}
+                              >
+                                <CiEdit />
+                              </Dropdown.Toggle>
+
+                              <Dropdown.Menu
+                              // onChange={onUpdate}
+                              >
+                                <Dropdown.Item
+                                  // href="#/action-1"
+                                  value="cancelado"
+                                  // onClick={onCancelado}
+                                >
+                                  Cancelado
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  // href="#/action-2"
+                                  value="seguimiento"
+                                  // onClick={onSeguimiento}
+                                >
+                                  Seguimiento
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  // href="#/action-3"
+                                  value="vendido"
+                                  // onClick={onVendido}
+                                >
+                                  Vendido
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown> */}
+                          </td>
                           <td>
                             <NavLink to={cotizacion?.id} target="_blank">
                               <button className="cotizador__button--descargar">
-                                Ver PDF
+                                <FaFilePdf />
                               </button>
                             </NavLink>
                           </td>
@@ -383,7 +509,7 @@ export const Cotizaciones = () => {
                               onClick={() => openModal(id)}
                               className="cotizador__button--delete"
                             >
-                              Eliminar
+                              <FaTrash />
                             </Button>
                           </td>
                         </tr>
@@ -396,14 +522,13 @@ export const Cotizaciones = () => {
                       (cotizacion) => cotizacion?.emailValue === emailValue
                     )
                     .map((cotizacion) => {
-                      console.log("</> → cotizacion:", cotizacion);
                       const { seconds, nanoseconds } =
                         cotizacion.createdAt || {};
                       const Date = moment
                         .unix(seconds)
                         .add(nanoseconds / 1000000, "milliseconds");
                       moment.locale("es");
-                      const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+                      const Fordate = Date.format("DD/MM/YYYY") || "";
                       const {
                         nombre,
                         id,
@@ -411,8 +536,9 @@ export const Cotizaciones = () => {
                         cantidad,
                         precio,
                         entrega,
-                        seleccione,
                         folio,
+                        status,
+                        // seleccione,
                         // empresa,
                         // celular,
                         // email,
@@ -430,14 +556,25 @@ export const Cotizaciones = () => {
                       });
 
                       return (
+                        // Table Data
                         <tr key={id}>
                           <td>{folio}</td>
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
-                          <td>{emailValue}</td>
-                          <td>{seleccione}</td>
-                          {/* selects seleccione */}
                           <td>
+                            {emailValue === "aclarrea@solupatch.com"
+                              ? "Ana Larrea"
+                              : emailValue === "jlramos@solupatch.com"
+                              ? "José Ramos"
+                              : emailValue === "rvl@solupatch.com"
+                              ? "Rodolfo Villalobos"
+                              : emailValue === "lblanco@solupatch.com"
+                              ? "Luis Blanco"
+                              : "Invitado"}
+                          </td>
+                          {/* <td>{seleccione}</td> */}
+                          {/* selects seleccione */}
+                          {/* <td>
                             {cantidad}{" "}
                             {seleccione === "25kg Solupatch Bultos" && (
                               <span className="cotizador__input--placeholder">
@@ -489,12 +626,117 @@ export const Cotizaciones = () => {
                                 Litros
                               </span>
                             )}
-                          </td>
+                          </td> */}
                           <td>$ {totalFormated}</td>
+                          <td>
+                            {status === "seguimiento" ? (
+                              <FaCircleMinus
+                                style={{
+                                  fontSize: "1.5rem",
+                                  color: "black",
+                                  backgroundColor: "#FBC512",
+                                  borderRadius: "50px",
+                                  marginLeft: "6px",
+                                }}
+                              />
+                            ) : status === "vendido" ? (
+                              <FaCircleCheck
+                                style={{
+                                  fontSize: "1.5rem",
+                                  color: "black",
+                                  backgroundColor: "green",
+                                  borderRadius: "50px",
+                                  marginLeft: "6px",
+                                }}
+                              />
+                            ) : (
+                              status === "cancelado" && (
+                                <FaCircleXmark
+                                  style={{
+                                    fontSize: "1.5rem",
+                                    color: "black",
+                                    backgroundColor: "red",
+                                    borderRadius: "50px",
+                                    marginLeft: "6px",
+                                  }}
+                                />
+                              )
+                            )}
+                          </td>
+                          <td>
+                            <select
+                              onClick={() => onClickUpdate(id)}
+                              onChange={onUpdate}
+                              name="status"
+                              id="status"
+                            >
+                              <option value="seguimiento">Seguimiento</option>
+                              <option value="vendido">Vendido</option>
+                              <option value="cancelado">Cancelado</option>
+                            </select>
+                            {/* <button onClick={onUpdateSave}> */}
+                            <MdSave
+                              onClick={onUpdateSave}
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                color: "white",
+                                backgroundColor: "black",
+                                borderRadius: "50px",
+                                padding: "3px",
+                                cursor: "pointer",
+                                marginLeft: "5px",
+                                // fontSize: "20px",
+                              }}
+                            />
+                            {/* </button> */}
+                            {/* <Dropdown>
+                              <Dropdown.Toggle
+                                // onClick={onClickUpdate}
+                                variant="warning"
+                                id="dropdown-basic"
+                                style={{
+                                  backgroundColor: "black",
+                                  color: "white",
+                                  border: "black",
+                                  borderRadius: "50px",
+                                  padding: "0px 10px",
+                                }}
+                              >
+                                <CiEdit />
+                              </Dropdown.Toggle>
+
+                              <Dropdown.Menu
+                              // onChange={onUpdate}
+                              >
+                                <Dropdown.Item
+                                  // href="#/action-1"
+                                  value="cancelado"
+                                  // onClick={onCancelado}
+                                >
+                                  Cancelado
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  // href="#/action-2"
+                                  value="seguimiento"
+                                  // onClick={onSeguimiento}
+                                >
+                                  Seguimiento
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  // href="#/action-3"
+                                  value="vendido"
+                                  // onClick={onVendido}
+                                >
+                                  Vendido
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown> */}
+                          </td>
                           <td>
                             <NavLink to={cotizacion?.id} target="_blank">
                               <button className="cotizador__button--descargar">
-                                Ver PDF
+                                <FaFilePdf />
                               </button>
                             </NavLink>
                           </td>
@@ -504,7 +746,7 @@ export const Cotizaciones = () => {
                               onClick={() => openModal(id)}
                               className="cotizador__button--delete"
                             >
-                              Eliminar
+                              <FaTrash />
                             </Button>
                           </td>
                         </tr>

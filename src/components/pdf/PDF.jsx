@@ -137,8 +137,7 @@ export const PDF = () => {
       return (
         <div className="pdf__header__title-vendor">
           Ana Cristina Larrea <br />
-          {/* WhatsApp 81 8704 8514 */}
-          Teléfonos: 8261299100, 8123691537
+          Whatsapp: 81 8704 8514
         </div>
       );
     }
@@ -146,8 +145,7 @@ export const PDF = () => {
       return (
         <div className="pdf__header__title-vendor">
           José Luis Ramos <br />
-          {/* WhatsApp 81 8704 8514 */}
-          Teléfonos: 8261299100, 8123691537
+          Whatsapp: 81 2580 7799
         </div>
       );
     }
@@ -155,8 +153,7 @@ export const PDF = () => {
       return (
         <div className="pdf__header__title-vendor">
           Luis Blanco <br />
-          {/* WhatsApp 81 8704 8514 */}
-          Teléfonos: 8261299100, 8123691537
+          Whatsapp: 81 3091 6138
         </div>
       );
     }
@@ -164,8 +161,7 @@ export const PDF = () => {
       return (
         <div className="pdf__header__title-vendor">
           Rodolfo Villalobos <br />
-          {/* WhatsApp 81 8704 8514 */}
-          Teléfonos: 8261299100, 8123691537
+          Whatsapp: 81 2201 6300
         </div>
       );
     }
