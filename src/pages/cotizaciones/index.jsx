@@ -432,7 +432,7 @@ export const Cotizaciones = () => {
                                     marginLeft: "5px",
                                     fontSize: "20px",
                                     position: "absolute",
-                                    right: "15px",
+                                    left: "50px",
                                     top: "1.5px",
                                   }}
                                 />
