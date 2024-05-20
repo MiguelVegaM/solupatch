@@ -1,4 +1,8 @@
-import { useRef, useState } from "react";
+import {
+  // useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { signOut } from "firebase/auth";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
@@ -12,7 +16,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import * as XLSX from "xlsx";
 import { Toaster, toast } from "sonner";
-// import Dropdown from "react-bootstrap/Dropdown";
+import Dropdown from "react-bootstrap/Dropdown";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import {
@@ -22,7 +26,6 @@ import {
   FaFilePdf,
   FaTrash,
 } from "react-icons/fa6";
-// import { CiEdit } from "react-icons/ci";
 import "../cotizaciones/styles.scss";
 import { MdSave } from "react-icons/md";
 
@@ -30,6 +33,7 @@ export const Cotizaciones = () => {
   const [tempDeleteId, setTempDeleteId] = useState("");
   const [tempUpdateId, setTempUpdateId] = useState("");
   const [nuevoStatus, setNuevoStatus] = useState("");
+  const [showSaveBtn, setShowSaveBtn] = useState(false);
 
   const {
     isAuth,
@@ -176,15 +180,16 @@ export const Cotizaciones = () => {
     console.log("</> → id:", id);
   };
 
-  const onUpdate = async (e) => {
-    setNuevoStatus(e.target.value);
-    console.log(e.target.value);
+  const onUpdate = async (e, statusFromDropdown) => {
+    setNuevoStatus(statusFromDropdown);
+    console.log(statusFromDropdown);
+    setShowSaveBtn(true);
   };
 
   const onUpdateSave = async () => {
-    console.log(nuevoStatus);
+    // console.log(nuevoStatus);
     try {
-      console.log(tempUpdateId);
+      // console.log(tempUpdateId);
       const docRef = doc(db, "cotizaciones", tempUpdateId);
       await updateDoc(docRef, {
         status: nuevoStatus,
@@ -192,7 +197,16 @@ export const Cotizaciones = () => {
     } catch (error) {
       console.log(error);
     }
+    toast.success("Estado actualizado");
+    setShowSaveBtn(false);
   };
+
+  // const onSaveToaster = () => {};
+
+  // useEffect(() => {
+  //   onUpdateSave();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [nuevoStatus]);
 
   if (!isAuth) {
     return <Navigate to="/" />;
@@ -335,167 +349,97 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          {/* <td>{seleccione}</td> */}
-                          {/* selects seleccione */}
-                          {/* <td>
-                            {cantidad}{" "}
-                            {seleccione === "25kg Solupatch Bultos" && (
-                              <span className="cotizador__input--placeholder">
-                                Bultos
-                              </span>
-                            )}
-                            {seleccione === "Solupatch a Granel" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Debastado" && (
-                              <span className="cotizador__input--placeholder">
-                                M2
-                              </span>
-                            )}
-                            {seleccione === "Suministro y tendido pg64" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Suministro y tendido pg76" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Impregnación" && (
-                              <span className="cotizador__input--placeholder">
-                                Litros
-                              </span>
-                            )}
-                            {seleccione === "Suministro pg64" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Traslado carpeta" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Movimientos maquinaria" && (
-                              <span className="cotizador__input--placeholder">
-                                Flete
-                              </span>
-                            )}
-                            {seleccione === "Emulsión aslfáltica" && (
-                              <span className="cotizador__input--placeholder">
-                                Litros
-                              </span>
-                            )}
-                          </td> */}
                           <td>$ {totalFormated}</td>
                           <td>
-                            {status === "seguimiento" ? (
-                              <FaCircleMinus
-                                style={{
-                                  fontSize: "1.5rem",
-                                  color: "black",
-                                  backgroundColor: "#FBC512",
-                                  borderRadius: "50px",
-                                  marginLeft: "6px",
-                                }}
-                              />
-                            ) : status === "vendido" ? (
-                              <FaCircleCheck
-                                style={{
-                                  fontSize: "1.5rem",
-                                  color: "black",
-                                  backgroundColor: "green",
-                                  borderRadius: "50px",
-                                  marginLeft: "6px",
-                                }}
-                              />
-                            ) : (
-                              status === "cancelado" && (
-                                <FaCircleXmark
+                            <span
+                              style={{ display: "flex", position: "relative" }}
+                            >
+                              <Dropdown onClick={() => onClickUpdate(id)}>
+                                <Dropdown.Toggle
+                                  variant="warning"
+                                  id="dropdown-basic"
                                   style={{
-                                    fontSize: "1.5rem",
-                                    color: "black",
-                                    backgroundColor: "red",
+                                    backgroundColor: "transparent",
+                                    border: "1px solid black",
                                     borderRadius: "50px",
-                                    marginLeft: "6px",
+                                    padding: "1px 6px 1px 0px",
+                                  }}
+                                >
+                                  {status === "cancelado" ? (
+                                    <FaCircleXmark
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "red",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  ) : status === "vendido" ? (
+                                    <FaCircleCheck
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "green",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <FaCircleMinus
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "#FBC512",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  )}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "seguimiento")}
+                                    value="seguimiento"
+                                  >
+                                    Seguimiento
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "cancelado")}
+                                    value="cancelado"
+                                  >
+                                    Cancelado
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "vendido")}
+                                    value="vendido"
+                                  >
+                                    Vendido
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                              {showSaveBtn && id === tempUpdateId && (
+                                <MdSave
+                                  onClick={onUpdateSave}
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    color: "white",
+                                    backgroundColor: "black",
+                                    borderRadius: "50px",
+                                    padding: "3px",
+                                    cursor: "pointer",
+                                    marginLeft: "5px",
+                                    fontSize: "20px",
+                                    position: "absolute",
+                                    right: "15px",
+                                    top: "1.5px",
                                   }}
                                 />
-                              )
-                            )}
+                              )}
+                            </span>
                           </td>
-                          <td>
-                            <select
-                              onClick={() => onClickUpdate(id)}
-                              onChange={onUpdate}
-                              name="status"
-                              id="status"
-                            >
-                              <option value="seguimiento">Seguimiento</option>
-                              <option value="vendido">Vendido</option>
-                              <option value="cancelado">Cancelado</option>
-                            </select>
-                            {/* <button onClick={onUpdateSave}> */}
-                            <MdSave
-                              onClick={onUpdateSave}
-                              style={{
-                                width: "25px",
-                                height: "25px",
-                                color: "white",
-                                backgroundColor: "black",
-                                borderRadius: "50px",
-                                padding: "3px",
-                                cursor: "pointer",
-                                marginLeft: "5px",
-                                fontSize: "20px",
-                              }}
-                            />
-                            {/* </button> */}
-                            {/* <Dropdown>
-                              <Dropdown.Toggle
-                                // onClick={onClickUpdate}
-                                variant="warning"
-                                id="dropdown-basic"
-                                style={{
-                                  backgroundColor: "black",
-                                  color: "white",
-                                  border: "black",
-                                  borderRadius: "50px",
-                                  padding: "0px 10px",
-                                }}
-                              >
-                                <CiEdit />
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu
-                              // onChange={onUpdate}
-                              >
-                                <Dropdown.Item
-                                  // href="#/action-1"
-                                  value="cancelado"
-                                  // onClick={onCancelado}
-                                >
-                                  Cancelado
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  // href="#/action-2"
-                                  value="seguimiento"
-                                  // onClick={onSeguimiento}
-                                >
-                                  Seguimiento
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  // href="#/action-3"
-                                  value="vendido"
-                                  // onClick={onVendido}
-                                >
-                                  Vendido
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown> */}
-                          </td>
+                          <td></td>
                           <td>
                             <NavLink to={cotizacion?.id} target="_blank">
                               <button className="cotizador__button--descargar">
