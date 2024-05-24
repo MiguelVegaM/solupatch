@@ -255,6 +255,7 @@ export const Cotizador = () => {
                 })}
                 className="cotizador__inputs--input cantidad"
                 type="number"
+                step="any"
               />
               {tipo === "25kg Solupatch Bultos" && (
                 <span className="cotizador__input--placeholder">Bultos</span>
