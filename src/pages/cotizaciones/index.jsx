@@ -573,12 +573,12 @@ export const Cotizaciones = () => {
                           </td> */}
                           <td>$ {totalFormated}</td>
                           <td>
-                            {status === "seguimiento" ? (
-                              <FaCircleMinus
+                            {status === "cancelado" ? (
+                              <FaCircleXmark
                                 style={{
                                   fontSize: "1.5rem",
                                   color: "black",
-                                  backgroundColor: "#FBC512",
+                                  backgroundColor: "red",
                                   borderRadius: "50px",
                                   marginLeft: "6px",
                                 }}
@@ -594,17 +594,15 @@ export const Cotizaciones = () => {
                                 }}
                               />
                             ) : (
-                              status === "cancelado" && (
-                                <FaCircleXmark
-                                  style={{
-                                    fontSize: "1.5rem",
-                                    color: "black",
-                                    backgroundColor: "red",
-                                    borderRadius: "50px",
-                                    marginLeft: "6px",
-                                  }}
-                                />
-                              )
+                              <FaCircleMinus
+                                style={{
+                                  fontSize: "1.5rem",
+                                  color: "black",
+                                  backgroundColor: "#FBC512",
+                                  borderRadius: "50px",
+                                  marginLeft: "6px",
+                                }}
+                              />
                             )}
                           </td>
                           <td>

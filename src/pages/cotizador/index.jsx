@@ -11,9 +11,10 @@ import { useGetFolio } from "../../hooks/useGetFolio";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
+import AddDynamicInputFields from "../../components/addDynamicInputs/AddDynamicInputs";
 
 export const Cotizador = () => {
-  const [tipo, setTipo] = useState("");
+  // const [tipo, setTipo] = useState("");
 
   const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
@@ -21,16 +22,16 @@ export const Cotizador = () => {
   // const { cotizaciones } = useGetCotizaciones();
   const { folios } = useGetFolio();
 
-  const [precio, setPrecio] = useState("");
+  // const [precio, setPrecio] = useState("");
   const [entrega, setEntrega] = useState("");
 
-  const handlePrecioChange = (e) => {
-    const formattedNumber = Number(
-      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
-    ).toLocaleString();
-    setPrecio(formattedNumber);
-    // setValue("precio", { formattedNumber });
-  };
+  // const handlePrecioChange = (e) => {
+  //   const formattedNumber = Number(
+  //     e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
+  //   ).toLocaleString();
+  //   setPrecio(formattedNumber);
+  //   // setValue("precio", { formattedNumber });
+  // };
 
   // console.log(precio);
   const handleEntregaChange = (e) => {
@@ -66,33 +67,23 @@ export const Cotizador = () => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    if (folios?.length <= 9) {
-      const dataObj = {
-        folio: "00010" + folios.length,
-        status: "progreso",
-        // total:
-        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
-        //   data.cantidad * data.precio * 1 +
-        //   data.entrega * 1 * 1,
-        ...data,
-      };
-      addCotizacion(dataObj);
-    } else {
-      const dataObj = {
-        folio: "0001" + folios?.length,
-        status: "progreso",
-        // total:
-        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
-        //   data.cantidad * data.precio * 1 +
-        //   data.entrega * 1 * 1,
-        ...data,
-      };
-      addCotizacion(dataObj);
-    }
-    addFolio(folio);
-
-    // console.log("</> → data:", data);
-    // console.log("</> → folio:", folio);
+    console.log(data);
+    // if (folios?.length <= 9) {
+    //   const dataObj = {
+    //     folio: "00010" + folios.length,
+    //     status: "seguimiento",
+    //     ...data,
+    //   };
+    //   addCotizacion(dataObj);
+    // } else {
+    //   const dataObj = {
+    //     folio: "0001" + folios?.length,
+    //     status: "progreso",
+    //     ...data,
+    //   };
+    //   addCotizacion(dataObj);
+    // }
+    // addFolio(folio);
   };
 
   const logout = async () => {
@@ -211,7 +202,7 @@ export const Cotizador = () => {
                 </p>
               )} */}
             </div>
-            <div className="cotizador__input--pair cotizador__input--pair--select">
+            {/* <div className="cotizador__input--pair cotizador__input--pair--select">
               <label className="cotizador__inputs--label">
                 Seleccione un tipo
               </label>
@@ -246,8 +237,8 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div>
-            <div className="cotizador__input--pair">
+            </div> */}
+            {/* <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Cantidad</label>
               <input
                 {...register("cantidad", {
@@ -291,11 +282,10 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div>
-            <div className="cotizador__input--pair">
+            </div> */}
+            {/* <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Precio</label>
               <span>$</span>
-              {/* <span>.00</span> */}
               <input
                 {...register("precio", {
                   required: true,
@@ -310,29 +300,33 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">
-                Servicio de entrega
-              </label>
-              <span>$</span>
-              {/* <span>.00</span> */}
+            </div> */}
+            {/* <button className="cotizador__form--agregar-button">
+              Agregar concepto
+            </button> */}
+          </div>
+          <AddDynamicInputFields />
+          <div className="cotizador__input--pair">
+            <label className="cotizador__inputs--label">
+              Servicio de entrega
+            </label>
+            <span>$</span>
+            {/* <span>.00</span> */}
 
-              <input
-                {...register("entrega", {
-                  required: true,
-                })}
-                className="cotizador__inputs--input precio"
-                type="text"
-                value={entrega}
-                onChange={handleEntregaChange}
-              />
-              {errors?.entrega?.type === "required" && (
-                <p className="cotizador__form--error-message">
-                  Este campo es requerido
-                </p>
-              )}
-            </div>
+            <input
+              {...register("entrega", {
+                required: true,
+              })}
+              className="cotizador__inputs--input precio"
+              type="text"
+              value={entrega}
+              onChange={handleEntregaChange}
+            />
+            {errors?.entrega?.type === "required" && (
+              <p className="cotizador__form--error-message">
+                Este campo es requerido
+              </p>
+            )}
           </div>
           <button
             disabled={!isDirty || isSubmitting}
