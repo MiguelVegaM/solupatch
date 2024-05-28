@@ -11,19 +11,20 @@ import { useGetFolio } from "../../hooks/useGetFolio";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
-import AddDynamicInputFields from "../../components/addDynamicInputs/AddDynamicInputs";
+// import AddDynamicInputFields from "../../components/addDynamicInputs/AddDynamicInputs";
+import { AddDynamicInputs } from "../../components/addDynamicInputs";
 
 export const Cotizador = () => {
   // const [tipo, setTipo] = useState("");
+  // const [precio, setPrecio] = useState("");
+  const [entrega, setEntrega] = useState("");
+  const [dataFromDynamicInputs, setDataFromDynamicInputs] = useState("");
 
   const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
 
   // const { cotizaciones } = useGetCotizaciones();
   const { folios } = useGetFolio();
-
-  // const [precio, setPrecio] = useState("");
-  const [entrega, setEntrega] = useState("");
 
   // const handlePrecioChange = (e) => {
   //   const formattedNumber = Number(
@@ -34,6 +35,11 @@ export const Cotizador = () => {
   // };
 
   // console.log(precio);
+
+  const handleDataFromChild = (data) => {
+    setDataFromDynamicInputs(data.test);
+  };
+
   const handleEntregaChange = (e) => {
     const formattedNumber = Number(
       e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
@@ -58,32 +64,35 @@ export const Cotizador = () => {
       empresa: "",
       celular: "",
       email: "",
-      seleccione: "",
-      cantidad: "",
-      precio: "",
+      // seleccione: "",
+      // cantidad: "",
+      // precio: "",
       entrega: "",
     },
   });
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    console.log(data);
-    // if (folios?.length <= 9) {
-    //   const dataObj = {
-    //     folio: "00010" + folios.length,
-    //     status: "seguimiento",
-    //     ...data,
-    //   };
-    //   addCotizacion(dataObj);
-    // } else {
-    //   const dataObj = {
-    //     folio: "0001" + folios?.length,
-    //     status: "progreso",
-    //     ...data,
-    //   };
-    //   addCotizacion(dataObj);
-    // }
-    // addFolio(folio);
+    if (folios.length <= 9) {
+      const dataObj = {
+        ...dataFromDynamicInputs,
+        folio: "00010" + folios.length,
+        status: "seguimiento",
+        ...data,
+      };
+      addCotizacion(dataObj);
+      console.log(dataObj);
+    } else {
+      const dataObj = {
+        ...dataFromDynamicInputs,
+        folio: "0001" + folios?.length,
+        status: "seguimineto",
+        ...data,
+      };
+      addCotizacion(dataObj);
+      console.log(dataObj);
+    }
+    addFolio(folio);
   };
 
   const logout = async () => {
@@ -305,7 +314,7 @@ export const Cotizador = () => {
               Agregar concepto
             </button> */}
           </div>
-          <AddDynamicInputFields />
+          <AddDynamicInputs getDataFromChild={handleDataFromChild} />
           <div className="cotizador__input--pair">
             <label className="cotizador__inputs--label">
               Servicio de entrega
@@ -317,7 +326,8 @@ export const Cotizador = () => {
               {...register("entrega", {
                 required: true,
               })}
-              className="cotizador__inputs--input precio"
+              className="cotizador__inputs--input entrega"
+              style={{ paddingLeft: "35px" }}
               type="text"
               value={entrega}
               onChange={handleEntregaChange}

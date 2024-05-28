@@ -146,6 +146,12 @@
       font-size: 1rem;
     }
 
+    .dynamic__inputs {
+      margin-left: -20px;
+      width: 90%;
+      position: relative;
+    }
+
     .cotizador__inputs--select {
       background-color: #c4c4c4;
       font-size: 1rem;
@@ -225,6 +231,12 @@
           margin-left: 60%;
           text-align: right;
         }
+      }
+      .dynamic__inputs {
+        margin-left: 0px;
+        // width: 100%;
+        grid-template-columns: repeat(1, 1fr);
+        width: 95%;
       }
       .cotizador__form--button {
         width: 90%;

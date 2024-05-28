@@ -320,7 +320,6 @@ export const Cotizaciones = () => {
                         // celular,
                         // email,
                       } = cotizacion;
-                      // console.log("</> → userID:", userID);
 
                       let importe =
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
