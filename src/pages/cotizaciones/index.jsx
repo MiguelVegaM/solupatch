@@ -45,25 +45,9 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  // const [datePdf, setDatePdf] = useState([]);
+  console.log(cotizaciones);
 
-  // useEffect(() => {
-  //   cotizaciones.forEach(
-  //     (cotizacion) => {
-  //       const { seconds, nanoseconds } = cotizacion?.createdAt || {};
-  //       const Date = moment
-  //         .unix(seconds)
-  //         .add(nanoseconds / 1000000, "milliseconds");
-  //       moment.locale("es-mx");
-  //       const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
-  //       setDatePdf(Fordate);
-  //       // console.log(Fordate);
-  //       console.log(datePdf);
-  //     },
-  //     [cotizaciones]
-  //   );
-  // });
-
+  // NOTE: Excel sheet
   const downloadExcel = () => {
     let table = [
       {
@@ -158,13 +142,11 @@ export const Cotizaciones = () => {
   // NOTE: DELETE
 
   const openModal = async (id) => {
-    console.log(id);
     setTempDeleteId(id);
     // console.log(tempDeleteId);
     modalRef.current.showModal();
   };
   const onDelete = async () => {
-    console.log(tempDeleteId);
     const docRef = doc(db, "cotizaciones", tempDeleteId);
     await deleteDoc(docRef);
     setTempDeleteId("");
@@ -211,17 +193,6 @@ export const Cotizaciones = () => {
   if (!isAuth) {
     return <Navigate to="/" />;
   }
-
-  // const onCancelado = () => {
-  //   setStatus(<FaCircleXmark />);
-  // };
-  // const onSeguimiento = () => {
-  //   setStatus(<FaCircleMinus />);
-  // };
-
-  // const onVendido = () => {
-  //   setStatus(<FaCircleCheck />);
-  // };
 
   return (
     <div className="cotizaciones">
@@ -310,16 +281,18 @@ export const Cotizaciones = () => {
                         nombre,
                         id,
                         emailValue,
-                        cantidad,
-                        precio,
                         entrega,
                         folio,
                         status,
+                        cantidad,
+                        precio,
+                        // dynamicForm,
                         // seleccione,
                         // empresa,
                         // celular,
                         // email,
                       } = cotizacion;
+                      // console.log("</> → userID:", userID);
 
                       let importe =
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
@@ -349,9 +322,15 @@ export const Cotizaciones = () => {
                               : "Invitado"}
                           </td>
                           <td>$ {totalFormated}</td>
+                          {/* {console.log(
+                            dynamicForm ? dynamicForm[0].precio : undefined
+                          )} */}
                           <td>
                             <span
-                              style={{ display: "flex", position: "relative" }}
+                              style={{
+                                display: "flex",
+                                position: "relative",
+                              }}
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
@@ -461,7 +440,7 @@ export const Cotizaciones = () => {
                     .reverse()
                 : // if other email render this
                   cotizaciones
-                    ?.filter(
+                    .filter(
                       (cotizacion) => cotizacion?.emailValue === emailValue
                     )
                     .map((cotizacion) => {
@@ -476,11 +455,12 @@ export const Cotizaciones = () => {
                         nombre,
                         id,
                         emailValue,
-                        cantidad,
-                        precio,
                         entrega,
                         folio,
                         status,
+                        cantidad,
+                        precio,
+                        // dynamicForm,
                         // seleccione,
                         // empresa,
                         // celular,
@@ -515,165 +495,100 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          {/* <td>{seleccione}</td> */}
-                          {/* selects seleccione */}
-                          {/* <td>
-                            {cantidad}{" "}
-                            {seleccione === "25kg Solupatch Bultos" && (
-                              <span className="cotizador__input--placeholder">
-                                Bultos
-                              </span>
-                            )}
-                            {seleccione === "Solupatch a Granel" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Debastado" && (
-                              <span className="cotizador__input--placeholder">
-                                M2
-                              </span>
-                            )}
-                            {seleccione === "Suministro y tendido pg64" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Suministro y tendido pg76" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Impregnación" && (
-                              <span className="cotizador__input--placeholder">
-                                Litros
-                              </span>
-                            )}
-                            {seleccione === "Suministro pg64" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Traslado carpeta" && (
-                              <span className="cotizador__input--placeholder">
-                                Toneladas
-                              </span>
-                            )}
-                            {seleccione === "Movimientos maquinaria" && (
-                              <span className="cotizador__input--placeholder">
-                                Flete
-                              </span>
-                            )}
-                            {seleccione === "Emulsión aslfáltica" && (
-                              <span className="cotizador__input--placeholder">
-                                Litros
-                              </span>
-                            )}
-                          </td> */}
                           <td>$ {totalFormated}</td>
                           <td>
-                            {status === "cancelado" ? (
-                              <FaCircleXmark
-                                style={{
-                                  fontSize: "1.5rem",
-                                  color: "black",
-                                  backgroundColor: "red",
-                                  borderRadius: "50px",
-                                  marginLeft: "6px",
-                                }}
-                              />
-                            ) : status === "vendido" ? (
-                              <FaCircleCheck
-                                style={{
-                                  fontSize: "1.5rem",
-                                  color: "black",
-                                  backgroundColor: "green",
-                                  borderRadius: "50px",
-                                  marginLeft: "6px",
-                                }}
-                              />
-                            ) : (
-                              <FaCircleMinus
-                                style={{
-                                  fontSize: "1.5rem",
-                                  color: "black",
-                                  backgroundColor: "#FBC512",
-                                  borderRadius: "50px",
-                                  marginLeft: "6px",
-                                }}
-                              />
-                            )}
-                          </td>
-                          <td>
-                            <select
-                              onClick={() => onClickUpdate(id)}
-                              onChange={onUpdate}
-                              name="status"
-                              id="status"
-                            >
-                              <option value="seguimiento">Seguimiento</option>
-                              <option value="vendido">Vendido</option>
-                              <option value="cancelado">Cancelado</option>
-                            </select>
-                            {/* <button onClick={onUpdateSave}> */}
-                            <MdSave
-                              onClick={onUpdateSave}
+                            <span
                               style={{
-                                width: "20px",
-                                height: "20px",
-                                color: "white",
-                                backgroundColor: "black",
-                                borderRadius: "50px",
-                                padding: "3px",
-                                cursor: "pointer",
-                                marginLeft: "5px",
-                                // fontSize: "20px",
+                                display: "flex",
+                                position: "relative",
                               }}
-                            />
-                            {/* </button> */}
-                            {/* <Dropdown>
-                              <Dropdown.Toggle
-                                // onClick={onClickUpdate}
-                                variant="warning"
-                                id="dropdown-basic"
-                                style={{
-                                  backgroundColor: "black",
-                                  color: "white",
-                                  border: "black",
-                                  borderRadius: "50px",
-                                  padding: "0px 10px",
-                                }}
-                              >
-                                <CiEdit />
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu
-                              // onChange={onUpdate}
-                              >
-                                <Dropdown.Item
-                                  // href="#/action-1"
-                                  value="cancelado"
-                                  // onClick={onCancelado}
+                            >
+                              <Dropdown onClick={() => onClickUpdate(id)}>
+                                <Dropdown.Toggle
+                                  variant="warning"
+                                  id="dropdown-basic"
+                                  style={{
+                                    backgroundColor: "transparent",
+                                    border: "1px solid black",
+                                    borderRadius: "50px",
+                                    padding: "1px 6px 1px 0px",
+                                  }}
                                 >
-                                  Cancelado
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  // href="#/action-2"
-                                  value="seguimiento"
-                                  // onClick={onSeguimiento}
-                                >
-                                  Seguimiento
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  // href="#/action-3"
-                                  value="vendido"
-                                  // onClick={onVendido}
-                                >
-                                  Vendido
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown> */}
+                                  {status === "cancelado" ? (
+                                    <FaCircleXmark
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "red",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  ) : status === "vendido" ? (
+                                    <FaCircleCheck
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "green",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <FaCircleMinus
+                                      style={{
+                                        fontSize: "1.5rem",
+                                        color: "black",
+                                        backgroundColor: "#FBC512",
+                                        borderRadius: "50px",
+                                        marginLeft: "6px",
+                                      }}
+                                    />
+                                  )}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "seguimiento")}
+                                    value="seguimiento"
+                                  >
+                                    Seguimiento
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "cancelado")}
+                                    value="cancelado"
+                                  >
+                                    Cancelado
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={(e) => onUpdate(e, "vendido")}
+                                    value="vendido"
+                                  >
+                                    Vendido
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                              {showSaveBtn && id === tempUpdateId && (
+                                <MdSave
+                                  onClick={onUpdateSave}
+                                  style={{
+                                    width: "25px",
+                                    height: "25px",
+                                    color: "white",
+                                    backgroundColor: "black",
+                                    borderRadius: "50px",
+                                    padding: "3px",
+                                    cursor: "pointer",
+                                    marginLeft: "5px",
+                                    fontSize: "20px",
+                                    position: "absolute",
+                                    right: "15px",
+                                    top: "1.5px",
+                                  }}
+                                />
+                              )}
+                            </span>
                           </td>
+                          <td></td>
                           <td>
                             <NavLink to={cotizacion?.id} target="_blank">
                               <button className="cotizador__button--descargar">

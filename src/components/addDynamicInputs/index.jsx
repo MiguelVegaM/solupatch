@@ -23,7 +23,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
     },
   } = useForm({
     defaultValues: {
-      test: [
+      dynamicForm: [
         {
           seleccione: "",
           cantidad: "",
@@ -35,7 +35,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "test",
+    name: "dynamicForm",
   });
 
   // const handlePrecioChange = (e) => {
@@ -55,7 +55,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
     <div className="cotizador__container--add-dynamic-inputs">
       <ul className="dynamic__input--ul">
         {fields.map((item, index) => {
-          const selectValue = getValues(`test.${index}.seleccione`);
+          const selectValue = getValues(`dynamicForm.${index}.seleccione`);
           return (
             <li
               className={`dynamic__input--li ${
@@ -73,7 +73,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
                     Seleccione un tipo
                   </label>
                   <select
-                    {...register(`test.${index}.seleccione`, {
+                    {...register(`dynamicForm.${index}.seleccione`, {
                       required: true,
                     })}
                     className="cotizador__inputs--select"
@@ -112,7 +112,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
                 <div className="cotizador__input--pair">
                   <label className="cotizador__inputs--label">Cantidad</label>
                   <input
-                    {...register(`test.${index}.cantidad`, {
+                    {...register(`dynamicForm.${index}.cantidad`, {
                       required: true,
                     })}
                     className="cotizador__inputs--input cantidad"
@@ -177,7 +177,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
                   <label className="cotizador__inputs--label">Precio</label>
                   <span>$</span>
                   <input
-                    {...register(`test.${index}.precio`, {
+                    {...register(`dynamicForm.${index}.precio`, {
                       required: true,
                     })}
                     className="cotizador__inputs--input precio"

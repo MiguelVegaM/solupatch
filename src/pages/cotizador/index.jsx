@@ -11,7 +11,6 @@ import { useGetFolio } from "../../hooks/useGetFolio";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
-// import AddDynamicInputFields from "../../components/addDynamicInputs/AddDynamicInputs";
 import { AddDynamicInputs } from "../../components/addDynamicInputs";
 
 export const Cotizador = () => {
@@ -31,15 +30,13 @@ export const Cotizador = () => {
   //     e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
   //   ).toLocaleString();
   //   setPrecio(formattedNumber);
-  //   // setValue("precio", { formattedNumber });
   // };
 
   // console.log(precio);
 
   const handleDataFromChild = (data) => {
-    setDataFromDynamicInputs(data.test);
+    setDataFromDynamicInputs(data);
   };
-
   const handleEntregaChange = (e) => {
     const formattedNumber = Number(
       e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
@@ -73,26 +70,29 @@ export const Cotizador = () => {
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
-    if (folios.length <= 9) {
+    if (folios?.length <= 9) {
       const dataObj = {
-        ...dataFromDynamicInputs,
         folio: "00010" + folios.length,
-        status: "seguimiento",
+        status: "seguimineto",
         ...data,
+        ...dataFromDynamicInputs,
       };
       addCotizacion(dataObj);
       console.log(dataObj);
     } else {
       const dataObj = {
-        ...dataFromDynamicInputs,
         folio: "0001" + folios?.length,
-        status: "seguimineto",
+        status: "seguimiento",
         ...data,
+        ...dataFromDynamicInputs,
       };
       addCotizacion(dataObj);
       console.log(dataObj);
     }
     addFolio(folio);
+
+    // console.log("</> → data:", data);
+    // console.log("</> → folio:", folio);
   };
 
   const logout = async () => {
@@ -246,8 +246,8 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div> */}
-            {/* <div className="cotizador__input--pair">
+            </div>
+            <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Cantidad</label>
               <input
                 {...register("cantidad", {
@@ -291,8 +291,8 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div> */}
-            {/* <div className="cotizador__input--pair">
+            </div>
+            <div className="cotizador__input--pair">
               <label className="cotizador__inputs--label">Precio</label>
               <span>$</span>
               <input
@@ -310,9 +310,6 @@ export const Cotizador = () => {
                 </p>
               )}
             </div> */}
-            {/* <button className="cotizador__form--agregar-button">
-              Agregar concepto
-            </button> */}
           </div>
           <AddDynamicInputs getDataFromChild={handleDataFromChild} />
           <div className="cotizador__input--pair">
@@ -320,17 +317,15 @@ export const Cotizador = () => {
               Servicio de entrega
             </label>
             <span>$</span>
-            {/* <span>.00</span> */}
-
             <input
               {...register("entrega", {
                 required: true,
               })}
-              className="cotizador__inputs--input entrega"
-              style={{ paddingLeft: "35px" }}
+              className="cotizador__inputs--input precio"
               type="text"
               value={entrega}
               onChange={handleEntregaChange}
+              style={{ paddingLeft: "35px" }}
             />
             {errors?.entrega?.type === "required" && (
               <p className="cotizador__form--error-message">

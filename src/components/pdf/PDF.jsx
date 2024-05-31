@@ -18,6 +18,7 @@ import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 import moment from "moment";
 
 import "./styles.scss";
+import { PDFTr } from "./PDFTr";
 
 export const PDF = () => {
   // const navigate = useNavigate();
@@ -31,8 +32,6 @@ export const PDF = () => {
   let cotizacionSeleccionada = cotizaciones.find(
     (cotizacion) => cotizacion?.id === cotizacionId
   );
-
-  console.log("</> → cotizacionSeleccionada:", cotizacionSeleccionada);
 
   useEffect(() => {
     const { seconds, nanoseconds } = cotizacionSeleccionada?.createdAt || {};
@@ -60,11 +59,11 @@ export const PDF = () => {
     maximumFractionDigits: 2,
   });
 
-  let precio = cotizacionSeleccionada?.precio.replace(/,/g, "") * 1;
-  let precioFormated = precio.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  // let precio = cotizacionSeleccionada?.precio.replace(/,/g, "") * 1;
+  // let precioFormated = precio.toLocaleString("en-US", {
+  //   minimumFractionDigits: 2,
+  //   maximumFractionDigits: 2,
+  // });
 
   let iva = (importe + entrega) * 0.16;
   let ivaFormated = iva.toLocaleString("en-US", {
@@ -234,7 +233,7 @@ export const PDF = () => {
               </div>
             </section>
             <section className="cotizacion">
-              <table className="cotizacion__title__bar">
+              {/* <div> <table className="cotizacion__title__bar">
                 <thead className="cotizacion__title__thead">
                   <tr>
                     <th className="cotizacion__title__th">CANTIDAD</th>
@@ -322,8 +321,8 @@ export const PDF = () => {
                     </td>
                   </tr>
                 </tbody>
-              </table>
-              <hr />
+              </table> </div> */}
+              <PDFTr />
             </section>
             <section className="total">
               <div className="cotizacion__total__div">

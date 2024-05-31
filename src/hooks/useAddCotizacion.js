@@ -2,8 +2,12 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 import { useGetUserInfo } from "../hooks/useGetUserInfo";
+// import moment from "moment";
+// import { useGetCotizaciones } from "./useGetCotizaciones";
 
 export const useAddCotizacion = () => {
+  // const [datePdf, setDatePdf] = useState("");
+
   const cotizacionCollectionRef = collection(db, "cotizaciones");
 
   const { userID, emailValue } = useGetUserInfo();
@@ -16,13 +20,13 @@ export const useAddCotizacion = () => {
     empresa,
     celular,
     email,
-    seleccione,
-    cantidad,
-    precio,
+    // seleccione,
+    // cantidad,
+    // precio,
     entrega,
     folio,
     status,
-    dataFromDynamicInputs,
+    dynamicForm,
   }) => {
     await addDoc(cotizacionCollectionRef, {
       userID,
@@ -31,14 +35,14 @@ export const useAddCotizacion = () => {
       empresa,
       celular,
       email,
-      seleccione,
-      cantidad,
-      precio,
+      // seleccione,
+      // cantidad,
+      // precio,
       entrega,
       createdAt,
       folio,
       status,
-      dataFromDynamicInputs,
+      dynamicForm,
     });
   };
 

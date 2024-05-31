@@ -26,6 +26,7 @@ import { Cotizaciones } from "./pages/cotizaciones";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { PDF } from "./components/pdf/PDF";
+import { PDFTr } from "./components/pdf/PDFTr";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/autenticacion" exact element={<Auth />} />
           <Route path="/cotizador" exact element={<Cotizador />} />
           <Route path="/cotizaciones" exact element={<Cotizaciones />} />
+          <Route path="/PDFTr" exact element={<PDFTr />} />
           <Route path="/cotizaciones/:cotizacionId" exact element={<PDF />} />
           <Route path="*" exact element={<Auth />} />
         </Routes>
