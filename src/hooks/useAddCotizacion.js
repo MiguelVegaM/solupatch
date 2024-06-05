@@ -14,24 +14,6 @@ export const useAddCotizacion = () => {
   // console.log("</> → userID:", userID);
 
   const createdAt = serverTimestamp();
-  // console.log("</> → serverTimestamp:", serverTimestamp);
-
-  // // const { cotizaciones } = useGetCotizaciones();
-  // // useEffect(() => {
-  // // cotizaciones.forEach(
-  // // (cotizacion) => {
-  // const { seconds, nanoseconds } = createdAt || {};
-  // const Date = moment.unix(seconds).add(nanoseconds / 1000000, "milliseconds");
-  // moment.locale("es-mx");
-  // const Fordate = Date.format("lll") || "";
-  // setDatePdf(Fordate);
-  // // console.log(Fordate);
-  // // },
-  // // [cotizaciones]
-  // // );
-  // // });
-
-  // console.log(datePdf);
 
   const addCotizacion = async ({
     nombre,
@@ -44,6 +26,8 @@ export const useAddCotizacion = () => {
     entrega,
     folio,
     status,
+    dynamicForm,
+    total,
   }) => {
     await addDoc(cotizacionCollectionRef, {
       userID,
@@ -59,6 +43,8 @@ export const useAddCotizacion = () => {
       createdAt,
       folio,
       status,
+      dynamicForm,
+      total,
     });
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase-config";
@@ -11,9 +12,15 @@ import { useGetFolio } from "../../hooks/useGetFolio";
 
 import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
 import "./styles.scss";
+import { AddDynamicInputs } from "../../components/addDynamicInputs";
 
 export const Cotizador = () => {
-  const [tipo, setTipo] = useState("");
+  // const [tipo, setTipo] = useState("");
+  // const [precio, setPrecio] = useState("");
+  const [entrega, setEntrega] = useState("");
+  const [dataFromDynamicInputs, setDataFromDynamicInputs] = useState("");
+  const [conceptoGuardado, setConceptoGuardado] = useState(false);
+  const [sumImportes, setSumImportes] = useState("");
 
   const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
@@ -21,18 +28,26 @@ export const Cotizador = () => {
   // const { cotizaciones } = useGetCotizaciones();
   const { folios } = useGetFolio();
 
-  const [precio, setPrecio] = useState("");
-  const [entrega, setEntrega] = useState("");
-
-  const handlePrecioChange = (e) => {
-    const formattedNumber = Number(
-      e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
-    ).toLocaleString();
-    setPrecio(formattedNumber);
-    // setValue("precio", { formattedNumber });
-  };
+  // const handlePrecioChange = (e) => {
+  //   const formattedNumber = Number(
+  //     e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
+  //   ).toLocaleString();
+  //   setPrecio(formattedNumber);
+  // };
 
   // console.log(precio);
+
+  const handleDataFromChild = (data) => {
+    setDataFromDynamicInputs(data);
+    let importesArr = data.dynamicForm.map((item) => {
+      return Number(item.precio * item.cantidad);
+    });
+    let sumImportesArr = importesArr.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue;
+    });
+    setSumImportes(sumImportesArr);
+  };
+
   const handleEntregaChange = (e) => {
     const formattedNumber = Number(
       e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")
@@ -61,38 +76,74 @@ export const Cotizador = () => {
       cantidad: "",
       precio: "",
       entrega: "",
+      // total: "",
     },
   });
 
   const onSubmit = async (data, e) => {
     e.preventDefault();
     if (folios?.length <= 9) {
+      console.log(sumImportes);
       const dataObj = {
-        folio: "00010" + folios.length,
-        status: "progreso",
-        // total:
-        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
-        //   data.cantidad * data.precio * 1 +
-        //   data.entrega * 1 * 1,
+        folio: "00000" + folios.length,
+        status: "seguimineto",
+        total: sumImportes,
         ...data,
+        ...dataFromDynamicInputs,
+      };
+      addCotizacion(dataObj);
+    } else if (folios?.length <= 99) {
+      console.log(sumImportes);
+      const dataObj = {
+        folio: "0000" + folios.length,
+        status: "seguimineto",
+        total: sumImportes,
+        ...data,
+        ...dataFromDynamicInputs,
+      };
+      addCotizacion(dataObj);
+    } else if (folios?.length <= 999) {
+      console.log(sumImportes);
+      const dataObj = {
+        folio: "000" + folios.length,
+        status: "seguimineto",
+        total: sumImportes,
+        ...data,
+        ...dataFromDynamicInputs,
+      };
+      addCotizacion(dataObj);
+    } else if (folios?.length <= 9999) {
+      console.log(sumImportes);
+      const dataObj = {
+        folio: "00" + folios.length,
+        status: "seguimineto",
+        total: sumImportes,
+        ...data,
+        ...dataFromDynamicInputs,
+      };
+      addCotizacion(dataObj);
+    } else if (folios?.length <= 99999) {
+      console.log(sumImportes);
+      const dataObj = {
+        folio: "0" + folios.length,
+        status: "seguimineto",
+        total: sumImportes,
+        ...data,
+        ...dataFromDynamicInputs,
       };
       addCotizacion(dataObj);
     } else {
+      console.log(sumImportes);
       const dataObj = {
-        folio: "0001" + folios?.length,
-        status: "progreso",
-        // total:
-        //   (data.cantidad * data.precio * 1 + data.entrega * 1 * 1) * 0.16 +
-        //   data.cantidad * data.precio * 1 +
-        //   data.entrega * 1 * 1,
+        folio: folios.length,
+        status: "seguimineto",
+        total: sumImportes,
         ...data,
+        ...dataFromDynamicInputs,
       };
       addCotizacion(dataObj);
     }
     addFolio(folio);
-
-    // console.log("</> → data:", data);
-    // console.log("</> → folio:", folio);
   };
 
   const logout = async () => {
@@ -211,132 +262,35 @@ export const Cotizador = () => {
                 </p>
               )} */}
             </div>
-            <div className="cotizador__input--pair cotizador__input--pair--select">
-              <label className="cotizador__inputs--label">
-                Seleccione un tipo
-              </label>
-              <select
-                {...register("seleccione", {
-                  required: true,
-                })}
-                className="cotizador__inputs--select"
-                onChange={(e) => setTipo(e.target.value)}
-              >
-                <option value="25kg Solupatch Bultos">
-                  25kgs Solupatch Bultos
-                </option>
-                <option value="Solupatch a Granel">Solupatch a Granel</option>
-                <option value="Debastado">Debastado</option>
-                <option value="Suministro y tendido pg64">
-                  Suministro y tendido pg64
-                </option>
-                <option value="Suministro y tendido pg76">
-                  Suministro y tendido pg76
-                </option>
-                <option value="Impregnación">Impregnación</option>
-                <option value="Suministro pg64">Suministro pg64</option>
-                <option value="Traslado carpeta">Traslado carpeta</option>
-                <option value="Movimientos maquinaria">
-                  Movimientos maquinaria
-                </option>
-                <option value="Emulsión aslfáltica">Emulsión aslfáltica</option>
-              </select>
-              {errors?.seleccione?.type === "required" && (
-                <p className="cotizador__form--error-message">
-                  Este campo es requerido
-                </p>
-              )}
-            </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Cantidad</label>
-              <input
-                {...register("cantidad", {
-                  required: true,
-                })}
-                className="cotizador__inputs--input cantidad"
-                type="number"
-                step="any"
-              />
-              {tipo === "25kg Solupatch Bultos" && (
-                <span className="cotizador__input--placeholder">Bultos</span>
-              )}
-              {tipo === "Solupatch a Granel" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
-              )}
-              {tipo === "Debastado" && (
-                <span className="cotizador__input--placeholder">M2</span>
-              )}
-              {tipo === "Suministro y tendido pg64" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
-              )}
-              {tipo === "Suministro y tendido pg76" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
-              )}
-              {tipo === "Impregnación" && (
-                <span className="cotizador__input--placeholder">Litros</span>
-              )}
-              {tipo === "Suministro pg64" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
-              )}
-              {tipo === "Traslado carpeta" && (
-                <span className="cotizador__input--placeholder">Toneladas</span>
-              )}
-              {tipo === "Movimientos maquinaria" && (
-                <span className="cotizador__input--placeholder">Flete</span>
-              )}
-              {tipo === "Emulsión aslfáltica" && (
-                <span className="cotizador__input--placeholder">Litros</span>
-              )}
-              {errors?.cantidad?.type === "required" && (
-                <p className="cotizador__form--error-message">
-                  Este campo es requerido
-                </p>
-              )}
-            </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">Precio</label>
-              <span>$</span>
-              {/* <span>.00</span> */}
-              <input
-                {...register("precio", {
-                  required: true,
-                })}
-                className="cotizador__inputs--input precio"
-                type="text"
-                value={precio}
-                onChange={handlePrecioChange}
-              />
-              {errors?.precio?.type === "required" && (
-                <p className="cotizador__form--error-message">
-                  Este campo es requerido
-                </p>
-              )}
-            </div>
-            <div className="cotizador__input--pair">
-              <label className="cotizador__inputs--label">
-                Servicio de entrega
-              </label>
-              <span>$</span>
-              {/* <span>.00</span> */}
+          </div>
+          <AddDynamicInputs
+            getDataFromChild={handleDataFromChild}
+            stateChanger={setConceptoGuardado}
+          />
+          <div className="cotizador__input--pair">
+            <label className="cotizador__inputs--label">
+              Servicio de entrega
+            </label>
+            <span>$</span>
+            <input
+              {...register("entrega", {
+                required: true,
+              })}
+              className="cotizador__inputs--input precio"
+              type="text"
+              value={entrega}
+              onChange={handleEntregaChange}
+              style={{ paddingLeft: "35px" }}
+            />
+            {errors?.entrega?.type === "required" && (
+              <p className="cotizador__form--error-message">
+                Este campo es requerido
+              </p>
+            )}
 
-              <input
-                {...register("entrega", {
-                  required: true,
-                })}
-                className="cotizador__inputs--input precio"
-                type="text"
-                value={entrega}
-                onChange={handleEntregaChange}
-              />
-              {errors?.entrega?.type === "required" && (
-                <p className="cotizador__form--error-message">
-                  Este campo es requerido
-                </p>
-              )}
-            </div>
           </div>
           <button
-            disabled={!isDirty || isSubmitting}
+            disabled={!isDirty || isSubmitting || !conceptoGuardado}
             type="submit"
             className="cotizador__form--button"
           >

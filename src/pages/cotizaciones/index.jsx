@@ -45,25 +45,9 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  // const [datePdf, setDatePdf] = useState([]);
+  // console.log(cotizaciones);
 
-  // useEffect(() => {
-  //   cotizaciones.forEach(
-  //     (cotizacion) => {
-  //       const { seconds, nanoseconds } = cotizacion?.createdAt || {};
-  //       const Date = moment
-  //         .unix(seconds)
-  //         .add(nanoseconds / 1000000, "milliseconds");
-  //       moment.locale("es-mx");
-  //       const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
-  //       setDatePdf(Fordate);
-  //       // console.log(Fordate);
-  //       console.log(datePdf);
-  //     },
-  //     [cotizaciones]
-  //   );
-  // });
-
+  // NOTE: Excel sheet
   const downloadExcel = () => {
     let table = [
       {
@@ -158,13 +142,11 @@ export const Cotizaciones = () => {
   // NOTE: DELETE
 
   const openModal = async (id) => {
-    console.log(id);
     setTempDeleteId(id);
     // console.log(tempDeleteId);
     modalRef.current.showModal();
   };
   const onDelete = async () => {
-    console.log(tempDeleteId);
     const docRef = doc(db, "cotizaciones", tempDeleteId);
     await deleteDoc(docRef);
     setTempDeleteId("");
@@ -201,27 +183,9 @@ export const Cotizaciones = () => {
     setShowSaveBtn(false);
   };
 
-  // const onSaveToaster = () => {};
-
-  // useEffect(() => {
-  //   onUpdateSave();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [nuevoStatus]);
-
   if (!isAuth) {
     return <Navigate to="/" />;
   }
-
-  // const onCancelado = () => {
-  //   setStatus(<FaCircleXmark />);
-  // };
-  // const onSeguimiento = () => {
-  //   setStatus(<FaCircleMinus />);
-  // };
-
-  // const onVendido = () => {
-  //   setStatus(<FaCircleCheck />);
-  // };
 
   return (
     <div className="cotizaciones">
@@ -310,11 +274,12 @@ export const Cotizaciones = () => {
                         nombre,
                         id,
                         emailValue,
-                        cantidad,
-                        precio,
                         entrega,
                         folio,
                         status,
+                        cantidad,
+                        precio,
+                        total,
                         // seleccione,
                         // empresa,
                         // celular,
@@ -326,11 +291,25 @@ export const Cotizaciones = () => {
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
                       let iva =
                         (importe + entrega.replace(/,/g, "") * 1) * 0.16;
-                      let total = importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = total.toLocaleString("en-US", {
+                      let totalImporte =
+                        importe + iva + entrega.replace(/,/g, "") * 1;
+                      let totalFormated = totalImporte.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
+
+                      let importeDy = total;
+                      let ivaDy =
+                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                      let totalImporteDy =
+                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                      let totalFormatedDy = totalImporteDy.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      );
 
                       return (
                         // Table Data
@@ -349,10 +328,18 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          <td>$ {totalFormated}</td>
+                          <td>
+                            ${" "}
+                            {cotizacion.dynamicForm
+                              ? totalFormatedDy
+                              : totalFormated}
+                          </td>
                           <td>
                             <span
-                              style={{ display: "flex", position: "relative" }}
+                              style={{
+                                display: "flex",
+                                position: "relative",
+                              }}
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
@@ -462,7 +449,7 @@ export const Cotizaciones = () => {
                     .reverse()
                 : // if other email render this
                   cotizaciones
-                    ?.filter(
+                    .filter(
                       (cotizacion) => cotizacion?.emailValue === emailValue
                     )
                     .map((cotizacion) => {
@@ -477,11 +464,12 @@ export const Cotizaciones = () => {
                         nombre,
                         id,
                         emailValue,
-                        cantidad,
-                        precio,
                         entrega,
                         folio,
                         status,
+                        cantidad,
+                        precio,
+                        total,
                         // seleccione,
                         // empresa,
                         // celular,
@@ -493,11 +481,25 @@ export const Cotizaciones = () => {
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
                       let iva =
                         (importe + entrega.replace(/,/g, "") * 1) * 0.16;
-                      let total = importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = total.toLocaleString("en-US", {
+                      let totalImporte =
+                        importe + iva + entrega.replace(/,/g, "") * 1;
+                      let totalFormated = totalImporte.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
+
+                      let importeDy = total;
+                      let ivaDy =
+                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                      let totalImporteDy =
+                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                      let totalFormatedDy = totalImporteDy.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      );
 
                       return (
                         // Table Data
@@ -516,10 +518,18 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          <td>$ {totalFormated}</td>
+                          <td>
+                            ${" "}
+                            {cotizacion.dynamicForm
+                              ? totalFormatedDy
+                              : totalFormated}
+                          </td>
                           <td>
                             <span
-                              style={{ display: "flex", position: "relative" }}
+                              style={{
+                                display: "flex",
+                                position: "relative",
+                              }} 
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
@@ -599,7 +609,7 @@ export const Cotizaciones = () => {
                                     marginLeft: "5px",
                                     fontSize: "20px",
                                     position: "absolute",
-                                    left: "50px",
+                                    right: "15px",
                                     top: "1.5px",
                                   }}
                                 />
