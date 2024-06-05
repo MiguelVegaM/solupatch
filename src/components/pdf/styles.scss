@@ -117,19 +117,28 @@
     width: 100%;
     .cotizacion__title__thead {
       background-color: #fac000;
+      .cotizacion__title__tr-concepto {
+        border: 1px solid rgba(0, 0, 0, 0.411);
+      }
       .cotizacion__title__th {
-        padding-left: 30px;
         padding-block: 15px;
+        text-align: center;
+        width: 100px;
+      }
+      .cotizacion__title__th-concepto {
+        font-size: 1.1rem;
+        padding-block: 0px;
+        padding-left: 15px;
+        padding-top: 5px;
       }
     }
     .cotizacion__title__tbody {
       .cotizacion__title__tr {
-        :first-child {
-          padding-left: 30px;
-        }
         .cotizacion__title__td {
-          padding-top: 15px;
+          padding-block: 15px;
           padding-left: 30px;
+          text-align: center;
+          width: 100px;
         }
       }
     }

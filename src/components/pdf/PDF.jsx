@@ -21,6 +21,29 @@ import "./styles.scss";
 import { PDFTr } from "./PDFTr";
 
 export const PDF = () => {
+  // const cotizacionEjemplo = {
+  //   celular: "1234567890",
+  //   createdAt: "May 29, 2024 at 1:05:17 PM UTC-6",
+  //   email: "ejemplo1a2i@gmail.com",
+  //   emailValue: "jlramos@solupatch.com",
+  //   empresa: "Regiomuros",
+  //   entrega: "500",
+  //   folio: "000999",
+  //   nombre: "Daniel Vega",
+  //   status: "seguimiento",
+  //   seleccione: "25kg Solupatch Bultos",
+  //   cantidad: "1",
+  //   precio: "100",
+  //   dynamicForm: [
+  //     {
+  //       seleccione: "Suministro y tendido pg64",
+  //       cantidad: "2",
+  //       precio: "200",
+  //     },
+  //     { seleccione: "Emulsión aslfáltica", cantidad: "2", precio: "200" },
+  //   ],
+  // };
+
   // const navigate = useNavigate();
   const [datePdf, setDatePdf] = useState("");
 
@@ -45,6 +68,11 @@ export const PDF = () => {
 
   const pdfRef = useRef();
 
+  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, "") * 1;
+  let entregaFormated = entrega.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
   let importe =
     cotizacionSeleccionada?.cantidad *
     cotizacionSeleccionada?.precio.replace(/,/g, "");
@@ -52,18 +80,6 @@ export const PDF = () => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-
-  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, "") * 1;
-  let entregaFormated = entrega.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
-  // let precio = cotizacionSeleccionada?.precio.replace(/,/g, "") * 1;
-  // let precioFormated = precio.toLocaleString("en-US", {
-  //   minimumFractionDigits: 2,
-  //   maximumFractionDigits: 2,
-  // });
 
   let iva = (importe + entrega) * 0.16;
   let ivaFormated = iva.toLocaleString("en-US", {
@@ -77,7 +93,26 @@ export const PDF = () => {
     maximumFractionDigits: 2,
   });
 
-  // console.log(importe, entrega, iva, total);
+  const [importeDy, setImporteDy] = useState("");
+  const fromPdfChild = (data) => {
+    setImporteDy(data);
+  };
+  let ivaDy = (importeDy + entrega) * 0.16;
+  let ivaDyFormated = ivaDy.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  let importeDyFormated = importeDy.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  let totalDy = importeDy + entrega + ivaDy;
+  let totalDyFormated = totalDy.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   const downloadPDF = () => {
     const input = pdfRef.current;
@@ -166,8 +201,6 @@ export const PDF = () => {
     }
   };
 
-  // console.log(cotizacionSeleccionada?.emailValue);
-
   return (
     <div>
       {cotizacionSeleccionada ? (
@@ -233,101 +266,110 @@ export const PDF = () => {
               </div>
             </section>
             <section className="cotizacion">
-              {/* <div> <table className="cotizacion__title__bar">
-                <thead className="cotizacion__title__thead">
-                  <tr>
-                    <th className="cotizacion__title__th">CANTIDAD</th>
-                    <th className="cotizacion__title__th">DESCRIPCIÓN</th>
-                    <th className="cotizacion__title__th">V. UNITARIO</th>
-                    <th className="cotizacion__title__th">ENTREGA</th>
-                    <th className="cotizacion__title__th">IMPORTE</th>
-                  </tr>
-                </thead>
-                <tbody className="cotizacion__title__tbody">
-                  <tr className="cotizacion__title__tr">
-                    <td className="cotizacion__title__td">
-                      {cotizacionSeleccionada?.cantidad}{" "}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "25kg Solupatch Bultos" && (
-                        <span className="cotizador__input--placeholder">
-                          Bultos
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Solupatch a Granel" && (
-                        <span className="cotizador__input--placeholder">
-                          Toneladas
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione === "Debastado" && (
-                        <span className="cotizador__input--placeholder">
-                          M2
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Suministro y tendido pg64" && (
-                        <span className="cotizador__input--placeholder">
-                          Toneladas
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Suministro y tendido pg76" && (
-                        <span className="cotizador__input--placeholder">
-                          Toneladas
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Impregnación" && (
-                        <span className="cotizador__input--placeholder">
-                          Litros
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Suministro pg64" && (
-                        <span className="cotizador__input--placeholder">
-                          Toneladas
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Traslado carpeta" && (
-                        <span className="cotizador__input--placeholder">
-                          Toneladas
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Movimientos maquinaria" && (
-                        <span className="cotizador__input--placeholder">
-                          Flete
-                        </span>
-                      )}
-                      {cotizacionSeleccionada?.seleccione ===
-                        "Emulsión aslfáltica" && (
-                        <span className="cotizador__input--placeholder">
-                          Litros
-                        </span>
-                      )}
-                    </td>
-                    <td className="cotizacion__title__td">
-                      {cotizacionSeleccionada?.seleccione}
-                    </td>
-                    <td className="cotizacion__title__td">
-                      $ {precioFormated}
-                    </td>
-                    <td className="cotizacion__title__td">
-                      $ {entregaFormated}
-                    </td>
-                    <td className="cotizacion__title__td">
-                      $ {importeFormated}
-                    </td>
-                  </tr>
-                </tbody>
-              </table> </div> */}
-              <PDFTr />
+              {/* <div>
+                {" "}
+                <table className="cotizacion__title__bar">
+                  <thead className="cotizacion__title__thead">
+                    <tr>
+                      <th className="cotizacion__title__th">CANTIDAD</th>
+                      <th className="cotizacion__title__th">DESCRIPCIÓN</th>
+                      <th className="cotizacion__title__th">V. UNITARIO</th>
+                      <th className="cotizacion__title__th">ENTREGA</th>
+                      <th className="cotizacion__title__th">IMPORTE</th>
+                    </tr>
+                  </thead>
+                  <tbody className="cotizacion__title__tbody">
+                    <tr className="cotizacion__title__tr">
+                      <td className="cotizacion__title__td">
+                        {cotizacionSeleccionada?.cantidad}{" "}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "25kg Solupatch Bultos" && (
+                          <span className="cotizador__input--placeholder">
+                            Bultos
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Solupatch a Granel" && (
+                          <span className="cotizador__input--placeholder">
+                            Toneladas
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione === "Debastado" && (
+                          <span className="cotizador__input--placeholder">
+                            M2
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Suministro y tendido pg64" && (
+                          <span className="cotizador__input--placeholder">
+                            Toneladas
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Suministro y tendido pg76" && (
+                          <span className="cotizador__input--placeholder">
+                            Toneladas
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Impregnación" && (
+                          <span className="cotizador__input--placeholder">
+                            Litros
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Suministro pg64" && (
+                          <span className="cotizador__input--placeholder">
+                            Toneladas
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Traslado carpeta" && (
+                          <span className="cotizador__input--placeholder">
+                            Toneladas
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Movimientos maquinaria" && (
+                          <span className="cotizador__input--placeholder">
+                            Flete
+                          </span>
+                        )}
+                        {cotizacionSeleccionada?.seleccione ===
+                          "Emulsión aslfáltica" && (
+                          <span className="cotizador__input--placeholder">
+                            Litros
+                          </span>
+                        )}
+                      </td>
+                      <td className="cotizacion__title__td">
+                        {cotizacionSeleccionada?.seleccione}
+                      </td>
+                      <td className="cotizacion__title__td">
+                        $ {precioFormated}
+                      </td>
+                      <td className="cotizacion__title__td">
+                        $ {entregaFormated}
+                      </td>
+                      <td className="cotizacion__title__td">
+                        $ {importeFormated}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>{" "}
+              </div> */}
+              <PDFTr
+                cotizaciones={cotizaciones}
+                cotizacionSeleccionada={cotizacionSeleccionada}
+                fromPdfChild={fromPdfChild}
+              />
             </section>
             <section className="total">
               <div className="cotizacion__total__div">
                 <span className="cotizacion__total__span">IMPORTE: </span>${" "}
-                {importeFormated}
+                {cotizacionSeleccionada.dynamicForm
+                  ? importeDyFormated
+                  : importeFormated}
               </div>
               <div className="cotizacion__total__div">
                 <span className="cotizacion__total__span">ENTREGA: </span>${" "}
@@ -335,11 +377,15 @@ export const PDF = () => {
               </div>
               <div className="cotizacion__total__div">
                 <span className="cotizacion__total__span">IVA 16%: </span>${" "}
-                {ivaFormated}
+                {cotizacionSeleccionada.dynamicForm
+                  ? ivaDyFormated
+                  : ivaFormated}
               </div>
               <div className="cotizacion__total__div">
                 <span className="cotizacion__total__span">TOTAL: </span>$
-                {totalFormated}
+                {cotizacionSeleccionada.dynamicForm
+                  ? totalDyFormated
+                  : totalFormated}
               </div>
             </section>
             <section className="banco">

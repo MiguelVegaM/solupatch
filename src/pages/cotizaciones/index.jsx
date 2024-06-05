@@ -45,7 +45,7 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  console.log(cotizaciones);
+  // console.log(cotizaciones);
 
   // NOTE: Excel sheet
   const downloadExcel = () => {
@@ -183,13 +183,6 @@ export const Cotizaciones = () => {
     setShowSaveBtn(false);
   };
 
-  // const onSaveToaster = () => {};
-
-  // useEffect(() => {
-  //   onUpdateSave();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [nuevoStatus]);
-
   if (!isAuth) {
     return <Navigate to="/" />;
   }
@@ -286,7 +279,7 @@ export const Cotizaciones = () => {
                         status,
                         cantidad,
                         precio,
-                        // dynamicForm,
+                        total,
                         // seleccione,
                         // empresa,
                         // celular,
@@ -298,11 +291,25 @@ export const Cotizaciones = () => {
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
                       let iva =
                         (importe + entrega.replace(/,/g, "") * 1) * 0.16;
-                      let total = importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = total.toLocaleString("en-US", {
+                      let totalImporte =
+                        importe + iva + entrega.replace(/,/g, "") * 1;
+                      let totalFormated = totalImporte.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
+
+                      let importeDy = total;
+                      let ivaDy =
+                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                      let totalImporteDy =
+                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                      let totalFormatedDy = totalImporteDy.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      );
 
                       return (
                         // Table Data
@@ -321,10 +328,12 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          <td>$ {totalFormated}</td>
-                          {/* {console.log(
-                            dynamicForm ? dynamicForm[0].precio : undefined
-                          )} */}
+                          <td>
+                            ${" "}
+                            {cotizacion.dynamicForm
+                              ? totalFormatedDy
+                              : totalFormated}
+                          </td>
                           <td>
                             <span
                               style={{
@@ -460,7 +469,7 @@ export const Cotizaciones = () => {
                         status,
                         cantidad,
                         precio,
-                        // dynamicForm,
+                        total,
                         // seleccione,
                         // empresa,
                         // celular,
@@ -472,11 +481,25 @@ export const Cotizaciones = () => {
                         cantidad * 1 * (precio.replace(/,/g, "") * 1);
                       let iva =
                         (importe + entrega.replace(/,/g, "") * 1) * 0.16;
-                      let total = importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = total.toLocaleString("en-US", {
+                      let totalImporte =
+                        importe + iva + entrega.replace(/,/g, "") * 1;
+                      let totalFormated = totalImporte.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
+
+                      let importeDy = total;
+                      let ivaDy =
+                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                      let totalImporteDy =
+                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                      let totalFormatedDy = totalImporteDy.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }
+                      );
 
                       return (
                         // Table Data
@@ -495,7 +518,12 @@ export const Cotizaciones = () => {
                               ? "Luis Blanco"
                               : "Invitado"}
                           </td>
-                          <td>$ {totalFormated}</td>
+                          <td>
+                            ${" "}
+                            {cotizacion.dynamicForm
+                              ? totalFormatedDy
+                              : totalFormated}
+                          </td>
                           <td>
                             <span
                               style={{

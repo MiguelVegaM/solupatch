@@ -8,7 +8,7 @@ import { Toaster, toast } from "sonner";
 
 import "./styles.scss";
 
-export const AddDynamicInputs = ({ getDataFromChild }) => {
+export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
   // const [tipo, setTipo] = useState("");
   // const [precio, setPrecio] = useState("");
 
@@ -28,6 +28,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
           seleccione: "",
           cantidad: "",
           precio: "",
+          concepto: "",
         },
       ],
     },
@@ -48,6 +49,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
   const onSaveConcept = (data, e) => {
     e.preventDefault();
     getDataFromChild(data);
+    stateChanger(true);
     toast.success("Concepto guardado");
   };
 
@@ -63,6 +65,25 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
               }`}
               key={item.id}
             >
+              {/* NOTE: Concepto */}
+              <div className="cotizador__input--pair">
+                <label className="cotizador__inputs--label">Concepto</label>
+                {/* <span>$</span> */}
+                <input
+                  {...register(`dynamicForm.${index}.concepto`, {
+                    required: true,
+                  })}
+                  className="cotizador__inputs--input precio"
+                  type="text"
+                  // value={precio}
+                  // onChange={handlePrecioChange}
+                />
+                {errors?.concepto?.type === "required" && (
+                  <p className="cotizador__form--error-message">
+                    Este campo es requerido
+                  </p>
+                )}
+              </div>
               <div
                 className="input_container cotizador__form--inputs"
                 key={index}
@@ -117,6 +138,7 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
                     })}
                     className="cotizador__inputs--input cantidad"
                     type="number"
+                    step="any"
                   />
 
                   {selectValue === "25kg Solupatch Bultos" && (
@@ -191,15 +213,17 @@ export const AddDynamicInputs = ({ getDataFromChild }) => {
                     </p>
                   )}
                 </div>
-                <button
-                  className="cotizador__form--agregar-button"
-                  type="button"
-                  onClick={() => {
-                    append({ seleccione: "", cantidad: "", precio: "" });
-                  }}
-                >
-                  Agregar concepto
-                </button>
+                <div className="cotizador__form--agregar-button-container">
+                  <button
+                    className="cotizador__form--agregar-button"
+                    type="button"
+                    onClick={() => {
+                      append({ seleccione: "", cantidad: "", precio: "" });
+                    }}
+                  >
+                    Agregar concepto
+                  </button>
+                </div>
 
                 {index > 0 && (
                   <button

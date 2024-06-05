@@ -20,13 +20,14 @@ export const useAddCotizacion = () => {
     empresa,
     celular,
     email,
-    // seleccione,
-    // cantidad,
-    // precio,
+    seleccione,
+    cantidad,
+    precio,
     entrega,
     folio,
     status,
     dynamicForm,
+    total,
   }) => {
     await addDoc(cotizacionCollectionRef, {
       userID,
@@ -35,14 +36,15 @@ export const useAddCotizacion = () => {
       empresa,
       celular,
       email,
-      // seleccione,
-      // cantidad,
-      // precio,
+      seleccione,
+      cantidad,
+      precio,
       entrega,
       createdAt,
       folio,
       status,
       dynamicForm,
+      total,
     });
   };
 
