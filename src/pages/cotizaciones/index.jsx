@@ -1,8 +1,4 @@
-import {
-  // useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { signOut } from "firebase/auth";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
@@ -45,8 +41,6 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  // console.log(cotizaciones);
-
   // NOTE: Excel sheet
   const downloadExcel = () => {
     let table = [
@@ -55,7 +49,7 @@ export const Cotizaciones = () => {
         B: "CLIENTE",
         C: "FECHA",
         D: "VENDEDOR",
-        E: "MERCANCÍA",
+        E: "PRODUCTO",
         F: "CANTIDAD",
         G: "EMPRESA",
         H: "EMAIL",
@@ -74,13 +68,36 @@ export const Cotizaciones = () => {
         return Fordate;
       };
 
+      const newArrSeleccione = [];
+      if (cotizacion.dynamicForm) {
+        newArrSeleccione.push(
+          cotizacion.dynamicForm.map((item) => item.seleccione)
+        );
+      }
+      const newArrCantidad = [];
+      if (cotizacion.dynamicForm) {
+        newArrCantidad.push(
+          cotizacion.dynamicForm.map((item) => item.cantidad)
+        );
+      }
+
       table.push({
         A: cotizacion.folio,
         B: cotizacion.nombre,
         C: formatedDate(),
         D: cotizacion.emailValue,
-        E: cotizacion.seleccione,
-        F: cotizacion.cantidad,
+        E: cotizacion.dynamicForm
+          ? newArrSeleccione
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, "\n")
+          : cotizacion.seleccione,
+        F: cotizacion.dynamicForm
+          ? newArrCantidad
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, "\n")
+          : cotizacion.cantidad,
         G: cotizacion.empresa,
         H: cotizacion.email,
         I: cotizacion.celular,
@@ -529,7 +546,7 @@ export const Cotizaciones = () => {
                               style={{
                                 display: "flex",
                                 position: "relative",
-                              }} 
+                              }}
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
