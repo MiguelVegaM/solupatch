@@ -1,34 +1,34 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import { signOut } from "firebase/auth";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase/firebase-config";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { signOut } from 'firebase/auth';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase/firebase-config';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 
-import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
-import { useGetUserInfo } from "../../hooks/useGetUserInfo";
-import moment from "moment";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import * as XLSX from "xlsx";
-import { Toaster, toast } from "sonner";
-import Dropdown from "react-bootstrap/Dropdown";
+import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
+import { useGetUserInfo } from '../../hooks/useGetUserInfo';
+import moment from 'moment';
+import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
+import * as XLSX from 'xlsx';
+import { Toaster, toast } from 'sonner';
+import Dropdown from 'react-bootstrap/Dropdown';
 
-import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
+import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
 import {
   FaCircleCheck,
   FaCircleMinus,
   FaCircleXmark,
   FaFilePdf,
   FaTrash,
-} from "react-icons/fa6";
-import "../cotizaciones/styles.scss";
-import { MdSave } from "react-icons/md";
+} from 'react-icons/fa6';
+import '../cotizaciones/styles.scss';
+import { MdSave } from 'react-icons/md';
 
 export const Cotizaciones = () => {
-  const [tempDeleteId, setTempDeleteId] = useState("");
-  const [tempUpdateId, setTempUpdateId] = useState("");
-  const [nuevoStatus, setNuevoStatus] = useState("");
+  const [tempDeleteId, setTempDeleteId] = useState('');
+  const [tempUpdateId, setTempUpdateId] = useState('');
+  const [nuevoStatus, setNuevoStatus] = useState('');
   const [showSaveBtn, setShowSaveBtn] = useState(false);
 
   const {
@@ -45,16 +45,16 @@ export const Cotizaciones = () => {
   const downloadExcel = () => {
     let table = [
       {
-        A: "FOLIO",
-        B: "CLIENTE",
-        C: "FECHA",
-        D: "VENDEDOR",
-        E: "PRODUCTO",
-        F: "CANTIDAD",
-        G: "EMPRESA",
-        H: "EMAIL",
-        I: "CELULAR",
-        J: "TOTAL",
+        A: 'FOLIO',
+        B: 'CLIENTE',
+        C: 'FECHA',
+        D: 'VENDEDOR',
+        E: 'PRODUCTO',
+        F: 'CANTIDAD',
+        G: 'EMPRESA',
+        H: 'EMAIL',
+        I: 'CELULAR',
+        J: 'TOTAL',
       },
     ];
     cotizaciones.forEach((cotizacion) => {
@@ -62,9 +62,9 @@ export const Cotizaciones = () => {
         const { seconds, nanoseconds } = cotizacion?.createdAt || {};
         const Date = moment
           .unix(seconds)
-          .add(nanoseconds / 1000000, "milliseconds");
-        moment.locale("es");
-        const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+          .add(nanoseconds / 1000000, 'milliseconds');
+        moment.locale('es');
+        const Fordate = Date.format('DD MM YYYY, h:mm a') || '';
         return Fordate;
       };
 
@@ -80,6 +80,36 @@ export const Cotizaciones = () => {
           cotizacion.dynamicForm.map((item) => item.cantidad)
         );
       }
+      const {
+        nombre,
+        id,
+        emailValue,
+        entrega,
+        folio,
+        status,
+        cantidad,
+        precio,
+        total,
+        // seleccione,
+        // empresa,
+        // celular,
+        // email,
+      } = cotizacion;
+      let importe = cantidad * 1 * (precio.replace(/,/g, '') * 1);
+      let iva = (importe + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporte = importe + iva + entrega.replace(/,/g, '') * 1;
+      let totalFormated = totalImporte.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      let importeDy = total;
+      let ivaDy = (importeDy + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporteDy = importeDy + ivaDy + entrega.replace(/,/g, '') * 1;
+      let totalFormatedDy = totalImporteDy.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
 
       table.push({
         A: cotizacion.folio,
@@ -90,29 +120,18 @@ export const Cotizaciones = () => {
           ? newArrSeleccione
               .map((item) => item)
               .toString()
-              .replace(/,/g, "\n")
+              .replace(/,/g, '\n')
           : cotizacion.seleccione,
         F: cotizacion.dynamicForm
           ? newArrCantidad
               .map((item) => item)
               .toString()
-              .replace(/,/g, "\n")
+              .replace(/,/g, '\n')
           : cotizacion.cantidad,
         G: cotizacion.empresa,
         H: cotizacion.email,
         I: cotizacion.celular,
-        J: (
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, "")) /
-            1 +
-            cotizacion.entrega.replace(/,/g, "") / 1) *
-            0.16 +
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, "")) /
-            1 +
-            cotizacion.entrega.replace(/,/g, "") / 1)
-        ).toLocaleString("en-US", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
+        J: cotizacion.dynamicForm ? totalFormatedDy : totalFormated,
       });
     });
 
@@ -123,15 +142,15 @@ export const Cotizaciones = () => {
   const createFilter = (finalData) => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(finalData, { skipHeader: true });
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Cotizaciones");
-    XLSX.writeFile(workbook, "Cotizaciones SOLUPATCH.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Cotizaciones');
+    XLSX.writeFile(workbook, 'Cotizaciones SOLUPATCH.xlsx');
   };
 
   const logout = async () => {
     try {
       await signOut(auth);
       localStorage.clear();
-      navigate("/autenticacion");
+      navigate('/autenticacion');
     } catch (error) {
       console.log(error);
     }
@@ -164,19 +183,19 @@ export const Cotizaciones = () => {
     modalRef.current.showModal();
   };
   const onDelete = async () => {
-    const docRef = doc(db, "cotizaciones", tempDeleteId);
+    const docRef = doc(db, 'cotizaciones', tempDeleteId);
     await deleteDoc(docRef);
-    setTempDeleteId("");
+    setTempDeleteId('');
     // console.log(tempDeleteId);
     modalRef.current.close();
-    toast.warning("Cotización eliminada");
+    toast.warning('Cotización eliminada');
   };
 
   // NOTE: UPDATE
 
   const onClickUpdate = (id) => {
     setTempUpdateId(id);
-    console.log("</> → id:", id);
+    console.log('</> → id:', id);
   };
 
   const onUpdate = async (e, statusFromDropdown) => {
@@ -189,42 +208,42 @@ export const Cotizaciones = () => {
     // console.log(nuevoStatus);
     try {
       // console.log(tempUpdateId);
-      const docRef = doc(db, "cotizaciones", tempUpdateId);
+      const docRef = doc(db, 'cotizaciones', tempUpdateId);
       await updateDoc(docRef, {
         status: nuevoStatus,
       });
     } catch (error) {
       console.log(error);
     }
-    toast.success("Estado actualizado");
+    toast.success('Estado actualizado');
     setShowSaveBtn(false);
   };
 
   if (!isAuth) {
-    return <Navigate to="/" />;
+    return <Navigate to='/' />;
   }
 
   return (
-    <div className="cotizaciones">
+    <div className='cotizaciones'>
       {/* Delete Modal */}
       <dialog
         onClick={closeModalOutside}
         ref={modalRef}
-        className="cotizaciones__modal"
+        className='cotizaciones__modal'
       >
         <div>
           <h3>Eliminar Cotización</h3>
           <p>Si elimina esta cotización los datos no podrán ser recuperados.</p>
 
-          <div className="cotizaciones__modal--buttons-container">
+          <div className='cotizaciones__modal--buttons-container'>
             <button
-              className="cotizaciones__modal--delete-button"
+              className='cotizaciones__modal--delete-button'
               onClick={onDelete}
             >
               Eliminar
             </button>
             <button
-              className="cotizaciones__modal--close-button"
+              className='cotizaciones__modal--close-button'
               onClick={closeModal}
             >
               Cerrar
@@ -232,32 +251,32 @@ export const Cotizaciones = () => {
           </div>
         </div>
       </dialog>
-      <div className="cotizaciones__navbar">
-        <div className="cotizador__navbar--vendedor">
+      <div className='cotizaciones__navbar'>
+        <div className='cotizador__navbar--vendedor'>
           <span>Vendedor:</span> {emailValue}
         </div>
         <img
-          className="cotizaciones__navbar--img"
+          className='cotizaciones__navbar--img'
           src={logoPrincipal}
-          alt="Solupatch Logo"
+          alt='Solupatch Logo'
         />
-        <div className="navbar__buttons">
-          <a href="/cotizador">
-            <button className="navbar__button--cotizaciones">Cotizador</button>
+        <div className='navbar__buttons'>
+          <a href='/cotizador'>
+            <button className='navbar__button--cotizaciones'>Cotizador</button>
           </a>
           <button
-            className="navbar__button--cotizaciones"
+            className='navbar__button--cotizaciones'
             onClick={downloadExcel}
           >
             Exportar Excel
           </button>
-          <button className="navbar__button--cotizaciones" onClick={logout}>
+          <button className='navbar__button--cotizaciones' onClick={logout}>
             Salir
           </button>
         </div>
       </div>
 
-      <div className="cotizaciones__body">
+      <div className='cotizaciones__body'>
         <Table striped>
           <thead>
             <tr>
@@ -277,16 +296,16 @@ export const Cotizaciones = () => {
           <tbody>
             {
               // if the email logged is rvl@solupatch.com render this
-              emailValue === "rvl@solupatch.com"
+              emailValue === 'rvl@solupatch.com'
                 ? cotizaciones
                     .map((cotizacion) => {
                       const { seconds, nanoseconds } =
                         cotizacion.createdAt || {};
                       const Date = moment
                         .unix(seconds)
-                        .add(nanoseconds / 1000000, "milliseconds");
-                      moment.locale("es");
-                      const Fordate = Date.format("DD/MM/YYYY") || "";
+                        .add(nanoseconds / 1000000, 'milliseconds');
+                      moment.locale('es');
+                      const Fordate = Date.format('DD/MM/YYYY') || '';
                       const {
                         nombre,
                         id,
@@ -305,23 +324,23 @@ export const Cotizaciones = () => {
                       // console.log("</> → userID:", userID);
 
                       let importe =
-                        cantidad * 1 * (precio.replace(/,/g, "") * 1);
+                        cantidad * 1 * (precio.replace(/,/g, '') * 1);
                       let iva =
-                        (importe + entrega.replace(/,/g, "") * 1) * 0.16;
+                        (importe + entrega.replace(/,/g, '') * 1) * 0.16;
                       let totalImporte =
-                        importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = totalImporte.toLocaleString("en-US", {
+                        importe + iva + entrega.replace(/,/g, '') * 1;
+                      let totalFormated = totalImporte.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
 
                       let importeDy = total;
                       let ivaDy =
-                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                        (importeDy + entrega.replace(/,/g, '') * 1) * 0.16;
                       let totalImporteDy =
-                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                        importeDy + ivaDy + entrega.replace(/,/g, '') * 1;
                       let totalFormatedDy = totalImporteDy.toLocaleString(
-                        "en-US",
+                        'en-US',
                         {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -335,18 +354,18 @@ export const Cotizaciones = () => {
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
                           <td>
-                            {emailValue === "aclarrea@solupatch.com"
-                              ? "Ana Larrea"
-                              : emailValue === "jlramos@solupatch.com"
-                              ? "José Ramos"
-                              : emailValue === "rvl@solupatch.com"
-                              ? "Rodolfo Villalobos"
-                              : emailValue === "lblanco@solupatch.com"
-                              ? "Luis Blanco"
-                              : "Invitado"}
+                            {emailValue === 'aclarrea@solupatch.com'
+                              ? 'Ana Larrea'
+                              : emailValue === 'jlramos@solupatch.com'
+                              ? 'José Ramos'
+                              : emailValue === 'rvl@solupatch.com'
+                              ? 'Rodolfo Villalobos'
+                              : emailValue === 'lblanco@solupatch.com'
+                              ? 'Luis Blanco'
+                              : 'Invitado'}
                           </td>
                           <td>
-                            ${" "}
+                            ${' '}
                             {cotizacion.dynamicForm
                               ? totalFormatedDy
                               : totalFormated}
@@ -354,69 +373,69 @@ export const Cotizaciones = () => {
                           <td>
                             <span
                               style={{
-                                display: "flex",
-                                position: "relative",
+                                display: 'flex',
+                                position: 'relative',
                               }}
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
-                                  variant="warning"
-                                  id="dropdown-basic"
+                                  variant='warning'
+                                  id='dropdown-basic'
                                   style={{
-                                    backgroundColor: "transparent",
-                                    border: "1px solid black",
-                                    borderRadius: "50px",
-                                    padding: "1px 6px 1px 0px",
+                                    backgroundColor: 'transparent',
+                                    border: '1px solid black',
+                                    borderRadius: '50px',
+                                    padding: '1px 6px 1px 0px',
                                   }}
                                 >
-                                  {status === "cancelado" ? (
+                                  {status === 'cancelado' ? (
                                     <FaCircleXmark
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "red",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: 'red',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
-                                  ) : status === "vendido" ? (
+                                  ) : status === 'vendido' ? (
                                     <FaCircleCheck
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "green",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: 'green',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
                                   ) : (
                                     <FaCircleMinus
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "#FBC512",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: '#FBC512',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
                                   )}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "seguimiento")}
-                                    value="seguimiento"
+                                    onClick={(e) => onUpdate(e, 'seguimiento')}
+                                    value='seguimiento'
                                   >
                                     Seguimiento
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "cancelado")}
-                                    value="cancelado"
+                                    onClick={(e) => onUpdate(e, 'cancelado')}
+                                    value='cancelado'
                                   >
                                     Cancelado
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "vendido")}
-                                    value="vendido"
+                                    onClick={(e) => onUpdate(e, 'vendido')}
+                                    value='vendido'
                                   >
                                     Vendido
                                   </Dropdown.Item>
@@ -426,18 +445,18 @@ export const Cotizaciones = () => {
                                 <MdSave
                                   onClick={onUpdateSave}
                                   style={{
-                                    width: "25px",
-                                    height: "25px",
-                                    color: "white",
-                                    backgroundColor: "black",
-                                    borderRadius: "50px",
-                                    padding: "3px",
-                                    cursor: "pointer",
-                                    marginLeft: "5px",
-                                    fontSize: "20px",
-                                    position: "absolute",
-                                    left: "50px",
-                                    top: "1.5px",
+                                    width: '25px',
+                                    height: '25px',
+                                    color: 'white',
+                                    backgroundColor: 'black',
+                                    borderRadius: '50px',
+                                    padding: '3px',
+                                    cursor: 'pointer',
+                                    marginLeft: '5px',
+                                    fontSize: '20px',
+                                    position: 'absolute',
+                                    left: '50px',
+                                    top: '1.5px',
                                   }}
                                 />
                               )}
@@ -445,8 +464,8 @@ export const Cotizaciones = () => {
                           </td>
                           <td></td>
                           <td>
-                            <NavLink to={cotizacion?.id} target="_blank">
-                              <button className="cotizador__button--descargar">
+                            <NavLink to={cotizacion?.id} target='_blank'>
+                              <button className='cotizador__button--descargar'>
                                 <FaFilePdf />
                               </button>
                             </NavLink>
@@ -455,7 +474,7 @@ export const Cotizaciones = () => {
                             {/* Boton para dialogo */}
                             <Button
                               onClick={() => openModal(id)}
-                              className="cotizador__button--delete"
+                              className='cotizador__button--delete'
                             >
                               <FaTrash />
                             </Button>
@@ -474,9 +493,9 @@ export const Cotizaciones = () => {
                         cotizacion.createdAt || {};
                       const Date = moment
                         .unix(seconds)
-                        .add(nanoseconds / 1000000, "milliseconds");
-                      moment.locale("es");
-                      const Fordate = Date.format("DD/MM/YYYY") || "";
+                        .add(nanoseconds / 1000000, 'milliseconds');
+                      moment.locale('es');
+                      const Fordate = Date.format('DD/MM/YYYY') || '';
                       const {
                         nombre,
                         id,
@@ -495,23 +514,23 @@ export const Cotizaciones = () => {
                       // console.log("</> → userID:", userID);
 
                       let importe =
-                        cantidad * 1 * (precio.replace(/,/g, "") * 1);
+                        cantidad * 1 * (precio.replace(/,/g, '') * 1);
                       let iva =
-                        (importe + entrega.replace(/,/g, "") * 1) * 0.16;
+                        (importe + entrega.replace(/,/g, '') * 1) * 0.16;
                       let totalImporte =
-                        importe + iva + entrega.replace(/,/g, "") * 1;
-                      let totalFormated = totalImporte.toLocaleString("en-US", {
+                        importe + iva + entrega.replace(/,/g, '') * 1;
+                      let totalFormated = totalImporte.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       });
 
                       let importeDy = total;
                       let ivaDy =
-                        (importeDy + entrega.replace(/,/g, "") * 1) * 0.16;
+                        (importeDy + entrega.replace(/,/g, '') * 1) * 0.16;
                       let totalImporteDy =
-                        importeDy + ivaDy + entrega.replace(/,/g, "") * 1;
+                        importeDy + ivaDy + entrega.replace(/,/g, '') * 1;
                       let totalFormatedDy = totalImporteDy.toLocaleString(
-                        "en-US",
+                        'en-US',
                         {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -525,18 +544,18 @@ export const Cotizaciones = () => {
                           <td>{nombre}</td>
                           <td>{Fordate}</td>
                           <td>
-                            {emailValue === "aclarrea@solupatch.com"
-                              ? "Ana Larrea"
-                              : emailValue === "jlramos@solupatch.com"
-                              ? "José Ramos"
-                              : emailValue === "rvl@solupatch.com"
-                              ? "Rodolfo Villalobos"
-                              : emailValue === "lblanco@solupatch.com"
-                              ? "Luis Blanco"
-                              : "Invitado"}
+                            {emailValue === 'aclarrea@solupatch.com'
+                              ? 'Ana Larrea'
+                              : emailValue === 'jlramos@solupatch.com'
+                              ? 'José Ramos'
+                              : emailValue === 'rvl@solupatch.com'
+                              ? 'Rodolfo Villalobos'
+                              : emailValue === 'lblanco@solupatch.com'
+                              ? 'Luis Blanco'
+                              : 'Invitado'}
                           </td>
                           <td>
-                            ${" "}
+                            ${' '}
                             {cotizacion.dynamicForm
                               ? totalFormatedDy
                               : totalFormated}
@@ -544,69 +563,69 @@ export const Cotizaciones = () => {
                           <td>
                             <span
                               style={{
-                                display: "flex",
-                                position: "relative",
+                                display: 'flex',
+                                position: 'relative',
                               }}
                             >
                               <Dropdown onClick={() => onClickUpdate(id)}>
                                 <Dropdown.Toggle
-                                  variant="warning"
-                                  id="dropdown-basic"
+                                  variant='warning'
+                                  id='dropdown-basic'
                                   style={{
-                                    backgroundColor: "transparent",
-                                    border: "1px solid black",
-                                    borderRadius: "50px",
-                                    padding: "1px 6px 1px 0px",
+                                    backgroundColor: 'transparent',
+                                    border: '1px solid black',
+                                    borderRadius: '50px',
+                                    padding: '1px 6px 1px 0px',
                                   }}
                                 >
-                                  {status === "cancelado" ? (
+                                  {status === 'cancelado' ? (
                                     <FaCircleXmark
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "red",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: 'red',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
-                                  ) : status === "vendido" ? (
+                                  ) : status === 'vendido' ? (
                                     <FaCircleCheck
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "green",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: 'green',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
                                   ) : (
                                     <FaCircleMinus
                                       style={{
-                                        fontSize: "1.5rem",
-                                        color: "black",
-                                        backgroundColor: "#FBC512",
-                                        borderRadius: "50px",
-                                        marginLeft: "6px",
+                                        fontSize: '1.5rem',
+                                        color: 'black',
+                                        backgroundColor: '#FBC512',
+                                        borderRadius: '50px',
+                                        marginLeft: '6px',
                                       }}
                                     />
                                   )}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "seguimiento")}
-                                    value="seguimiento"
+                                    onClick={(e) => onUpdate(e, 'seguimiento')}
+                                    value='seguimiento'
                                   >
                                     Seguimiento
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "cancelado")}
-                                    value="cancelado"
+                                    onClick={(e) => onUpdate(e, 'cancelado')}
+                                    value='cancelado'
                                   >
                                     Cancelado
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    onClick={(e) => onUpdate(e, "vendido")}
-                                    value="vendido"
+                                    onClick={(e) => onUpdate(e, 'vendido')}
+                                    value='vendido'
                                   >
                                     Vendido
                                   </Dropdown.Item>
@@ -616,18 +635,18 @@ export const Cotizaciones = () => {
                                 <MdSave
                                   onClick={onUpdateSave}
                                   style={{
-                                    width: "25px",
-                                    height: "25px",
-                                    color: "white",
-                                    backgroundColor: "black",
-                                    borderRadius: "50px",
-                                    padding: "3px",
-                                    cursor: "pointer",
-                                    marginLeft: "5px",
-                                    fontSize: "20px",
-                                    position: "absolute",
-                                    right: "15px",
-                                    top: "1.5px",
+                                    width: '25px',
+                                    height: '25px',
+                                    color: 'white',
+                                    backgroundColor: 'black',
+                                    borderRadius: '50px',
+                                    padding: '3px',
+                                    cursor: 'pointer',
+                                    marginLeft: '5px',
+                                    fontSize: '20px',
+                                    position: 'absolute',
+                                    left: '50px',
+                                    top: '1.5px',
                                   }}
                                 />
                               )}
@@ -635,8 +654,8 @@ export const Cotizaciones = () => {
                           </td>
                           <td></td>
                           <td>
-                            <NavLink to={cotizacion?.id} target="_blank">
-                              <button className="cotizador__button--descargar">
+                            <NavLink to={cotizacion?.id} target='_blank'>
+                              <button className='cotizador__button--descargar'>
                                 <FaFilePdf />
                               </button>
                             </NavLink>
@@ -645,7 +664,7 @@ export const Cotizaciones = () => {
                             {/* Boton para dialogo */}
                             <Button
                               onClick={() => openModal(id)}
-                              className="cotizador__button--delete"
+                              className='cotizador__button--delete'
                             >
                               <FaTrash />
                             </Button>
@@ -658,7 +677,7 @@ export const Cotizaciones = () => {
           </tbody>
         </Table>
       </div>
-      <Toaster position="bottom-center" richColors />
+      <Toaster position='bottom-center' richColors />
     </div>
   );
 };
