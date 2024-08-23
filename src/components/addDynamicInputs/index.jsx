@@ -42,7 +42,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
     control,
     name: 'dynamicForm',
   });
-
+  //FIXME:: Format Precio input to add commas
   // const handlePrecioChange = (e) => {
   //   const formattedNumber = Number(
   //     e.target.value.replace(/,/g, "").replace(/[A-Za-z]/g, "")

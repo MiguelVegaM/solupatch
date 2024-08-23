@@ -1,8 +1,4 @@
-import {
-  // useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { signOut } from 'firebase/auth';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
@@ -46,8 +42,6 @@ export const Cotizaciones = () => {
 
   const { cotizaciones } = useGetCotizaciones();
 
-  // console.log(cotizaciones);
-
   // NOTE: Excel sheet
   const downloadExcel = () => {
     let table = [
@@ -57,6 +51,7 @@ export const Cotizaciones = () => {
         C: 'FECHA',
         D: 'VENDEDOR',
         E: 'MERCANCÍA',
+        E: 'PRODUCTO',
         F: 'CANTIDAD',
         G: 'EMPRESA',
         H: 'EMAIL',
@@ -75,28 +70,82 @@ export const Cotizaciones = () => {
         return Fordate;
       };
 
+      const newArrSeleccione = [];
+      if (cotizacion.dynamicForm) {
+        newArrSeleccione.push(
+          cotizacion.dynamicForm.map((item) => item.seleccione)
+        );
+      }
+      const newArrCantidad = [];
+      if (cotizacion.dynamicForm) {
+        newArrCantidad.push(
+          cotizacion.dynamicForm.map((item) => item.cantidad)
+        );
+      }
+      const {
+        nombre,
+        id,
+        emailValue,
+        entrega,
+        folio,
+        status,
+        cantidad,
+        precio,
+        total,
+        // seleccione,
+        // empresa,
+        // celular,
+        // email,
+      } = cotizacion;
+      let importe = cantidad * 1 * (precio.replace(/,/g, '') * 1);
+      let iva = (importe + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporte = importe + iva + entrega.replace(/,/g, '') * 1;
+      let totalFormated = totalImporte.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      let importeDy = total;
+      let ivaDy = (importeDy + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporteDy = importeDy + ivaDy + entrega.replace(/,/g, '') * 1;
+      let totalFormatedDy = totalImporteDy.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
       table.push({
         A: cotizacion.folio,
         B: cotizacion.nombre,
         C: formatedDate(),
         D: cotizacion.emailValue,
-        E: cotizacion.seleccione,
-        F: cotizacion.cantidad,
+        E: cotizacion.dynamicForm
+          ? newArrSeleccione
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, '\n')
+          : cotizacion.seleccione,
+        F: cotizacion.dynamicForm
+          ? newArrCantidad
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, '\n')
+          : cotizacion.cantidad,
         G: cotizacion.empresa,
         H: cotizacion.email,
         I: cotizacion.celular,
-        J: (
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
-            1 +
-            cotizacion.entrega.replace(/,/g, '') / 1) *
-            0.16 +
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
-            1 +
-            cotizacion.entrega.replace(/,/g, '') / 1)
-        ).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
+//         J: (
+//           (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
+//             1 +
+//             cotizacion.entrega.replace(/,/g, '') / 1) *
+//             0.16 +
+//           (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
+//             1 +
+//             cotizacion.entrega.replace(/,/g, '') / 1)
+//         ).toLocaleString('en-US', {
+//           minimumFractionDigits: 2,
+//           maximumFractionDigits: 2,
+//         }),
+        J: cotizacion.dynamicForm ? totalFormatedDy : totalFormated,
       });
     });
 
@@ -423,6 +472,7 @@ export const Cotizaciones = () => {
                                     fontSize: '20px',
                                     position: 'absolute',
                                     right: '15px',
+//                                     left: '50px',
                                     top: '1.5px',
                                   }}
                                 />
