@@ -282,7 +282,7 @@ export const UpdateCotizacion = () => {
             type='submit'
             className='cotizador__form--button'
           >
-            COTIZAR
+            GUARDAR CAMBIOS
           </button>
         </form>
       </div>
