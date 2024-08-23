@@ -690,7 +690,13 @@ export const Cotizaciones = () => {
                             </NavLink>
                           </td>
                           <td>
-                            <FaRegPenToSquare />
+                            <NavLink
+                              to={`/cotizador-actualizar/${cotizacion?.id}`}
+                            >
+                              <button className='cotizador__button--edit'>
+                                <FaRegPenToSquare />
+                              </button>
+                            </NavLink>
                           </td>
                           <td>
                             {/* Boton para dialogo */}

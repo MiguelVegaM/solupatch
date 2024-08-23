@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 
 import { signOut } from 'firebase/auth';
-import { updateDoc } from 'firebase/firestore';
-import { auth } from '../../firebase/firebase-config';
+import { updateDoc, doc } from 'firebase/firestore';
+import { auth, db } from '../../firebase/firebase-config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAddFolio } from '../../hooks/useAddFolio';
@@ -13,6 +13,7 @@ import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetFolio } from '../../hooks/useGetFolio';
 import { useParams } from 'react-router-dom';
 import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
+import { toast } from 'sonner';
 
 import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
 import './styles.scss';
@@ -98,6 +99,11 @@ export const UpdateCotizacion = () => {
       await updateDoc(docRef, {
         // FIXME: Here I dont know whats should I pass (dataObj or each property)
         ...dataObj,
+      }).then(()=> {
+        toast.warning('Cotizacion actualizada');
+        navigate('/cotizaciones');
+      }).catch(()=> {
+        toast.warning('Hubo un error en los datos, favor de verificar.');
       });
       //   toast.success('Cotización actualizada correctamente');
       //   navigate('/cotizaciones');
