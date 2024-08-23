@@ -86,6 +86,7 @@ export const UpdateCotizacion = () => {
   });
   // FIXME: Review the updateDoc function
   const onSubmit = async (data, e) => {
+    console.log('states> ', conceptoGuardado + isDirty + isSubmitting)
     e.preventDefault();
     try {
       const dataObj = {
@@ -278,7 +279,7 @@ export const UpdateCotizacion = () => {
             )}
           </div>
           <button
-            disabled={!isDirty || isSubmitting || !conceptoGuardado}
+            // disabled={!isDirty || isSubmitting || !conceptoGuardado}
             type='submit'
             className='cotizador__form--button'
           >
