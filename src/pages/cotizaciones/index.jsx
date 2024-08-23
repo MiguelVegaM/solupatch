@@ -20,6 +20,7 @@ import {
   FaCircleMinus,
   FaCircleXmark,
   FaFilePdf,
+  FaRegPenToSquare,
   FaTrash,
 } from 'react-icons/fa6';
 import '../cotizaciones/styles.scss';
@@ -49,6 +50,7 @@ export const Cotizaciones = () => {
         B: 'CLIENTE',
         C: 'FECHA',
         D: 'VENDEDOR',
+        E: 'MERCANCÍA',
         E: 'PRODUCTO',
         F: 'CANTIDAD',
         G: 'EMPRESA',
@@ -131,6 +133,18 @@ export const Cotizaciones = () => {
         G: cotizacion.empresa,
         H: cotizacion.email,
         I: cotizacion.celular,
+//         J: (
+//           (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
+//             1 +
+//             cotizacion.entrega.replace(/,/g, '') / 1) *
+//             0.16 +
+//           (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
+//             1 +
+//             cotizacion.entrega.replace(/,/g, '') / 1)
+//         ).toLocaleString('en-US', {
+//           minimumFractionDigits: 2,
+//           maximumFractionDigits: 2,
+//         }),
         J: cotizacion.dynamicForm ? totalFormatedDy : totalFormated,
       });
     });
@@ -197,6 +211,7 @@ export const Cotizaciones = () => {
     setTempUpdateId(id);
     console.log('</> → id:', id);
   };
+  console.log(tempUpdateId);
 
   const onUpdate = async (e, statusFromDropdown) => {
     setNuevoStatus(statusFromDropdown);
@@ -288,6 +303,7 @@ export const Cotizaciones = () => {
               {/* <th>Cantidad</th> */}
               <th>Total de Cotizacion</th>
               <th>Estado</th>
+              <th></th>
               <th></th>
               <th></th>
               <th></th>
@@ -455,7 +471,8 @@ export const Cotizaciones = () => {
                                     marginLeft: '5px',
                                     fontSize: '20px',
                                     position: 'absolute',
-                                    left: '50px',
+                                    right: '15px',
+//                                     left: '50px',
                                     top: '1.5px',
                                   }}
                                 />
@@ -464,9 +481,21 @@ export const Cotizaciones = () => {
                           </td>
                           <td></td>
                           <td>
-                            <NavLink to={cotizacion?.id} target='_blank'>
+                            <NavLink
+                              to={`/pdf/${cotizacion?.id}`}
+                              target='_blank'
+                            >
                               <button className='cotizador__button--descargar'>
                                 <FaFilePdf />
+                              </button>
+                            </NavLink>
+                          </td>
+                          <td>
+                            <NavLink
+                              to={`/cotizador-actualizar/${cotizacion?.id}`}
+                            >
+                              <button className='cotizador__button--edit'>
+                                <FaRegPenToSquare />
                               </button>
                             </NavLink>
                           </td>
@@ -645,7 +674,7 @@ export const Cotizaciones = () => {
                                     marginLeft: '5px',
                                     fontSize: '20px',
                                     position: 'absolute',
-                                    left: '50px',
+                                    right: '15px',
                                     top: '1.5px',
                                   }}
                                 />
@@ -659,6 +688,9 @@ export const Cotizaciones = () => {
                                 <FaFilePdf />
                               </button>
                             </NavLink>
+                          </td>
+                          <td>
+                            <FaRegPenToSquare />
                           </td>
                           <td>
                             {/* Boton para dialogo */}

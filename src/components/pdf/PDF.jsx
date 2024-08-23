@@ -1,54 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
-import logoPrincipal from "../../assets/imgs/logo-solupatch.webp";
-import wwwCursor from "../../assets/imgs/web-www-trazo-de-icono-de-cursor.png";
-import empaqueSolupatch from "../../assets/imgs/empaque-solupatch.png";
-import fbIcon from "../../assets/imgs/fb-icon.png";
-import igIcon from "../../assets/imgs/ig-icon.png";
-import ClipLoader from "react-spinners/ClipLoader";
+import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
+import wwwCursor from '../../assets/imgs/web-www-trazo-de-icono-de-cursor.png';
+import empaqueSolupatch from '../../assets/imgs/empaque-solupatch.png';
+import fbIcon from '../../assets/imgs/fb-icon.png';
+import igIcon from '../../assets/imgs/ig-icon.png';
+import ClipLoader from 'react-spinners/ClipLoader';
 
-import "../pdf/styles.scss";
-import "../../../src/App.css";
-import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
+import '../pdf/styles.scss';
+import '../../../src/App.css';
+import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
 
-import moment from "moment";
+import moment from 'moment';
 
-import "./styles.scss";
-import { PDFTr } from "./PDFTr";
+import './styles.scss';
+import { PDFTr } from './PDFTr';
 
 export const PDF = () => {
-  // const cotizacionEjemplo = {
-  //   celular: "1234567890",
-  //   createdAt: "May 29, 2024 at 1:05:17 PM UTC-6",
-  //   email: "ejemplo1a2i@gmail.com",
-  //   emailValue: "jlramos@solupatch.com",
-  //   empresa: "Regiomuros",
-  //   entrega: "500",
-  //   folio: "000999",
-  //   nombre: "Daniel Vega",
-  //   status: "seguimiento",
-  //   seleccione: "25kg Solupatch Bultos",
-  //   cantidad: "1",
-  //   precio: "100",
-  //   dynamicForm: [
-  //     {
-  //       seleccione: "Suministro y tendido pg64",
-  //       cantidad: "2",
-  //       precio: "200",
-  //     },
-  //     { seleccione: "Emulsión aslfáltica", cantidad: "2", precio: "200" },
-  //   ],
-  // };
-
   // const navigate = useNavigate();
-  const [datePdf, setDatePdf] = useState("");
+  const [datePdf, setDatePdf] = useState('');
 
   let { cotizacionId } = useParams();
-  // console.log("</> → cotizacionId:", cotizacionId);
 
   const { cotizaciones } = useGetCotizaciones();
 
@@ -56,60 +32,62 @@ export const PDF = () => {
     (cotizacion) => cotizacion?.id === cotizacionId
   );
 
+  console.log('</> → cotizacionSeleccionada:', cotizacionSeleccionada);
+
   useEffect(() => {
     const { seconds, nanoseconds } = cotizacionSeleccionada?.createdAt || {};
     const Date = moment
       .unix(seconds)
-      .add(nanoseconds / 1000000, "milliseconds");
-    moment.locale("es-mx");
-    const Fordate = Date.format("DD MM YYYY, h:mm a") || "";
+      .add(nanoseconds / 1000000, 'milliseconds');
+    moment.locale('es-mx');
+    const Fordate = Date.format('DD MM YYYY, h:mm a') || '';
     setDatePdf(Fordate);
   }, [cotizacionSeleccionada]);
 
   const pdfRef = useRef();
 
-  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, "") * 1;
-  let entregaFormated = entrega.toLocaleString("en-US", {
+  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, '') * 1;
+  let entregaFormated = entrega.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
   let importe =
     cotizacionSeleccionada?.cantidad *
-    cotizacionSeleccionada?.precio.replace(/,/g, "");
-  let importeFormated = importe.toLocaleString("en-US", {
+    cotizacionSeleccionada?.precio.replace(/,/g, '');
+  let importeFormated = importe.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let iva = (importe + entrega) * 0.16;
-  let ivaFormated = iva.toLocaleString("en-US", {
+  let ivaFormated = iva.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let total = importe + entrega + iva;
-  let totalFormated = total.toLocaleString("en-US", {
+  let totalFormated = total.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  const [importeDy, setImporteDy] = useState("");
+  const [importeDy, setImporteDy] = useState('');
   const fromPdfChild = (data) => {
     setImporteDy(data);
   };
   let ivaDy = (importeDy + entrega) * 0.16;
-  let ivaDyFormated = ivaDy.toLocaleString("en-US", {
+  let ivaDyFormated = ivaDy.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  let importeDyFormated = importeDy.toLocaleString("en-US", {
+  let importeDyFormated = importeDy.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let totalDy = importeDy + entrega + ivaDy;
-  let totalDyFormated = totalDy.toLocaleString("en-US", {
+  let totalDyFormated = totalDy.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -122,8 +100,8 @@ export const PDF = () => {
     //   "body > div:last-child img { display: inline-block; }"
     // );
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4", true);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4', true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
@@ -133,7 +111,7 @@ export const PDF = () => {
       const imgY = 0;
       pdf.addImage(
         imgData,
-        "PNG",
+        'PNG',
         imgX,
         imgY,
         imgWidth * ratio,
@@ -145,8 +123,8 @@ export const PDF = () => {
   const printPDF = () => {
     const input = pdfRef.current;
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4", true);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4', true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
@@ -156,44 +134,44 @@ export const PDF = () => {
       const imgY = 0;
       pdf.addImage(
         imgData,
-        "PNG",
+        'PNG',
         imgX,
         imgY,
         imgWidth * ratio,
         imgHeight * ratio
       );
-      window.open(pdf.output("bloburl"));
+      window.open(pdf.output('bloburl'));
     });
   };
   // NOTE: Listado de vendedores
   const vendedores = () => {
-    if (cotizacionSeleccionada?.emailValue === "aclarrea@solupatch.com") {
+    if (cotizacionSeleccionada?.emailValue === 'aclarrea@solupatch.com') {
       return (
-        <div className="pdf__header__title-vendor">
+        <div className='pdf__header__title-vendor'>
           Ana Cristina Larrea <br />
           Whatsapp: 81 8704 8514
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === "jlramos@solupatch.com") {
+    if (cotizacionSeleccionada?.emailValue === 'jlramos@solupatch.com') {
       return (
-        <div className="pdf__header__title-vendor">
+        <div className='pdf__header__title-vendor'>
           José Luis Ramos <br />
           Whatsapp: 81 2580 7799
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === "lblanco@solupatch.com") {
+    if (cotizacionSeleccionada?.emailValue === 'lblanco@solupatch.com') {
       return (
-        <div className="pdf__header__title-vendor">
+        <div className='pdf__header__title-vendor'>
           Luis Blanco <br />
           Whatsapp: 81 3091 6138
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === "rvl@solupatch.com") {
+    if (cotizacionSeleccionada?.emailValue === 'rvl@solupatch.com') {
       return (
-        <div className="pdf__header__title-vendor">
+        <div className='pdf__header__title-vendor'>
           Rodolfo Villalobos <br />
           Whatsapp: 81 2201 6300
         </div>
@@ -204,28 +182,28 @@ export const PDF = () => {
   return (
     <div>
       {cotizacionSeleccionada ? (
-        <div className="pdf__container">
-          <div className="pdf__button__container">
-            <button className="pdf__button" onClick={downloadPDF}>
+        <div className='pdf__container'>
+          <div className='pdf__button__container'>
+            <button className='pdf__button' onClick={downloadPDF}>
               Guardar PDF
             </button>
-            <button className="pdf__button" onClick={printPDF}>
+            <button className='pdf__button' onClick={printPDF}>
               Imprimir PDF
             </button>
           </div>
-          <div ref={pdfRef} className="pdf">
-            <section className="pdf__header">
-              <div className="pdf__header__img__datos">
+          <div ref={pdfRef} className='pdf'>
+            <section className='pdf__header'>
+              <div className='pdf__header__img__datos'>
                 <img
-                  className="pdf__header__img"
+                  className='pdf__header__img'
                   src={logoPrincipal}
-                  alt="Solupatch Logo"
+                  alt='Solupatch Logo'
                 />
-                <div className="pdf__header__datos">
-                  <div className="pdf__header__datos1">
+                <div className='pdf__header__datos'>
+                  <div className='pdf__header__datos1'>
                     SOLUPATCH S.A. DE C.V.
                   </div>
-                  <div className="pdf__header__datos2">RFC: SOL231030DX0</div>
+                  <div className='pdf__header__datos2'>RFC: SOL231030DX0</div>
                   <div>
                     <span>Dirección:</span> Av.Revolución, 4055, Local 15,
                     <br />
@@ -233,7 +211,7 @@ export const PDF = () => {
                   </div>
                 </div>
               </div>
-              <div className="pdf__header__title">
+              <div className='pdf__header__title'>
                 <div>COTIZACIÓN</div>
                 <div>{datePdf}</div>
                 <div>Folio:{cotizacionSeleccionada?.folio}</div>
@@ -242,30 +220,30 @@ export const PDF = () => {
                   {vendedores()}
                 </div>
                 <div>
-                  <a href="https://www.solupatch.com">
-                    <img src={wwwCursor} alt="" />
+                  <a href='https://www.solupatch.com'>
+                    <img src={wwwCursor} alt='' />
                   </a>
                   <span>
-                    <a href="www.solupatch.com">solupatch.com</a>
+                    <a href='www.solupatch.com'>solupatch.com</a>
                   </span>
                 </div>
               </div>
             </section>
-            <section className="cliente">
-              <div className="cliente__title__bar">DATOS DEL CLIENTE</div>
+            <section className='cliente'>
+              <div className='cliente__title__bar'>DATOS DEL CLIENTE</div>
               <hr />
-              <div className="cliente__datos">
-                <div className="cliente__datos__pair">
+              <div className='cliente__datos'>
+                <div className='cliente__datos__pair'>
                   <div>{cotizacionSeleccionada?.nombre}</div>
                   <div>{cotizacionSeleccionada?.empresa}</div>
                 </div>
-                <div className="cliente__datos__pair">
+                <div className='cliente__datos__pair'>
                   <div>{cotizacionSeleccionada?.celular}</div>
                   <div>{cotizacionSeleccionada?.email}</div>
                 </div>
               </div>
             </section>
-            <section className="cotizacion">
+            <section className='cotizacion'>
               {/* <div>
                 {" "}
                 <table className="cotizacion__title__bar">
@@ -364,35 +342,35 @@ export const PDF = () => {
                 fromPdfChild={fromPdfChild}
               />
             </section>
-            <section className="total">
-              <div className="cotizacion__total__div">
-                <span className="cotizacion__total__span">IMPORTE: </span>${" "}
+            <section className='total'>
+              <div className='cotizacion__total__div'>
+                <span className='cotizacion__total__span'>IMPORTE: </span>${' '}
                 {cotizacionSeleccionada.dynamicForm
                   ? importeDyFormated
                   : importeFormated}
               </div>
-              <div className="cotizacion__total__div">
-                <span className="cotizacion__total__span">ENTREGA: </span>${" "}
+              <div className='cotizacion__total__div'>
+                <span className='cotizacion__total__span'>ENTREGA: </span>${' '}
                 {entregaFormated}
               </div>
-              <div className="cotizacion__total__div">
-                <span className="cotizacion__total__span">IVA 16%: </span>${" "}
+              <div className='cotizacion__total__div'>
+                <span className='cotizacion__total__span'>IVA 16%: </span>${' '}
                 {cotizacionSeleccionada.dynamicForm
                   ? ivaDyFormated
                   : ivaFormated}
               </div>
-              <div className="cotizacion__total__div">
-                <span className="cotizacion__total__span">TOTAL: </span>$
+              <div className='cotizacion__total__div'>
+                <span className='cotizacion__total__span'>TOTAL: </span>$
                 {cotizacionSeleccionada.dynamicForm
                   ? totalDyFormated
                   : totalFormated}
               </div>
             </section>
-            <section className="banco">
-              <div className="banco__title__bar">
+            <section className='banco'>
+              <div className='banco__title__bar'>
                 INFORMACIÓN PARA DEPOSITO O TRANSFERENCIA
               </div>
-              <div className="banco__datos__img">
+              <div className='banco__datos__img'>
                 <div>
                   <div>Banco: BBVA</div>
                   <div>Nombre: SOLUPATCH. S.A. de C.V.</div>
@@ -401,24 +379,24 @@ export const PDF = () => {
                   <div>No.Cuenta: 0121942298</div>
                   <div>Coreo: facturacion@solupatch.com</div>
                 </div>
-                <img src={empaqueSolupatch} alt="" />
+                <img src={empaqueSolupatch} alt='' />
               </div>
             </section>
-            <section className="footer">
-              <div className="footer__title">
+            <section className='footer'>
+              <div className='footer__title'>
                 <a
-                  href="https://www.facebook.com/solupatch"
-                  target="_blank"
-                  rel="noreferrer"
+                  href='https://www.facebook.com/solupatch'
+                  target='_blank'
+                  rel='noreferrer'
                 >
-                  <img src={fbIcon} alt="" />
+                  <img src={fbIcon} alt='' />
                 </a>
                 <a
-                  href="https://www.instagram.com/solupatch"
-                  target="_blank"
-                  rel="noreferrer"
+                  href='https://www.instagram.com/solupatch'
+                  target='_blank'
+                  rel='noreferrer'
                 >
-                  <img src={igIcon} alt="" />
+                  <img src={igIcon} alt='' />
                 </a>
                 <div> /solupatch</div>
               </div>
@@ -426,9 +404,9 @@ export const PDF = () => {
           </div>
         </div>
       ) : (
-        <div className="pdf__loader__spinner">
-          <ClipLoader color="#fac000" size={50} />
-          <div className="pdf__loader__text">Cargando...</div>
+        <div className='pdf__loader__spinner'>
+          <ClipLoader color='#fac000' size={50} />
+          <div className='pdf__loader__text'>Cargando...</div>
         </div>
       )}
     </div>
