@@ -683,7 +683,7 @@ export const Cotizaciones = () => {
                           </td>
                           <td></td>
                           <td>
-                            <NavLink to={cotizacion?.id} target='_blank'>
+                            <NavLink to={`/pdf/${cotizacion?.id}`} target='_blank'>
                               <button className='cotizador__button--descargar'>
                                 <FaFilePdf />
                               </button>
