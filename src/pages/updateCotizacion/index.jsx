@@ -86,12 +86,12 @@ export const UpdateCotizacion = () => {
   });
   // FIXME: Review the updateDoc function
   const onSubmit = async (data, e) => {
-    console.log('states> ', conceptoGuardado + isDirty + isSubmitting)
+    console.log('states> ', conceptoGuardado + isDirty + isSubmitting);
     e.preventDefault();
     try {
       const dataObj = {
         //   status: 'seguimineto',
-        //   total: sumImportes,
+        total: sumImportes,
         folio: cotizacionSeleccionada?.folio,
         ...data,
         ...dataFromDynamicInputs,
@@ -100,14 +100,14 @@ export const UpdateCotizacion = () => {
       await updateDoc(docRef, {
         // FIXME: Here I dont know whats should I pass (dataObj or each property)
         ...dataObj,
-      }).then(()=> {
-        toast.warning('Cotizacion actualizada');
-        navigate('/cotizaciones');
-      }).catch(()=> {
-        toast.warning('Hubo un error en los datos, favor de verificar.');
-      });
-      //   toast.success('Cotización actualizada correctamente');
-      //   navigate('/cotizaciones');
+      })
+        .then(() => {
+          toast.warning('Cotizacion actualizada');
+          navigate('/cotizaciones');
+        })
+        .catch(() => {
+          toast.warning('Hubo un error en los datos, favor de verificar.');
+        });
     } catch (error) {
       console.log(error);
     }
