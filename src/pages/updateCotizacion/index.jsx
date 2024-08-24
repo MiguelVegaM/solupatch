@@ -86,7 +86,7 @@ export const UpdateCotizacion = () => {
   });
   // FIXME: Review the updateDoc function
   const onSubmit = async (data, e) => {
-    console.log('states> ', conceptoGuardado + isDirty + isSubmitting);
+    // console.log('states> ', conceptoGuardado + isDirty + isSubmitting);
     e.preventDefault();
     try {
       const dataObj = {
