@@ -30,6 +30,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
       dynamicForm: [
         {
           seleccione: '',
+          unidad: '',
           cantidad: '',
           precio: '',
           concepto: '',
@@ -83,9 +84,9 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
               key={item.id}
             >
               {/* NOTE: Concepto */}
-              <div className='cotizador__input--pair'>
+              {/* <div className='cotizador__input--pair'>
                 <label className='cotizador__inputs--label'>Concepto</label>
-                {/* <span>$</span> */}
+
                 <input
                   {...register(`dynamicForm.${index}.concepto`, {
                     required: true,
@@ -100,7 +101,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     Este campo es requerido
                   </p>
                 )}
-              </div>
+              </div> */}
               <div
                 className='input_container cotizador__form--inputs'
                 key={index}
@@ -146,6 +147,22 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     </p>
                   )}
                 </div>
+                {/* NOTE: Unidad */}
+                <div className='cotizador__input--pair'>
+                  <label className='cotizador__inputs--label'>Unidad</label>
+                  <input
+                    {...register(`dynamicForm.${index}.unidad`, {
+                      required: true,
+                    })}
+                    className='cotizador__inputs--input unidad'
+                    type='text'
+                  />
+                  {errors?.nombre?.type === 'required' && (
+                    <p className='cotizador__form--error-message'>
+                      Este campo es requerido
+                    </p>
+                  )}
+                </div>
                 {/* NOTE: Cantidad */}
                 <div className='cotizador__input--pair'>
                   <label className='cotizador__inputs--label'>Cantidad</label>
@@ -158,7 +175,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     step='any'
                   />
 
-                  {selectValue === '25kg Solupatch Bultos' && (
+                  {/* {selectValue === '25kg Solupatch Bultos' && (
                     <span className='cotizador__input--placeholder'>
                       Bultos
                     </span>
@@ -203,7 +220,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     <span className='cotizador__input--placeholder'>
                       Litros
                     </span>
-                  )}
+                  )} */}
                   {errors?.cantidad?.type === 'required' && (
                     <p className='cotizador__form--error-message'>
                       Este campo es requerido
@@ -235,7 +252,12 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     className='cotizador__form--agregar-button'
                     type='button'
                     onClick={() => {
-                      append({ seleccione: '', cantidad: '', precio: '' });
+                      append({
+                        seleccione: '',
+                        unidad: '',
+                        cantidad: '',
+                        precio: '',
+                      });
                     }}
                   >
                     Agregar concepto
@@ -257,10 +279,11 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
         })}
       </ul>
       <button
+        type='button'
         onClick={handleSubmit(onSaveConcept)}
         className='cotizador__form--guardar-button'
       >
-        Guardar Concepto
+        Guardar Conceptos
       </button>
       <Toaster position='bottom-center' richColors />
     </div>

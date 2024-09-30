@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'GalanoGrotesqueRegular', sans-serif;
+  src: local('GalanoGrotesqueRegular'),
+    url('./assets/fonts/GalanoGrotesqueRegular.otf') format('opentype');
+  font-weight: normal;
+}
+
 /* makes sizing simpler  */
 
 *,
@@ -20,7 +27,7 @@
 /* min body height */
 body {
   min-height: 100svh;
-  font-family: "GalanoGrotesqueRegular", sans-serif;
+  font-family: 'GalanoGrotesqueRegular', sans-serif;
 }
 
 /* responsive images/videos */

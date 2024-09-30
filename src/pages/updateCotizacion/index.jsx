@@ -81,6 +81,7 @@ export const UpdateCotizacion = () => {
       cantidad: '',
       precio: '',
       entrega: '',
+      observaciones: '',
       // total: "",
     },
   });
@@ -151,12 +152,15 @@ export const UpdateCotizacion = () => {
     setValue('celular', cotizacionSeleccionada?.celular);
     setValue('email', cotizacionSeleccionada?.email);
     setValue('entrega', cotizacionSeleccionada?.entrega);
+    setValue('observaciones', cotizacionSeleccionada?.observaciones);
     // setValue('seleccione', cotizacionSeleccionada?.dynamicForm[1]?.seleccione);
     // setValue('cantidad', cotizacionSeleccionada?.cantidad);
     // setValue('precio', cotizacionSeleccionada?.precio);
     // setValue('total', cotizacionSeleccionada?.total);
     // setValue('dynamicForm', cotizacionSeleccionada?.dynamicForm);
   }, [cotizacionSeleccionada, setValue]);
+
+  console.log(conceptoGuardado);
 
   return (
     <div className='cotizador'>
@@ -257,29 +261,51 @@ export const UpdateCotizacion = () => {
             getDataFromChild={handleDataFromChild}
             stateChanger={setConceptoGuardado}
           />
-          <div className='cotizador__input--pair'>
-            <label className='cotizador__inputs--label'>
-              Servicio de entrega
-            </label>
-            <span>$</span>
-            <input
-              {...register('entrega', {
-                required: true,
-              })}
-              className='cotizador__inputs--input precio'
-              type='text'
-              value={entrega}
-              onChange={handleEntregaChange}
-              style={{ paddingLeft: '35px' }}
-            />
-            {errors?.entrega?.type === 'required' && (
-              <p className='cotizador__form--error-message'>
-                Este campo es requerido
-              </p>
-            )}
+          <div className='cotizador__form--inputs2'>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>
+                Servicio de entrega
+              </label>
+              <span>$</span>
+              <input
+                {...register('entrega', {
+                  required: true,
+                })}
+                className='cotizador__inputs--input precio'
+                type='text'
+                value={entrega}
+                onChange={handleEntregaChange}
+                style={{ paddingLeft: '35px' }}
+              />
+              {errors?.entrega?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
+                  Este campo es requerido
+                </p>
+              )}
+            </div>
+            <div className='cotizador__input--pair'>
+              <label className='cotizador__inputs--label'>
+                Observaciones generales
+              </label>
+              <input
+                {...register('observaciones', {
+                  required: false,
+                })}
+                className='cotizador__inputs--input precio'
+                type='text'
+                // value={entrega}
+                // onChange={handleEntregaChange}
+                style={{ paddingLeft: '35px' }}
+              />
+              {errors?.observaciones?.type === 'required' && (
+                <p className='cotizador__form--error-message'>
+                  Este campo es requerido
+                </p>
+              )}
+            </div>
           </div>
           <button
-            // disabled={!isDirty || isSubmitting || !conceptoGuardado}
+            disabled={!conceptoGuardado}
             type='submit'
             className='cotizador__form--button'
           >
