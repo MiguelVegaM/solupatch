@@ -10,7 +10,9 @@ import { useAddCotizacion } from '../../hooks/useAddCotizacion';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetFolio } from '../../hooks/useGetFolio';
 
-import logoPrincipal from '../../assets/imgs/logo-solupatch.webp';
+import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
+import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
+import { RxAvatar } from 'react-icons/rx';
 import './styles.scss';
 import { AddDynamicInputs } from '../../components/addDynamicInputs';
 
@@ -171,22 +173,72 @@ export const Cotizador = () => {
 
   return (
     <div className='cotizador'>
-      <div className='cotizador__navbar'>
-        <div className='cotizador__navbar--vendedor'>
-          <span>Vendedor:</span> {emailValue}
-        </div>
-        <img
-          className='cotizador__navbar--img'
-          src={logoPrincipal}
-          alt='Solupatch Logo'
-        />
+      <div className='cotizaciones__navbar'>
+        <a href='https://solupatch.com' target='_blank'>
+          <img
+            src={logoPrincipal}
+            alt='Logo Solupatch'
+            className='cotizaciones__navbar--img'
+          />
+        </a>
         <div className='navbar__buttons'>
           <a href='/cotizaciones'>
-            <button className='navbar__button--cotizador'>Cotizaciones</button>
+            <button className='navbar__button--cotizaciones'>
+              <FaClipboardList
+                style={{
+                  fontSize: '1rem',
+                  marginTop: '-5px',
+                  marginRight: '-3px',
+                }}
+              />{' '}
+              Cotizaciones
+            </button>
           </a>
-          <button className='navbar__button--cotizador' onClick={logout}>
-            Salir
-          </button>
+          <a href='https://wa.link/vmn1ao' target='_blank'>
+            <button className='navbar__button--cotizaciones'>
+              <FaWhatsapp /> Soporte
+            </button>
+          </a>
+          <div
+            onClick={logout}
+            className='navbar__button--cotizaciones-vendedor-container'
+          >
+            <button
+              className='navbar__button--cotizaciones-vendedor'
+              // onClick={logout}
+            >
+              <div style={{ display: 'flex' }}>
+                <div>
+                  <div style={{ fontWeight: '900' }}>
+                    {emailValue === 'rvl@solupatch.com'
+                      ? 'Rodolfo Villalobos'
+                      : emailValue === 'aclarrea@solupatch.com'
+                      ? 'Ana Larrea'
+                      : emailValue === 'jlramos@solupatch.com'
+                      ? 'José Ramos'
+                      : emailValue === 'lblanco@solupatch.com'
+                      ? 'Luis Blanco'
+                      : 'Invitado'}
+                  </div>
+                  <div style={{ fontWeight: '100' }}>{emailValue}</div>
+                </div>
+                <div>
+                  <RxAvatar
+                    style={{
+                      fontSize: '1.5rem',
+                      marginTop: '5px',
+                      marginLeft: '10px',
+                    }}
+                  />
+                </div>
+              </div>
+            </button>
+            <div className='navbar__button--cotizaciones-vendedor-overlay'>
+              <div className='navbar__button--cotizaciones-vendedor-text'>
+                Cerrar Sesión
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className='cotizador__body'>
@@ -320,6 +372,15 @@ export const Cotizador = () => {
             COTIZAR
           </button>
         </form>
+        <p
+          style={{
+            textAlign: 'center',
+            marginTop: '2rem',
+            color: '#717171',
+          }}
+        >
+          Solupatch © Todos los derechos reservados
+        </p>
       </div>
     </div>
   );

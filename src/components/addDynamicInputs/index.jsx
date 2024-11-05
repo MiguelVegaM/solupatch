@@ -4,6 +4,7 @@
 // NOTE: En cuanto a los inputs ya están funcionando independientes solo falta el placeholder del input 'Cantidad' ya que se renderea por estado y al seleccionar el segundo input, se cambia el estado y tambien se cambia el primer input
 
 import { useForm, useFieldArray } from 'react-hook-form';
+import { FaCirclePlus } from 'react-icons/fa6';
 import { Toaster, toast } from 'sonner';
 
 import './styles.scss';
@@ -140,6 +141,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     <option value='Emulsión aslfáltica'>
                       Emulsión aslfáltica
                     </option>
+                    <option value='Slurry Seal'>Slurry Seal</option>
                   </select>
                   {errors?.seleccione?.type === 'required' && (
                     <p className='cotizador__form--error-message'>
@@ -247,22 +249,6 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     </p>
                   )}
                 </div>
-                <div className='cotizador__form--agregar-button-container'>
-                  <button
-                    className='cotizador__form--agregar-button'
-                    type='button'
-                    onClick={() => {
-                      append({
-                        seleccione: '',
-                        unidad: '',
-                        cantidad: '',
-                        precio: '',
-                      });
-                    }}
-                  >
-                    Agregar concepto
-                  </button>
-                </div>
 
                 {index > 0 && (
                   <button
@@ -273,6 +259,22 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     x
                   </button>
                 )}
+              </div>
+              <div className='cotizador__form--agregar-button-container'>
+                <button
+                  className='cotizador__form--agregar-button'
+                  type='button'
+                  onClick={() => {
+                    append({
+                      seleccione: '',
+                      unidad: '',
+                      cantidad: '',
+                      precio: '',
+                    });
+                  }}
+                >
+                  Agregar concepto <FaCirclePlus style={{ fontSize: '30px' }} />
+                </button>
               </div>
             </li>
           );
