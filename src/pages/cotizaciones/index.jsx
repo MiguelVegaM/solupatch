@@ -3,6 +3,7 @@ import {
   // useEffect,
   useRef,
   useState,
+  useMemo,
 } from 'react';
 
 import { signOut } from 'firebase/auth';
@@ -54,6 +55,8 @@ export const Cotizaciones = () => {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
   const [show, setShow] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('999999');
+  const [finalDate, setFinalDate] = useState([]);
 
   const {
     isAuth,
@@ -242,8 +245,6 @@ export const Cotizaciones = () => {
           .add(nanoseconds / 1000000, 'milliseconds');
         moment.locale('es');
         const Fordate = Date.format('DD/MM/YYYY') || '';
-        // console.log(Fordate.toLocaleString());
-        // console.log(moment('23/10/2024').isSame('23/10/2024'));
         return Fordate;
       },
     },
@@ -267,17 +268,17 @@ export const Cotizaciones = () => {
       header: 'Total de Cotización',
       accessorKey: 'precio',
       accessorFn: (row) => {
-        let importe = row.cantidad * 1 * (row.precio.replace(/,/g, '') * 1);
-        let iva = (importe + row.entrega.replace(/,/g, '') * 1) * 0.16;
-        let totalImporte = importe + iva + row.entrega.replace(/,/g, '') * 1;
+        let importe = row.cantidad * 1 * (row.precio?.replace(/,/g, '') * 1);
+        let iva = (importe + row.entrega?.replace(/,/g, '') * 1) * 0.16;
+        let totalImporte = importe + iva + row.entrega?.replace(/,/g, '') * 1;
         let totalFormated = totalImporte.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
         let importeDy = row.total;
-        let ivaDy = (importeDy + row.entrega.replace(/,/g, '') * 1) * 0.16;
+        let ivaDy = (importeDy + row.entrega?.replace(/,/g, '') * 1) * 0.16;
         let totalImporteDy =
-          importeDy + ivaDy + row.entrega.replace(/,/g, '') * 1;
+          importeDy + ivaDy + row.entrega?.replace(/,/g, '') * 1;
         let totalFormatedDy = totalImporteDy.toLocaleString('en-US', {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -464,9 +465,64 @@ export const Cotizaciones = () => {
       );
     }
   }, [cotizaciones, emailValue]);
+  // console.log(cotizacionesFiltered);
+
+  //  FIXME:: Soluciones filtro días
+
+  // ----------------------------
+
+  // const startDate = new Date(
+  //   `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${
+  //     new Date().getUTCDate() + 1
+  //   }`
+  // );
+
+  // const date = new Date();
+  // date.setDate(date.getDate() - selectedDate);
+
+  // const endDate = new Date(
+  //   `${date.getFullYear()}/${date.getMonth() + 1}/${date.getUTCDate()}`
+  // );
+
+  // const filteredData = cotizacionesFiltered.filter((item) => {
+  //   const date = new Date(item?.createdAt?.seconds * 1000);
+  //   return date <= startDate && date >= endDate;
+  // });
+
+  // -------------------------
+
+  const startDate = useMemo(
+    () =>
+      new Date(
+        `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${
+          new Date().getUTCDate() + 1
+        }`
+      ),
+    []
+  );
+
+  const endDate = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - selectedDate);
+    return new Date(
+      `${date.getFullYear()}/${date.getMonth() + 1}/${date.getUTCDate()}`
+    );
+  }, [selectedDate]);
+
+  const filteredData = useMemo(
+    () =>
+      cotizacionesFiltered.filter((item) => {
+        const date = new Date(item?.createdAt?.seconds * 1000);
+        return date <= startDate && date >= endDate;
+      }),
+    [cotizacionesFiltered, startDate, endDate]
+  );
+
+  console.log(filteredData);
+  console.log(cotizacionesFiltered);
 
   const table = useReactTable({
-    data: cotizacionesFiltered.reverse(),
+    data: filteredData.reverse(),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -613,7 +669,7 @@ export const Cotizaciones = () => {
                       onChange={(e) => setFiltering(e.target.value)}
                     />
                   </div>
-                  {/* <div style={{ position: 'relative' }}>
+                  <div style={{ position: 'relative' }}>
                     <FaCalendarDays
                       style={{
                         color: 'black',
@@ -627,13 +683,14 @@ export const Cotizaciones = () => {
                       name='selectedDate'
                       id='selectedDate'
                       className='cotizaciones__buscar-select'
+                      onChange={(e) => setSelectedDate(e.target.value)}
                     >
-                      <option value=''>Seleccione un rango</option>
-                      <option value='7-dias'>Últimos 7 Días</option>
-                      <option value='15-dias'>Últimos 15 Días</option>
-                      <option value='30-dias'>Últimos 30 Días</option>
+                      <option value='999999'>Seleccione un rango</option>
+                      <option value='7'>Últimos 7 Días</option>
+                      <option value='15'>Últimos 15 Días</option>
+                      <option value='30'>Últimos 30 Días</option>
                     </select>
-                  </div> */}
+                  </div>
                 </div>
               </div>
               <table>
