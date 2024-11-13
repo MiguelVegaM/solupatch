@@ -639,8 +639,14 @@ export const Cotizaciones = () => {
         </div>
         <div className='cotizaciones__body'>
           {cotizacionesFiltered.length > 0 ? (
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  width: '90%',
+                }}
+              >
                 <button
                   className='navbar__button--cotizaciones-excel'
                   onClick={downloadExcel}
@@ -648,9 +654,21 @@ export const Cotizaciones = () => {
                   <LuDownload /> Descargar Excel
                 </button>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h5>COTIZACIONES GENERADAS</h5>
-                <div style={{ display: 'flex', gap: '20px' }}>
+              <div
+                className='cotizaciones__header'
+                // style={{
+                //   display: 'flex',
+                //   justifyContent: 'space-between',
+                //   width: '100%',
+                // }}
+              >
+                <h5 style={{ textAlign: 'center', paddingTop: '8px' }}>
+                  COTIZACIONES GENERADAS
+                </h5>
+                <div
+                  className='cotizaciones__filter-container'
+                  // style={{ display: 'flex', gap: '20px' }}
+                >
                   <div style={{ position: 'relative' }}>
                     <FaMagnifyingGlass
                       style={{
@@ -693,44 +711,46 @@ export const Cotizaciones = () => {
                   </div>
                 </div>
               </div>
-              <table>
-                <thead>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <th
-                          key={header.id}
-                          onClick={header.column.getToggleSortingHandler()}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}{' '}
-                          {
-                            { asc: '⭡', desc: '⭣' }[
-                              header.column.getIsSorted() ?? null
-                            ]
-                          }
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody>
-                  {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <td key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div style={{ overflowX: 'auto', width: '100%' }}>
+                <table>
+                  <thead>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <tr key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <th
+                            key={header.id}
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}{' '}
+                            {
+                              { asc: '⭡', desc: '⭣' }[
+                                header.column.getIsSorted() ?? null
+                              ]
+                            }
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+                  <tbody>
+                    {table.getRowModel().rows.map((row) => (
+                      <tr key={row.id}>
+                        {row.getVisibleCells().map((cell) => (
+                          <td key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               <div
                 className='cotizaciones__paginationButtons'
                 style={{ textAlign: 'center', marginTop: '2rem' }}
@@ -757,7 +777,7 @@ export const Cotizaciones = () => {
               >
                 Solupatch © Todos los derechos reservados
               </p>
-            </div>
+            </>
           ) : (
             <div className='pdf__loader__spinner'>
               <ClipLoader color='#fac000' size={50} />
