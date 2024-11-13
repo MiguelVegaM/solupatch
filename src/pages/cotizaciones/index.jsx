@@ -509,7 +509,7 @@ export const Cotizaciones = () => {
     );
   }, [selectedDate]);
 
-  const filteredData = useMemo(
+  const dateFilteredData = useMemo(
     () =>
       cotizacionesFiltered.filter((item) => {
         const date = new Date(item?.createdAt?.seconds * 1000);
@@ -518,11 +518,11 @@ export const Cotizaciones = () => {
     [cotizacionesFiltered, startDate, endDate]
   );
 
-  console.log(filteredData);
+  console.log(dateFilteredData);
   console.log(cotizacionesFiltered);
 
   const table = useReactTable({
-    data: filteredData.reverse(),
+    data: dateFilteredData.reverse(),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
