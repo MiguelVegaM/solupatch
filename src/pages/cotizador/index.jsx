@@ -234,17 +234,17 @@ export const Cotizador = () => {
               </div>
             </button>
             <div className='navbar__button--cotizaciones-vendedor-overlay'>
-              <div className='navbar__button--cotizaciones-vendedor-text'>
+              {/* <div className='navbar__button--cotizaciones-vendedor-text'>
                 Cerrar Sesión
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
       <div className='cotizador__body'>
         <div className='cotizador__hero'>
-          <h2 className='cotizador__header--title'>COTIZADOR</h2>
-          <p className='cotizador__header--paragraph'>Solupatch Versión 1.0</p>
+          <h2 className='cotizador__header--title'>CREAR COTIZACIÓN</h2>
+          {/* <p className='cotizador__header--paragraph'>Solupatch Versión 1.0</p> */}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='cotizador__form'>
           <div className='cotizador__form--inputs'>
@@ -324,7 +324,7 @@ export const Cotizador = () => {
           <div className='cotizador__form--inputs2'>
             <div className='cotizador__input--pair'>
               <label className='cotizador__inputs--label'>
-                Servicio de entrega
+                Precio de entrega
               </label>
               <span>$</span>
               <input
@@ -343,7 +343,7 @@ export const Cotizador = () => {
                 </p>
               )}
             </div>
-            <div className='cotizador__input--pair'>
+            {/* <div className='cotizador__input--pair'>
               <label className='cotizador__inputs--label'>
                 Observaciones generales
               </label>
@@ -362,7 +362,7 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div>
+            </div> */}
           </div>
           <button
             disabled={!isDirty || isSubmitting || !conceptoGuardado}

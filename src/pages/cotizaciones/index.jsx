@@ -202,7 +202,7 @@ export const Cotizaciones = () => {
     // } catch (error) {
     //   console.log(error);
     // }
-    toast.success('Estado actualizado');
+    // toast.success('Estado actualizado');
     // setShowSaveBtn(false);
   };
 
@@ -321,8 +321,8 @@ export const Cotizaciones = () => {
                   <FaCircleXmark
                     style={{
                       fontSize: '1.5rem',
-                      color: 'black',
-                      backgroundColor: 'red',
+                      color: '#b62b2be0',
+                      backgroundColor: '#fff',
                       borderRadius: '50px',
                       marginLeft: '6px',
                     }}
@@ -331,8 +331,8 @@ export const Cotizaciones = () => {
                   <FaCircleCheck
                     style={{
                       fontSize: '1.5rem',
-                      color: 'black',
-                      backgroundColor: 'green',
+                      color: '#00CA22',
+                      backgroundColor: '#fff',
                       borderRadius: '50px',
                       marginLeft: '6px',
                     }}
@@ -341,8 +341,8 @@ export const Cotizaciones = () => {
                   <FaCircleMinus
                     style={{
                       fontSize: '1.5rem',
-                      color: 'black',
-                      backgroundColor: '#FBC512',
+                      color: '#FBC512',
+                      backgroundColor: '#fff',
                       borderRadius: '50px',
                       marginLeft: '6px',
                     }}
@@ -402,7 +402,7 @@ export const Cotizaciones = () => {
                   marginLeft: '5px',
                   fontSize: '20px',
                   position: 'absolute',
-                  right: '15px',
+                  left: '50px',
                   top: '1.5px',
                 }}
               />
@@ -418,7 +418,8 @@ export const Cotizaciones = () => {
         return (
           <NavLink to={`/pdf/${info.row.original?.id}`} target='_blank'>
             <button className='cotizador__button--descargar'>
-              <FaFilePdf />
+              {/* <FaFilePdf /> */}
+              <p>PDF</p>
             </button>
           </NavLink>
         );
@@ -536,7 +537,7 @@ export const Cotizaciones = () => {
     onGlobalFilterChange: setFiltering,
     initialState: {
       pagination: {
-        pageSize: 10, //custom default page size
+        pageSize: 50, //custom default page size
       },
     },
   });
@@ -590,12 +591,12 @@ export const Cotizaciones = () => {
                     marginRight: '-3px',
                   }}
                 />{' '}
-                Cotizador
+                COTIZADOR
               </button>
             </a>
             <a href='https://wa.link/vmn1ao' target='_blank'>
               <button className='navbar__button--cotizaciones'>
-                <FaWhatsapp /> Soporte
+                <FaWhatsapp /> SOPORTE
               </button>
             </a>
             <div
@@ -629,11 +630,11 @@ export const Cotizaciones = () => {
                   </div>
                 </div>
               </button>
-              <div className='navbar__button--cotizaciones-vendedor-overlay'>
+              {/* <div className='navbar__button--cotizaciones-vendedor-overlay'>
                 <div className='navbar__button--cotizaciones-vendedor-text'>
                   Cerrar Sesión
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -665,10 +666,7 @@ export const Cotizaciones = () => {
                 <h5 style={{ textAlign: 'center', paddingTop: '8px' }}>
                   COTIZACIONES GENERADAS
                 </h5>
-                <div
-                  className='cotizaciones__filter-container'
-                  // style={{ display: 'flex', gap: '20px' }}
-                >
+                <div className='cotizaciones__filter-container'>
                   <div style={{ position: 'relative' }}>
                     <FaMagnifyingGlass
                       style={{
@@ -711,7 +709,7 @@ export const Cotizaciones = () => {
                   </div>
                 </div>
               </div>
-              <div style={{ overflowX: 'auto', width: '100%' }}>
+              <div className='cotizaciones__table-container'>
                 <table>
                   <thead>
                     {table.getHeaderGroups().map((headerGroup) => (

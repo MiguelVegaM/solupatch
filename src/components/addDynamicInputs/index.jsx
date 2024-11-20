@@ -110,7 +110,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                 {/* NOTE: Seleccione */}
                 <div className='cotizador__input--pair cotizador__input--pair--select'>
                   <label className='cotizador__inputs--label'>
-                    Seleccione un tipo
+                    Seleccione un producto
                   </label>
                   <select
                     {...register(`dynamicForm.${index}.seleccione`, {
@@ -151,7 +151,9 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                 </div>
                 {/* NOTE: Unidad */}
                 <div className='cotizador__input--pair'>
-                  <label className='cotizador__inputs--label'>Unidad</label>
+                  <label className='cotizador__inputs--label'>
+                    Unidad de medida
+                  </label>
                   <input
                     {...register(`dynamicForm.${index}.unidad`, {
                       required: true,
