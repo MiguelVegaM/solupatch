@@ -343,7 +343,7 @@ export const Cotizador = () => {
                 </p>
               )}
             </div>
-            {/* <div className='cotizador__input--pair'>
+            <div className='cotizador__input--pair'>
               <label className='cotizador__inputs--label'>
                 Observaciones generales
               </label>
@@ -362,7 +362,7 @@ export const Cotizador = () => {
                   Este campo es requerido
                 </p>
               )}
-            </div> */}
+            </div>
           </div>
           <button
             disabled={!isDirty || isSubmitting || !conceptoGuardado}
