@@ -208,7 +208,6 @@ export const Cotizador = () => {
               className='navbar__button--cotizaciones-vendedor'
               onClick={() => setShow(!show)}
               ref={target}
-              // onClick={logout}
             >
               <div style={{ display: 'flex' }}>
                 <div>

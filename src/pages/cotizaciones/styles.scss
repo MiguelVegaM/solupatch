@@ -242,7 +242,13 @@
     }
   }
 }
-
+.tooltip-arrow {
+  left: 60px !important;
+}
+.tooltip-arrow::before {
+  // color: red !important;
+  border-bottom-color: #afafaf !important;
+}
 .tooltip-inner {
   color: #000 !important;
   font-weight: 900;
