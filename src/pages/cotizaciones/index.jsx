@@ -45,6 +45,8 @@ import { RxAvatar } from 'react-icons/rx';
 import '../cotizaciones/styles.scss';
 import { MdSave } from 'react-icons/md';
 import ClipLoader from 'react-spinners/ClipLoader';
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export const Cotizaciones = () => {
   const [tempDeleteId, setTempDeleteId] = useState('');
@@ -54,9 +56,10 @@ export const Cotizaciones = () => {
   const [cotizacionesFiltered, setCotizacionesFiltered] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState('');
-  const [show, setShow] = useState(false);
   const [selectedDate, setSelectedDate] = useState('999999');
   const [finalDate, setFinalDate] = useState([]);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const {
     isAuth,
@@ -469,29 +472,6 @@ export const Cotizaciones = () => {
   // console.log(cotizacionesFiltered);
 
   //  FIXME:: Soluciones filtro días
-
-  // ----------------------------
-
-  // const startDate = new Date(
-  //   `${new Date().getFullYear()}/${new Date().getMonth() + 1}/${
-  //     new Date().getUTCDate() + 1
-  //   }`
-  // );
-
-  // const date = new Date();
-  // date.setDate(date.getDate() - selectedDate);
-
-  // const endDate = new Date(
-  //   `${date.getFullYear()}/${date.getMonth() + 1}/${date.getUTCDate()}`
-  // );
-
-  // const filteredData = cotizacionesFiltered.filter((item) => {
-  //   const date = new Date(item?.createdAt?.seconds * 1000);
-  //   return date <= startDate && date >= endDate;
-  // });
-
-  // -------------------------
-
   const startDate = useMemo(
     () =>
       new Date(
@@ -599,11 +579,12 @@ export const Cotizaciones = () => {
                 <FaWhatsapp /> SOPORTE
               </button>
             </a>
-            <div
-              onClick={logout}
-              className='navbar__button--cotizaciones-vendedor-container'
-            >
-              <button className='navbar__button--cotizaciones-vendedor'>
+            <div className='navbar__button--cotizaciones-vendedor-container'>
+              <button
+                className='navbar__button--cotizaciones-vendedor'
+                onClick={() => setShow(!show)}
+                ref={target}
+              >
                 <div style={{ display: 'flex' }}>
                   <div>
                     <div style={{ fontWeight: '900' }}>
@@ -630,11 +611,26 @@ export const Cotizaciones = () => {
                   </div>
                 </div>
               </button>
-              {/* <div className='navbar__button--cotizaciones-vendedor-overlay'>
-                <div className='navbar__button--cotizaciones-vendedor-text'>
-                  Cerrar Sesión
-                </div>
-              </div> */}
+              <Overlay target={target.current} show={show} placement='bottom'>
+                {(props) => (
+                  <Tooltip
+                    id='overlay-example'
+                    {...props}
+                    style={{
+                      position: 'absolute',
+                      marginTop: '5px',
+                      backgroundColor: '#afafaf',
+                      padding: '10px 45px',
+                      borderRadius: 50,
+                      cursor: 'pointer',
+                      ...props.style,
+                    }}
+                    onClick={logout}
+                  >
+                    CERRAR SESIÓN
+                  </Tooltip>
+                )}
+              </Overlay>
             </div>
           </div>
         </div>
@@ -652,7 +648,7 @@ export const Cotizaciones = () => {
                   className='navbar__button--cotizaciones-excel'
                   onClick={downloadExcel}
                 >
-                  <LuDownload /> Descargar Excel
+                  <LuDownload /> DESCARGAR EXCEL
                 </button>
               </div>
               <div
@@ -663,7 +659,13 @@ export const Cotizaciones = () => {
                 //   width: '100%',
                 // }}
               >
-                <h5 style={{ textAlign: 'center', paddingTop: '8px' }}>
+                <h5
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: '8px',
+                    fontFamily: 'GalanoGrotesqueBold',
+                  }}
+                >
                   COTIZACIONES GENERADAS
                 </h5>
                 <div className='cotizaciones__filter-container'>

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebase-config';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -13,8 +13,10 @@ import { useGetFolio } from '../../hooks/useGetFolio';
 import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
 import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
 import { RxAvatar } from 'react-icons/rx';
-import './styles.scss';
 import { AddDynamicInputs } from '../../components/addDynamicInputs';
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
+import './styles.scss';
 
 export const Cotizador = () => {
   // const [tipo, setTipo] = useState("");
@@ -23,6 +25,8 @@ export const Cotizador = () => {
   const [dataFromDynamicInputs, setDataFromDynamicInputs] = useState('');
   const [conceptoGuardado, setConceptoGuardado] = useState(false);
   const [sumImportes, setSumImportes] = useState('');
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
@@ -199,12 +203,11 @@ export const Cotizador = () => {
               <FaWhatsapp /> Soporte
             </button>
           </a>
-          <div
-            onClick={logout}
-            className='navbar__button--cotizaciones-vendedor-container'
-          >
+          <div className='navbar__button--cotizaciones-vendedor-container'>
             <button
               className='navbar__button--cotizaciones-vendedor'
+              onClick={() => setShow(!show)}
+              ref={target}
               // onClick={logout}
             >
               <div style={{ display: 'flex' }}>
@@ -233,11 +236,26 @@ export const Cotizador = () => {
                 </div>
               </div>
             </button>
-            <div className='navbar__button--cotizaciones-vendedor-overlay'>
-              {/* <div className='navbar__button--cotizaciones-vendedor-text'>
-                Cerrar Sesión
-              </div> */}
-            </div>
+            <Overlay target={target.current} show={show} placement='bottom'>
+              {(props) => (
+                <Tooltip
+                  id='overlay-example'
+                  {...props}
+                  style={{
+                    position: 'absolute',
+                    marginTop: '5px',
+                    backgroundColor: '#afafaf',
+                    padding: '10px 45px',
+                    borderRadius: 50,
+                    cursor: 'pointer',
+                    ...props.style,
+                  }}
+                  onClick={logout}
+                >
+                  CERRAR SESIÓN
+                </Tooltip>
+              )}
+            </Overlay>
           </div>
         </div>
       </div>

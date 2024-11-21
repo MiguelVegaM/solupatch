@@ -201,6 +201,7 @@
       border-radius: 30px;
       height: 50px;
       margin-left: 10px;
+      font-family: 'GalanoGrotesqueBold';
       // &:hover {
       //   background-color: #000000e0;
       //   color: #fff;
@@ -238,37 +239,15 @@
           transform: scale(0.99);
         }
       }
-      // .navbar__button--cotizaciones-vendedor-overlay {
-      //   position: absolute;
-      //   top: 0;
-      //   bottom: 0;
-      //   left: 15px;
-      //   right: 0;
-      //   height: 100%;
-      //   width: 92%;
-      //   opacity: 0;
-      //   transition: 0.5s ease;
-      //   background-color: #9f9f9f;
-      //   border-radius: 30px;
-      //   &:hover {
-      //     opacity: 1;
-      //   }
-      //   .navbar__button--cotizaciones-vendedor-text {
-      //     color: white;
-      //     font-size: 0.75rem;
-      //     position: absolute;
-      //     top: 50%;
-      //     left: 50%;
-      //     -webkit-transform: translate(-50%, -50%);
-      //     -ms-transform: translate(-50%, -50%);
-      //     transform: translate(-50%, -50%);
-      //     text-align: center;
-      //   }
-      // }
     }
   }
 }
 
+.tooltip-inner {
+  color: #000 !important;
+  font-weight: 900;
+  background-color: #afafaf !important;
+}
 .cotizaciones__body {
   background-color: #000;
   color: #ffffff;

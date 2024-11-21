@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { signOut } from 'firebase/auth';
 import { updateDoc, doc } from 'firebase/firestore';
@@ -18,9 +18,11 @@ import { toast } from 'sonner';
 import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
 import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
 import { RxAvatar } from 'react-icons/rx';
+import Overlay from 'react-bootstrap/Overlay';
+import Tooltip from 'react-bootstrap/Tooltip';
 
-import './styles.scss';
 import { AddDynamicInputs } from '../../components/addDynamicInputs';
+import './styles.scss';
 
 export const UpdateCotizacion = () => {
   // const [tipo, setTipo] = useState("");
@@ -29,6 +31,8 @@ export const UpdateCotizacion = () => {
   const [dataFromDynamicInputs, setDataFromDynamicInputs] = useState('');
   const [conceptoGuardado, setConceptoGuardado] = useState(false);
   const [sumImportes, setSumImportes] = useState('');
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   const { addFolio } = useAddFolio();
   const { addCotizacion } = useAddCotizacion();
@@ -212,13 +216,11 @@ export const UpdateCotizacion = () => {
               <FaWhatsapp /> Soporte
             </button>
           </a>
-          <div
-            onClick={logout}
-            className='navbar__button--cotizaciones-vendedor-container'
-          >
+          <div className='navbar__button--cotizaciones-vendedor-container'>
             <button
               className='navbar__button--cotizaciones-vendedor'
-              // onClick={logout}
+              onClick={() => setShow(!show)}
+              ref={target}
             >
               <div style={{ display: 'flex' }}>
                 <div>
@@ -246,18 +248,33 @@ export const UpdateCotizacion = () => {
                 </div>
               </div>
             </button>
-            <div className='navbar__button--cotizaciones-vendedor-overlay'>
-              <div className='navbar__button--cotizaciones-vendedor-text'>
-                Cerrar Sesión
-              </div>
-            </div>
+            <Overlay target={target.current} show={show} placement='bottom'>
+              {(props) => (
+                <Tooltip
+                  id='overlay-example'
+                  {...props}
+                  style={{
+                    position: 'absolute',
+                    marginTop: '5px',
+                    backgroundColor: '#afafaf',
+                    padding: '10px 45px',
+                    borderRadius: 50,
+                    cursor: 'pointer',
+                    ...props.style,
+                  }}
+                  onClick={logout}
+                >
+                  CERRAR SESIÓN
+                </Tooltip>
+              )}
+            </Overlay>
           </div>
         </div>
       </div>
       <div className='cotizador__body'>
         <div className='cotizador__hero'>
-          <h2 className='cotizador__header--title'>COTIZADOR</h2>
-          <p className='cotizador__header--paragraph'>Solupatch Versión 1.0</p>
+          <h2 className='cotizador__header--title'>EDITAR COTIZACIÓN</h2>
+          {/* <p className='cotizador__header--paragraph'>Solupatch Versión 1.0</p> */}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className='cotizador__form'>
           <div className='cotizador__form--inputs'>

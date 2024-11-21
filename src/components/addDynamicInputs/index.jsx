@@ -287,7 +287,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
         onClick={handleSubmit(onSaveConcept)}
         className='cotizador__form--guardar-button'
       >
-        Guardar Conceptos
+        GUARDAR CONCEPTOS
       </button>
       <Toaster position='bottom-center' richColors />
     </div>
