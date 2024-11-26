@@ -144,16 +144,17 @@ export const Cotizaciones = () => {
     try {
       await signOut(auth);
       localStorage.clear();
+      sessionStorage.clear();
       navigate('/autenticacion');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const modalRef = useRef(null);
 
   const closeModal = () => {
-    console.log(tempDeleteId);
+    // console.log(tempDeleteId);
     modalRef.current.close();
   };
 
@@ -189,13 +190,13 @@ export const Cotizaciones = () => {
 
   const onClickUpdate = (id) => {
     setTempUpdateId(id);
-    console.log('</> → id:', id);
+    // console.log('</> → id:', id);
   };
 
   const onUpdate = async (e, statusFromDropdown) => {
     setShowSaveBtn(true);
     setNuevoStatus(statusFromDropdown);
-    console.log(statusFromDropdown);
+    // console.log(statusFromDropdown);
     // try {
     //   // console.log(tempUpdateId);
     //   const docRef = doc(db, 'cotizaciones', tempUpdateId);
@@ -218,7 +219,7 @@ export const Cotizaciones = () => {
         status: nuevoStatus,
       });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     toast.success('Estado actualizado');
     setShowSaveBtn(false);
@@ -499,8 +500,8 @@ export const Cotizaciones = () => {
     [cotizacionesFiltered, startDate, endDate]
   );
 
-  console.log(dateFilteredData);
-  console.log(cotizacionesFiltered);
+  // console.log(dateFilteredData);
+  // console.log(cotizacionesFiltered);
 
   const table = useReactTable({
     data: dateFilteredData.reverse(),

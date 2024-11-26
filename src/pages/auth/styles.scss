@@ -76,6 +76,25 @@
       color: #bd940dc7;
     }
 
+    .auth__recuerdame-olvide {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      .auth__recuerdame {
+        .auth__recuerdame-chekbox {
+          border-radius: 50%;
+          background-color: #afafaf;
+          border: #afafaf;
+          // FIXME:: No se puede cambiar el color del check
+        }
+      }
+      .auth__olvide {
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: #afafaf;
+      }
+    }
+
     .auth__form--button {
       /* display: block; */
       background-color: #fbc512;

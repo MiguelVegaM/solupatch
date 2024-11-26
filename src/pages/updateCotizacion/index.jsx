@@ -117,7 +117,7 @@ export const UpdateCotizacion = () => {
           toast.warning('Hubo un error en los datos, favor de verificar.');
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -125,9 +125,10 @@ export const UpdateCotizacion = () => {
     try {
       await signOut(auth);
       localStorage.clear();
+      sessionStorage.clear();
       navigate('/autenticacion');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -151,7 +152,7 @@ export const UpdateCotizacion = () => {
   let cotizacionSeleccionada = cotizaciones.find(
     (cotizacion) => cotizacion?.id === cotizacionId
   );
-  console.log(cotizacionId);
+  // console.log(cotizacionId);
 
   useEffect(() => {
     setValue('nombre', cotizacionSeleccionada?.nombre);
@@ -167,7 +168,7 @@ export const UpdateCotizacion = () => {
     // setValue('dynamicForm', cotizacionSeleccionada?.dynamicForm);
   }, [cotizacionSeleccionada, setValue]);
 
-  console.log(conceptoGuardado);
+  // console.log(conceptoGuardado);
 
   return (
     <div className='cotizador'>

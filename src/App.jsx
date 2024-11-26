@@ -8,6 +8,8 @@ import { PDFTr } from './components/pdf/PDFTr';
 
 import './App.css';
 import { UpdateCotizacion } from './pages/updateCotizacion';
+import { OlvideContrasena } from './pages/olvide-contrasena';
+import { RestablecerContrasena } from './pages/restablecer-contrasena';
 
 function App() {
   return (
@@ -15,6 +17,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/autenticacion' exact element={<Auth />} />
+          <Route
+            path='/olvide-contrasena'
+            exact
+            element={<OlvideContrasena />}
+          />
+          <Route
+            path='/restablecer-contrasena'
+            exact
+            element={<RestablecerContrasena />}
+          />
           <Route path='/cotizador' exact element={<Cotizador />} />
           <Route path='/cotizaciones' exact element={<Cotizaciones />} />
           <Route path='/PDFTr' exact element={<PDFTr />} />

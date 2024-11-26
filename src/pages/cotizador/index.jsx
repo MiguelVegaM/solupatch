@@ -89,7 +89,7 @@ export const Cotizador = () => {
   const onSubmit = async (data, e) => {
     e.preventDefault();
     if (folios?.length <= 9) {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: '00000' + folios.length,
         status: 'seguimineto',
@@ -99,7 +99,7 @@ export const Cotizador = () => {
       };
       addCotizacion(dataObj);
     } else if (folios?.length <= 99) {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: '0000' + folios.length,
         status: 'seguimineto',
@@ -109,7 +109,7 @@ export const Cotizador = () => {
       };
       addCotizacion(dataObj);
     } else if (folios?.length <= 999) {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: '000' + folios.length,
         status: 'seguimineto',
@@ -119,7 +119,7 @@ export const Cotizador = () => {
       };
       addCotizacion(dataObj);
     } else if (folios?.length <= 9999) {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: '00' + folios.length,
         status: 'seguimineto',
@@ -129,7 +129,7 @@ export const Cotizador = () => {
       };
       addCotizacion(dataObj);
     } else if (folios?.length <= 99999) {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: '0' + folios.length,
         status: 'seguimineto',
@@ -139,7 +139,7 @@ export const Cotizador = () => {
       };
       addCotizacion(dataObj);
     } else {
-      console.log(sumImportes);
+      // console.log(sumImportes);
       const dataObj = {
         folio: folios.length,
         status: 'seguimineto',
@@ -156,9 +156,10 @@ export const Cotizador = () => {
     try {
       await signOut(auth);
       localStorage.clear();
+      sessionStorage.clear();
       navigate('/autenticacion');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
