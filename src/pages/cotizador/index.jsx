@@ -17,6 +17,7 @@ import { AddDynamicInputs } from '../../components/addDynamicInputs';
 import Overlay from 'react-bootstrap/Overlay';
 import Tooltip from 'react-bootstrap/Tooltip';
 import './styles.scss';
+import { NavBar } from '../../components/navBar';
 
 export const Cotizador = () => {
   // const [tipo, setTipo] = useState("");
@@ -152,16 +153,16 @@ export const Cotizador = () => {
     addFolio(folio);
   };
 
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      localStorage.clear();
-      sessionStorage.clear();
-      navigate('/autenticacion');
-    } catch (error) {
-      // console.log(error);
-    }
-  };
+  // const logout = async () => {
+  //   try {
+  //     await signOut(auth);
+  //     localStorage.clear();
+  //     sessionStorage.clear();
+  //     navigate('/autenticacion');
+  //   } catch (error) {
+  //     // console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -178,87 +179,7 @@ export const Cotizador = () => {
 
   return (
     <div className='cotizador'>
-      <div className='cotizaciones__navbar'>
-        <a href='https://solupatch.com' target='_blank'>
-          <img
-            src={logoPrincipal}
-            alt='Logo Solupatch'
-            className='cotizaciones__navbar--img'
-          />
-        </a>
-        <div className='navbar__buttons'>
-          <a href='/cotizaciones'>
-            <button className='navbar__button--cotizaciones'>
-              <FaClipboardList
-                style={{
-                  fontSize: '1rem',
-                  marginTop: '-5px',
-                  marginRight: '-3px',
-                }}
-              />{' '}
-              Cotizaciones
-            </button>
-          </a>
-          <a href='https://wa.link/vmn1ao' target='_blank'>
-            <button className='navbar__button--cotizaciones'>
-              <FaWhatsapp /> Soporte
-            </button>
-          </a>
-          <div className='navbar__button--cotizaciones-vendedor-container'>
-            <button
-              className='navbar__button--cotizaciones-vendedor'
-              onClick={() => setShow(!show)}
-              ref={target}
-            >
-              <div style={{ display: 'flex' }}>
-                <div>
-                  <div style={{ fontWeight: '900' }}>
-                    {emailValue === 'rvl@solupatch.com'
-                      ? 'Rodolfo Villalobos'
-                      : emailValue === 'aclarrea@solupatch.com'
-                      ? 'Ana Larrea'
-                      : emailValue === 'jlramos@solupatch.com'
-                      ? 'José Ramos'
-                      : emailValue === 'lblanco@solupatch.com'
-                      ? 'Luis Blanco'
-                      : 'Invitado'}
-                  </div>
-                  <div style={{ fontWeight: '100' }}>{emailValue}</div>
-                </div>
-                <div>
-                  <RxAvatar
-                    style={{
-                      fontSize: '1.5rem',
-                      marginTop: '5px',
-                      marginLeft: '10px',
-                    }}
-                  />
-                </div>
-              </div>
-            </button>
-            <Overlay target={target.current} show={show} placement='bottom'>
-              {(props) => (
-                <Tooltip
-                  id='overlay-example'
-                  {...props}
-                  style={{
-                    position: 'absolute',
-                    marginTop: '5px',
-                    backgroundColor: '#afafaf',
-                    padding: '10px 45px',
-                    borderRadius: 50,
-                    cursor: 'pointer',
-                    ...props.style,
-                  }}
-                  onClick={logout}
-                >
-                  CERRAR SESIÓN
-                </Tooltip>
-              )}
-            </Overlay>
-          </div>
-        </div>
-      </div>
+      <NavBar />
       <div className='cotizador__body'>
         <div className='cotizador__hero'>
           <h2 className='cotizador__header--title'>CREAR COTIZACIÓN</h2>

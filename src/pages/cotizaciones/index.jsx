@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  // useEffect,
-  useRef,
-  useState,
-  useMemo,
-} from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 import { signOut } from 'firebase/auth';
 import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
@@ -47,6 +41,7 @@ import { MdSave } from 'react-icons/md';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Overlay from 'react-bootstrap/Overlay';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { NavBar } from '../../components/navBar';
 
 export const Cotizaciones = () => {
   const [tempDeleteId, setTempDeleteId] = useState('');
@@ -59,6 +54,7 @@ export const Cotizaciones = () => {
   const [selectedDate, setSelectedDate] = useState('999999');
   const [finalDate, setFinalDate] = useState([]);
   const [show, setShow] = useState(false);
+
   const target = useRef(null);
 
   const {
@@ -554,7 +550,8 @@ export const Cotizaciones = () => {
             </div>
           </div>
         </dialog>
-        <div className='cotizaciones__navbar'>
+        <NavBar />
+        {/* <div className='cotizaciones__navbar'>
           <a href='https://solupatch.com' target='_blank'>
             <img
               src={logoPrincipal}
@@ -634,7 +631,7 @@ export const Cotizaciones = () => {
               </Overlay>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className='cotizaciones__body'>
           {cotizacionesFiltered.length > 0 ? (
             <>
