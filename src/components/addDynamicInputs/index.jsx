@@ -106,6 +106,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
               <div
                 className='input_container cotizador__form--inputs'
                 key={index}
+                style={{ gap: '0 1rem' }}
               >
                 {/* NOTE: Seleccione */}
                 <div className='cotizador__input--pair cotizador__input--pair--select'>
@@ -119,7 +120,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     className='cotizador__inputs--select'
                     // onChange={() => fnchange()}
                   >
-                    <option value='' disabled selected>
+                    <option value='' disabled>
                       Elige una opcion
                     </option>
                     <option value='25kg Solupatch Bultos'>

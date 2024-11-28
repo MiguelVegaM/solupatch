@@ -256,10 +256,6 @@ export const Cotizador = () => {
               )} */}
             </div>
           </div>
-          <AddDynamicInputs
-            getDataFromChild={handleDataFromChild}
-            stateChanger={setConceptoGuardado}
-          />
           <div className='cotizador__form--inputs2'>
             <div className='cotizador__input--pair'>
               <label className='cotizador__inputs--label'>
@@ -303,6 +299,10 @@ export const Cotizador = () => {
               )}
             </div>
           </div>
+          <AddDynamicInputs
+            getDataFromChild={handleDataFromChild}
+            stateChanger={setConceptoGuardado}
+          />
           <button
             disabled={!isDirty || isSubmitting || !conceptoGuardado}
             type='submit'
