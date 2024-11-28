@@ -119,6 +119,9 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                     className='cotizador__inputs--select'
                     // onChange={() => fnchange()}
                   >
+                    <option value='' disabled selected>
+                      Elige una opcion
+                    </option>
                     <option value='25kg Solupatch Bultos'>
                       25kgs Solupatch Bultos
                     </option>

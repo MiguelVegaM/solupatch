@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 
 import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
+import iconoCotizador from '../../assets/imgs/ICONO-COTIZADOR.svg';
+import iconoWhatsApp from '../../assets/imgs/ICONO-WHATSAPP.svg';
 import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
 import { RxAvatar } from 'react-icons/rx';
 
@@ -42,7 +44,7 @@ export const NavBar = () => {
 
   return (
     <div className='cotizaciones__navbar'>
-      <a href='https://solupatch.com' target='_blank'>
+      <a target='_blank'>
         <img
           src={logoPrincipal}
           alt='Logo Solupatch'
@@ -52,19 +54,31 @@ export const NavBar = () => {
       <div className='navbar__buttons'>
         <a href={location === '/cotizaciones' ? '/cotizador' : '/cotizaciones'}>
           <button className='navbar__button--cotizaciones'>
-            <FaClipboardList
+            <img
+              src={iconoCotizador}
               style={{
-                fontSize: '1rem',
+                // fontSize: '2rem',
+                width: '30px',
                 marginTop: '-5px',
                 marginRight: '-3px',
               }}
+              alt='Ícono Cotizador'
             />{' '}
             {location === '/cotizaciones' ? 'COTIZADOR' : 'COTIZACIONES'}
           </button>
         </a>
-        <a href='https://wa.link/vmn1ao' target='_blank'>
+        <a href='https://wa.link/61fpl2' target='_blank'>
           <button className='navbar__button--cotizaciones'>
-            <FaWhatsapp /> SOPORTE
+            <img
+              src={iconoWhatsApp}
+              style={{
+                width: '30px',
+                marginTop: '-5px',
+                marginRight: '-3px',
+              }}
+              alt='Ícono WhatsApp'
+            />{' '}
+            SOPORTE
           </button>
         </a>
         <div className='navbar__button--cotizaciones-vendedor-container'>

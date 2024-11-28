@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase/firebase-config';
+// import { signOut } from 'firebase/auth';
+// import { auth } from '../../firebase/firebase-config';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAddFolio } from '../../hooks/useAddFolio';
@@ -10,12 +10,12 @@ import { useAddCotizacion } from '../../hooks/useAddCotizacion';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { useGetFolio } from '../../hooks/useGetFolio';
 
-import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
-import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
-import { RxAvatar } from 'react-icons/rx';
+// import logoPrincipal from '../../assets/imgs/logoSolupatch.png';
+// import { FaClipboardList, FaWhatsapp } from 'react-icons/fa6';
+// import { RxAvatar } from 'react-icons/rx';
 import { AddDynamicInputs } from '../../components/addDynamicInputs';
-import Overlay from 'react-bootstrap/Overlay';
-import Tooltip from 'react-bootstrap/Tooltip';
+// import Overlay from 'react-bootstrap/Overlay';
+// import Tooltip from 'react-bootstrap/Tooltip';
 import './styles.scss';
 import { NavBar } from '../../components/navBar';
 

@@ -551,87 +551,6 @@ export const Cotizaciones = () => {
           </div>
         </dialog>
         <NavBar />
-        {/* <div className='cotizaciones__navbar'>
-          <a href='https://solupatch.com' target='_blank'>
-            <img
-              src={logoPrincipal}
-              alt='Logo Solupatch'
-              className='cotizaciones__navbar--img'
-            />
-          </a>
-          <div className='navbar__buttons'>
-            <a href='/cotizador'>
-              <button className='navbar__button--cotizaciones'>
-                <FaClipboardList
-                  style={{
-                    fontSize: '1rem',
-                    marginTop: '-5px',
-                    marginRight: '-3px',
-                  }}
-                />{' '}
-                COTIZADOR
-              </button>
-            </a>
-            <a href='https://wa.link/vmn1ao' target='_blank'>
-              <button className='navbar__button--cotizaciones'>
-                <FaWhatsapp /> SOPORTE
-              </button>
-            </a>
-            <div className='navbar__button--cotizaciones-vendedor-container'>
-              <button
-                className='navbar__button--cotizaciones-vendedor'
-                onClick={() => setShow(!show)}
-                ref={target}
-              >
-                <div style={{ display: 'flex' }}>
-                  <div>
-                    <div style={{ fontWeight: '900' }}>
-                      {emailValue === 'rvl@solupatch.com'
-                        ? 'Rodolfo Villalobos'
-                        : emailValue === 'aclarrea@solupatch.com'
-                        ? 'Ana Larrea'
-                        : emailValue === 'jlramos@solupatch.com'
-                        ? 'José Ramos'
-                        : emailValue === 'lblanco@solupatch.com'
-                        ? 'Luis Blanco'
-                        : 'Invitado'}
-                    </div>
-                    <div style={{ fontWeight: '100' }}>{emailValue}</div>
-                  </div>
-                  <div>
-                    <RxAvatar
-                      style={{
-                        fontSize: '1.5rem',
-                        marginTop: '5px',
-                        marginLeft: '10px',
-                      }}
-                    />
-                  </div>
-                </div>
-              </button>
-              <Overlay target={target.current} show={show} placement='bottom'>
-                {(props) => (
-                  <Tooltip
-                    id='overlay-example'
-                    {...props}
-                    style={{
-                      position: 'absolute',
-                      marginTop: '5px',
-                      backgroundColor: '#afafaf',
-                      padding: '10px 45px',
-                      borderRadius: 50,
-                      cursor: 'pointer',
-                      ...props.style,
-                    }}
-                    onClick={logout}
-                  >
-                    CERRAR SESIÓN
-                  </Tooltip>
-                )}
-              </Overlay>
-            </div>
-          </div>
-        </div> */}
         <div className='cotizaciones__body'>
           {cotizacionesFiltered.length > 0 ? (
             <>
@@ -642,12 +561,12 @@ export const Cotizaciones = () => {
                   width: '90%',
                 }}
               >
-                <button
+                {/* <button
                   className='navbar__button--cotizaciones-excel'
                   onClick={downloadExcel}
                 >
                   <LuDownload /> DESCARGAR EXCEL
-                </button>
+                </button> */}
               </div>
               <div
                 className='cotizaciones__header'
@@ -707,6 +626,12 @@ export const Cotizaciones = () => {
                       <option value='30'>Últimos 30 Días</option>
                     </select>
                   </div>
+                  <button
+                    className='navbar__button--cotizaciones-excel'
+                    onClick={downloadExcel}
+                  >
+                    <LuDownload /> DESCARGAR EXCEL
+                  </button>
                 </div>
               </div>
               <div className='cotizaciones__table-container'>
@@ -749,32 +674,33 @@ export const Cotizaciones = () => {
                   </tbody>
                 </table>
               </div>
-              <div
-                className='cotizaciones__paginationButtons'
-                style={{ textAlign: 'center', marginTop: '2rem' }}
-              >
-                <button onClick={() => table.setPageIndex(0)}>&lt;&lt;</button>
-                <button onClick={() => table.previousPage()}>&lt;</button>
-                <span>
-                  {'  '} {table.getState().pagination.pageIndex + 1} de{' '}
-                  {table.getPageCount()}
-                </span>
-                <button onClick={() => table.nextPage()}>&gt;</button>
-                <button
-                  onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              <div className='footer__pagination'>
+                <p
+                // style={{
+                //   textAlign: 'center',
+                //   marginTop: '2rem',
+                //   color: '#717171',
+                // }}
                 >
-                  &gt;&gt;
-                </button>
+                  Solupatch © Todos los derechos reservados
+                </p>
+                <div className='cotizaciones__paginationButtons'>
+                  <button onClick={() => table.setPageIndex(0)}>
+                    &lt;&lt;
+                  </button>
+                  <button onClick={() => table.previousPage()}>&lt;</button>
+                  <span style={{ marginLeft: '9px' }}>
+                    {'  '} {table.getState().pagination.pageIndex + 1} de{' '}
+                    {table.getPageCount()}
+                  </span>
+                  <button onClick={() => table.nextPage()}>&gt;</button>
+                  <button
+                    onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                  >
+                    &gt;&gt;
+                  </button>
+                </div>
               </div>
-              <p
-                style={{
-                  textAlign: 'center',
-                  marginTop: '2rem',
-                  color: '#717171',
-                }}
-              >
-                Solupatch © Todos los derechos reservados
-              </p>
             </>
           ) : (
             <div className='pdf__loader__spinner'>
