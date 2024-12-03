@@ -81,11 +81,11 @@ export const Cotizaciones = () => {
         B: 'CLIENTE',
         C: 'FECHA',
         D: 'VENDEDOR',
-        E: 'MERCANCÍA',
-        F: 'CANTIDAD',
-        G: 'EMPRESA',
-        H: 'EMAIL',
-        I: 'CELULAR',
+        E: 'EMPRESA',
+        F: 'EMAIL',
+        G: 'CELULAR',
+        H: 'MERCANCÍA',
+        I: 'CANTIDAD',
         J: 'TOTAL',
       },
     ];
@@ -100,28 +100,80 @@ export const Cotizaciones = () => {
         return Fordate;
       };
 
+      const newArrSeleccione = [];
+      if (cotizacion.dynamicForm) {
+        newArrSeleccione.push(
+          cotizacion.dynamicForm.map((item) => item.seleccione)
+        );
+      }
+      const newArrCantidad = [];
+      if (cotizacion.dynamicForm) {
+        newArrCantidad.push(
+          cotizacion.dynamicForm.map((item) => item.cantidad)
+        );
+      }
+
+      const {
+        nombre,
+        id,
+        emailValue,
+        entrega,
+        folio,
+        status,
+        cantidad,
+        precio,
+        total,
+        // seleccione,
+        // empresa,
+        // celular,
+        // email,
+      } = cotizacion;
+      let importe = cantidad * 1 * (precio.replace(/,/g, '') * 1);
+      let iva = (importe + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporte = importe + iva + entrega.replace(/,/g, '') * 1;
+      let totalFormated = totalImporte.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      let importeDy = total;
+      let ivaDy = (importeDy + entrega.replace(/,/g, '') * 1) * 0.16;
+      let totalImporteDy = importeDy + ivaDy + entrega.replace(/,/g, '') * 1;
+      let totalFormatedDy = totalImporteDy.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
       table.push({
         A: cotizacion.folio,
         B: cotizacion.nombre,
         C: formatedDate(),
-        D: cotizacion.emailValue,
-        E: cotizacion.seleccione,
-        F: cotizacion.cantidad,
-        G: cotizacion.empresa,
-        H: cotizacion.email,
-        I: cotizacion.celular,
-        J: (
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
-            1 +
-            cotizacion.entrega.replace(/,/g, '') / 1) *
-            0.16 +
-          (((cotizacion.cantidad / 1) * cotizacion.precio.replace(/,/g, '')) /
-            1 +
-            cotizacion.entrega.replace(/,/g, '') / 1)
-        ).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
+        D:
+          cotizacion.emailValue === 'rvl@solupatch.com'
+            ? 'Rodolfo Villalobos'
+            : emailValue === 'aclarrea@solupatch.com'
+            ? 'Ana Larrea'
+            : emailValue === 'jlramos@solupatch.com'
+            ? 'José Ramos'
+            : emailValue === 'lblanco@solupatch.com'
+            ? 'Luis Blanco'
+            : 'Invitado',
+        E: cotizacion.empresa,
+        F: cotizacion.email,
+        G: cotizacion.celular,
+        H: cotizacion.dynamicForm
+          ? newArrSeleccione
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, '\n')
+          : cotizacion.seleccione,
+        I: cotizacion.dynamicForm
+          ? newArrCantidad
+              .map((item) => item)
+              .toString()
+              .replace(/,/g, '\n')
+          : cotizacion.cantidad,
+        J: cotizacion.dynamicForm ? totalFormatedDy : totalFormated,
       });
     });
 
@@ -129,6 +181,13 @@ export const Cotizaciones = () => {
 
     createFilter(finalData);
   };
+
+  // cotizaciones.forEach((cotizacion) => {
+  //   cotizacion.dynamicForm
+  //     ? console.log(cotizacion.dynamicForm.seleccione)
+  //     : console.log(cotizacion.seleccione);
+  // });
+
   const createFilter = (finalData) => {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(finalData, { skipHeader: true });
