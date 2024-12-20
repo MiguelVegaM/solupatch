@@ -52,7 +52,13 @@ export const NavBar = () => {
         />
       </a>
       <div className='navbar__buttons'>
-        <a href={location === '/cotizaciones' ? '/cotizador' : '/cotizaciones'}>
+        <a
+          onClick={() => {
+            location === '/cotizaciones'
+              ? navigate('/cotizador')
+              : navigate('/cotizaciones');
+          }}
+        >
           <button className='navbar__button--cotizaciones'>
             <img
               src={iconoCotizador}
