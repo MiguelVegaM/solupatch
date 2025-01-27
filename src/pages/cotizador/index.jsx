@@ -153,17 +153,6 @@ export const Cotizador = () => {
     addFolio(folio);
   };
 
-  // const logout = async () => {
-  //   try {
-  //     await signOut(auth);
-  //     localStorage.clear();
-  //     sessionStorage.clear();
-  //     navigate('/autenticacion');
-  //   } catch (error) {
-  //     // console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
@@ -174,8 +163,6 @@ export const Cotizador = () => {
   if (!isAuth) {
     return <Navigate to='/' />;
   }
-
-  // console.log(emailValue);
 
   return (
     <div className='cotizador'>

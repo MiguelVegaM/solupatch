@@ -146,6 +146,7 @@ export const AddDynamicInputs = ({ getDataFromChild, stateChanger }) => {
                       Emulsión aslfáltica
                     </option>
                     <option value='Slurry Seal'>Slurry Seal</option>
+                    <option value='Bacherey'>Bacherey</option>
                   </select>
                   {errors?.seleccione?.type === 'required' && (
                     <p className='cotizador__form--error-message'>
