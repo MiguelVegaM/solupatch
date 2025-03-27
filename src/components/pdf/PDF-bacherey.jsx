@@ -572,7 +572,7 @@ export const PDFBacherey = () => {
             <section className='footer'>
               <div className='footer__web'>
                 <a
-                  href='https://www.solupatch.com'
+                  href='https://www.bacherey.com'
                   target='_blank'
                   rel='noreferrer'
                 >
