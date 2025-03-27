@@ -490,33 +490,34 @@ export const PDFBacherey = () => {
                 <div className='cotizacion__total__div'>
                   <span className='cotizacion__total__span'>
                     SUBTOTAL:{'  '}
-                  </span>{' '}
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? importeDyFormated
                     : importeFormated}
+                    </span>
                 </div>
                 <div className='cotizacion__total__div'>
                   <span className='cotizacion__total__span'>
                     ENTREGA: {'  '}
-                  </span>
                   ${entregaFormated}
+                  </span>
                 </div>
                 <div className='cotizacion__total__div'>
                   <span className='cotizacion__total__span'>
                     IVA 16%: {'  '}
-                  </span>
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? ivaDyFormated
                     : ivaFormated}
+                    </span>
                 </div>
                 <div className='cotizacion__total__div'>
-                  <span className='cotizacion__total__span'>TOTAL:{'  '} </span>
+                  <span className='cotizacion__total__span'>TOTAL:{'  '} 
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? totalDyFormated
                     : totalFormated}
+                    </span>
                 </div>
                 <img
                   className='certificaciones__img'
@@ -569,6 +570,15 @@ export const PDFBacherey = () => {
             </section>
 
             <section className='footer'>
+              <div className='footer__web'>
+                <a
+                  href='https://www.solupatch.com'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  BACHEREY.COM
+                </a>
+              </div>
               <div className='footer__social'>
                 <a
                   href='https://www.facebook.com/solupatch'
@@ -583,22 +593,6 @@ export const PDFBacherey = () => {
                   rel='noreferrer'
                 >
                   <FaInstagram />
-                </a>
-                <a
-                  href='https://www.instagram.com/solupatch'
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <FaTiktok />
-                </a>
-              </div>
-              <div className='footer__web'>
-                <a
-                  href='https://www.solupatch.com'
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <img src={solupatchWeb} alt='Solupatch Web' />
                 </a>
               </div>
             </section>
