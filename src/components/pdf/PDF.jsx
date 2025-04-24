@@ -1,27 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
-import logoPrincipal from '../../assets/imgs/LOGO-SOLUPATCH.png';
-import certificacionesImg from '../../assets/imgs/CERTIFICACIONES.png';
-import { FaFacebookF, FaTiktok, FaInstagram } from 'react-icons/fa';
-import solupatchWeb from '../../assets/imgs/PAGINA WEB.png';
-import ClipLoader from 'react-spinners/ClipLoader';
+import logoPrincipal from "../../assets/imgs/LOGO-SOLUPATCH.png";
+import certificacionesImg from "../../assets/imgs/CERTIFICACIONES.png";
+import { FaFacebookF, FaTiktok, FaInstagram } from "react-icons/fa";
+import solupatchWeb from "../../assets/imgs/PAGINA WEB.png";
+import ClipLoader from "react-spinners/ClipLoader";
 
-import '../pdf/styles.scss';
-import '../../../src/App.css';
-import { useGetCotizaciones } from '../../hooks/useGetCotizaciones';
+import "../pdf/styles.scss";
+import "../../../src/App.css";
+import { useGetCotizaciones } from "../../hooks/useGetCotizaciones";
 
-import moment from 'moment';
+import moment from "moment";
 
-import './styles.scss';
-import { PDFTr } from './PDFTr';
+import "./styles.scss";
+import { PDFTr } from "./PDFTr";
 
 export const PDF = () => {
   // const navigate = useNavigate();
-  const [datePdf, setDatePdf] = useState('');
+  const [datePdf, setDatePdf] = useState("");
 
   let { cotizacionId } = useParams();
 
@@ -31,62 +31,62 @@ export const PDF = () => {
     (cotizacion) => cotizacion?.id === cotizacionId
   );
 
-  console.log('</> → cotizacionSeleccionada:', cotizacionSeleccionada);
+  console.log("</> → cotizacionSeleccionada:", cotizacionSeleccionada);
 
   useEffect(() => {
     const { seconds, nanoseconds } = cotizacionSeleccionada?.createdAt || {};
     const Date = moment
       .unix(seconds)
-      .add(nanoseconds / 1000000, 'milliseconds');
-    moment.locale('es-mx');
-    const Fordate = Date.format('DD MM YYYY, h:mm a') || '';
+      .add(nanoseconds / 1000000, "milliseconds");
+    moment.locale("es-mx");
+    const Fordate = Date.format("DD/MM/YYYY, h:mm a") || "";
     setDatePdf(Fordate);
   }, [cotizacionSeleccionada]);
 
   const pdfRef = useRef();
 
-  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, '') * 1;
-  let entregaFormated = entrega.toLocaleString('en-US', {
+  let entrega = cotizacionSeleccionada?.entrega.replace(/,/g, "") * 1;
+  let entregaFormated = entrega.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
   let importe =
     cotizacionSeleccionada?.cantidad *
-    cotizacionSeleccionada?.precio.replace(/,/g, '');
-  let importeFormated = importe.toLocaleString('en-US', {
+    cotizacionSeleccionada?.precio.replace(/,/g, "");
+  let importeFormated = importe.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let iva = (importe + entrega) * 0.16;
-  let ivaFormated = iva.toLocaleString('en-US', {
+  let ivaFormated = iva.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let total = importe + entrega + iva;
-  let totalFormated = total.toLocaleString('en-US', {
+  let totalFormated = total.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  const [importeDy, setImporteDy] = useState('');
+  const [importeDy, setImporteDy] = useState("");
   const fromPdfChild = (data) => {
     setImporteDy(data);
   };
   let ivaDy = (importeDy + entrega) * 0.16;
-  let ivaDyFormated = ivaDy.toLocaleString('en-US', {
+  let ivaDyFormated = ivaDy.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
-  let importeDyFormated = importeDy.toLocaleString('en-US', {
+  let importeDyFormated = importeDy.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
 
   let totalDy = importeDy + entrega + ivaDy;
-  let totalDyFormated = totalDy.toLocaleString('en-US', {
+  let totalDyFormated = totalDy.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -99,8 +99,8 @@ export const PDF = () => {
     //   "body > div:last-child img { display: inline-block; }"
     // );
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4', true);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4", true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
@@ -110,7 +110,7 @@ export const PDF = () => {
       const imgY = 0;
       pdf.addImage(
         imgData,
-        'PNG',
+        "PNG",
         imgX,
         imgY,
         imgWidth * ratio,
@@ -122,8 +122,8 @@ export const PDF = () => {
   const printPDF = () => {
     const input = pdfRef.current;
     html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4', true);
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4", true);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
       const imgWidth = canvas.width;
@@ -133,42 +133,42 @@ export const PDF = () => {
       const imgY = 0;
       pdf.addImage(
         imgData,
-        'PNG',
+        "PNG",
         imgX,
         imgY,
         imgWidth * ratio,
         imgHeight * ratio
       );
-      window.open(pdf.output('bloburl'));
+      window.open(pdf.output("bloburl"));
     });
   };
   // NOTE: Listado de vendedores
   const vendedores = () => {
-    if (cotizacionSeleccionada?.emailValue === 'aclarrea@solupatch.com') {
+    if (cotizacionSeleccionada?.emailValue === "aclarrea@solupatch.com") {
       return (
-        <div className='pdf__header__title-vendor'>
-          Vendedor:{' '}
+        <div className="pdf__header__title-vendor">
+          Vendedor:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             Ana Cristina Larrea
-          </span>{' '}
+          </span>{" "}
           <br />
-          Celular/Whatsapp:{' '}
+          Celular/Whatsapp:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             81 8704 8514
-          </span>{' '}
+          </span>{" "}
           <br />
-          Correo:{' '}
+          Correo:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             aclarrea@solupatch.com
@@ -176,31 +176,31 @@ export const PDF = () => {
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === 'jlramos@solupatch.com') {
+    if (cotizacionSeleccionada?.emailValue === "jlramos@solupatch.com") {
       return (
-        <div className='pdf__header__title-vendor'>
-          Vendedor:{' '}
+        <div className="pdf__header__title-vendor">
+          Vendedor:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             José Luis Ramos
-          </span>{' '}
+          </span>{" "}
           <br />
-          Celular/Whatsapp:{' '}
+          Celular/Whatsapp:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             81 2580 7799
-          </span>{' '}
+          </span>{" "}
           <br />
-          Correo:{' '}
+          Correo:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             jlramos@solupatch.com
@@ -208,31 +208,31 @@ export const PDF = () => {
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === 'lblanco@solupatch.com') {
+    if (cotizacionSeleccionada?.emailValue === "lblanco@solupatch.com") {
       return (
-        <div className='pdf__header__title-vendor'>
-          Vendedor:{' '}
+        <div className="pdf__header__title-vendor">
+          Vendedor:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             Luis Blanco
-          </span>{' '}
+          </span>{" "}
           <br />
-          Celular/Whatsapp:{' '}
+          Celular/Whatsapp:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             81 3091 6138
-          </span>{' '}
+          </span>{" "}
           <br />
-          Correo:{' '}
+          Correo:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             lblanco@solupatch.com
@@ -240,31 +240,31 @@ export const PDF = () => {
         </div>
       );
     }
-    if (cotizacionSeleccionada?.emailValue === 'rvl@solupatch.com') {
+    if (cotizacionSeleccionada?.emailValue === "rvl@solupatch.com") {
       return (
-        <div className='pdf__header__title-vendor'>
-          Vendedor:{' '}
+        <div className="pdf__header__title-vendor">
+          Vendedor:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             Rodolfo Villalobos
-          </span>{' '}
+          </span>{" "}
           <br />
-          Celular/Whatsapp:{' '}
+          Celular/Whatsapp:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             81 2201 6300
-          </span>{' '}
+          </span>{" "}
           <br />
-          Correo:{' '}
+          Correo:{" "}
           <span
             style={{
-              fontFamily: 'GalanoGrotesqueBold',
+              fontFamily: "GalanoGrotesqueBold",
             }}
           >
             rvl@solupatch.com
@@ -277,80 +277,80 @@ export const PDF = () => {
   return (
     <div>
       {cotizacionSeleccionada ? (
-        <div className='pdf__container'>
-          <div className='pdf__button__container'>
-            <button className='pdf__button' onClick={downloadPDF}>
+        <div className="pdf__container">
+          <div className="pdf__button__container">
+            <button className="pdf__button" onClick={downloadPDF}>
               GUARDAR PDF
             </button>
-            <button className='pdf__button' onClick={printPDF}>
+            <button className="pdf__button" onClick={printPDF}>
               IMPRIMIR PDF
             </button>
           </div>
-          <div ref={pdfRef} className='pdf'>
-            <section className='pdf__header'>
-              <div className='pdf__header__img__datos'>
+          <div ref={pdfRef} className="pdf">
+            <section className="pdf__header">
+              <div className="pdf__header__img__datos">
                 <img
-                  className='pdf__header__img'
+                  className="pdf__header__img"
                   src={logoPrincipal}
-                  alt='Solupatch Logo'
+                  alt="Solupatch Logo"
                 />
-                <div className='pdf__header__cliente__datos'>
+                <div className="pdf__header__cliente__datos">
                   <div>
-                    Cliente:{' '}
+                    Cliente:{" "}
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       {cotizacionSeleccionada?.nombre}
                     </span>
                   </div>
                   <div>
-                    Empresa:{' '}
+                    Empresa:{" "}
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       {cotizacionSeleccionada?.empresa}
                     </span>
                   </div>
                   <div>
-                    Celular:{' '}
+                    Celular:{" "}
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       {cotizacionSeleccionada?.celular}
                     </span>
                   </div>
                   <div>
-                    Correo:{' '}
+                    Correo:{" "}
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       {cotizacionSeleccionada?.email}
                     </span>
                   </div>
                 </div>
-                <div className='pdf__header__cliente__datos'>
+                <div className="pdf__header__cliente__datos">
                   {vendedores()}
                 </div>
               </div>
-              <div className='pdf__header__title'>
+              <div className="pdf__header__title">
                 <div
                   style={{
-                    fontFamily: 'GalanoGrotesqueBold',
+                    fontFamily: "GalanoGrotesqueBold",
                   }}
                 >
                   COTIZACIÓN
                 </div>
                 <div
                   style={{
-                    fontFamily: 'GalanoGrotesqueBold',
+                    fontFamily: "GalanoGrotesqueBold",
                   }}
                 >
                   {datePdf}
@@ -358,12 +358,12 @@ export const PDF = () => {
                 <div>Folio:{cotizacionSeleccionada?.folio}</div>
                 <div>{/* {vendedores()} */}</div>
                 <div>
-                  <div className='pdf__header__datos'>
-                    <div className='pdf__header__datos1'>
+                  <div className="pdf__header__datos">
+                    <div className="pdf__header__datos1">
                       SOLUPATCH S.A. DE C.V.
                     </div>
-                    <div className='pdf__header__datos1'>RFC: SOL231030DX0</div>
-                    <div className='pdf__header__datos2'>
+                    <div className="pdf__header__datos1">RFC: SOL231030DX0</div>
+                    <div className="pdf__header__datos2">
                       <span>Dirección:</span> Av.Revolución, 4055,
                       <br /> Local 15, Contry C.P. 64860,
                       <br /> Monterey, Nuevo León, México
@@ -386,19 +386,19 @@ export const PDF = () => {
                 </div>
               </div>
             </section> */}
-            <section className='cotizacion'>
+            <section className="cotizacion">
               <table
-                className='cotizacion__title__bar'
+                className="cotizacion__title__bar"
                 key={cotizacionSeleccionada.id}
               >
-                <thead className='cotizacion__title__thead'>
+                <thead className="cotizacion__title__thead">
                   <tr>
-                    <th className='cotizacion__title__th'>LÍNEA</th>
-                    <th className='cotizacion__title__th'>CONCEPTO</th>
-                    <th className='cotizacion__title__th'>CANTIDAD</th>
-                    <th className='cotizacion__title__th'>UNIDAD</th>
-                    <th className='cotizacion__title__th'>P. UNIDATIO</th>
-                    <th className='cotizacion__title__th'>TOTAL</th>
+                    <th className="cotizacion__title__th">LÍNEA</th>
+                    <th className="cotizacion__title__th">CONCEPTO</th>
+                    <th className="cotizacion__title__th">CANTIDAD</th>
+                    <th className="cotizacion__title__th">UNIDAD</th>
+                    <th className="cotizacion__title__th">P. UNIDATIO</th>
+                    <th className="cotizacion__title__th">TOTAL</th>
                   </tr>
                 </thead>
                 <PDFTr
@@ -407,26 +407,26 @@ export const PDF = () => {
                   fromPdfChild={fromPdfChild}
                 />
               </table>
-              <div className='cotizacion__observaciones'>
+              <div className="cotizacion__observaciones">
                 {/* {cotizacionSeleccionada?.observaciones} */}
                 <h5
                   style={{
-                    fontFamily: 'GalanoGrotesqueBold',
+                    fontFamily: "GalanoGrotesqueBold",
                   }}
                 >
                   Observaciones Generales
-                </h5>{' '}
+                </h5>{" "}
                 <br /> {cotizacionSeleccionada?.observaciones}
               </div>
             </section>
-            <section className='total'>
-              <div className='banco__datos__img'>
-                <div className='banco__datos__text'>
+            <section className="total">
+              <div className="banco__datos__img">
+                <div className="banco__datos__text">
                   <div
                     style={{
-                      fontWeight: 'bold',
-                      marginBottom: '10px',
-                      fontFamily: 'GalanoGrotesqueBold',
+                      fontWeight: "bold",
+                      marginBottom: "10px",
+                      fontFamily: "GalanoGrotesqueBold",
                     }}
                   >
                     INFORMACIÓN PARA DEPOSITO TRANSFERENCIA
@@ -434,51 +434,51 @@ export const PDF = () => {
                   <div>
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       Banco:
-                    </span>{' '}
+                    </span>{" "}
                     BBVA
                   </div>
                   <div>
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       Nombre:
-                    </span>{' '}
+                    </span>{" "}
                     SOLUPATCH. S.A. de C.V.
                   </div>
                   <div>
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       Clave Interbancaria:
-                    </span>{' '}
+                    </span>{" "}
                     012580001219422986
                   </div>
                   <div>
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       No.Tarjeta:
-                    </span>{' '}
+                    </span>{" "}
                     455513012605665
                   </div>
                   <div>
                     <span
                       style={{
-                        fontFamily: 'GalanoGrotesqueBold',
+                        fontFamily: "GalanoGrotesqueBold",
                       }}
                     >
                       No.Cuenta:
-                    </span>{' '}
+                    </span>{" "}
                     0121942298
                   </div>
                   {/* <div>Coreo: facturacion@solupatch.com</div> */}
@@ -486,47 +486,47 @@ export const PDF = () => {
                 {/* <img src={empaqueSolupatch} alt='' /> */}
               </div>
               <div>
-                <div className='cotizacion__total__div'>
-                  <span className='cotizacion__total__span'>
-                    SUBTOTAL:{'  '}
-                  </span>{' '}
+                <div className="cotizacion__total__div">
+                  <span className="cotizacion__total__span">
+                    SUBTOTAL:{"  "}
+                  </span>{" "}
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? importeDyFormated
                     : importeFormated}
                 </div>
-                <div className='cotizacion__total__div'>
-                  <span className='cotizacion__total__span'>
-                    ENTREGA: {'  '}
+                <div className="cotizacion__total__div">
+                  <span className="cotizacion__total__span">
+                    ENTREGA: {"  "}
                   </span>
                   ${entregaFormated}
                 </div>
-                <div className='cotizacion__total__div'>
-                  <span className='cotizacion__total__span'>
-                    IVA 16%: {'  '}
+                <div className="cotizacion__total__div">
+                  <span className="cotizacion__total__span">
+                    IVA 16%: {"  "}
                   </span>
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? ivaDyFormated
                     : ivaFormated}
                 </div>
-                <div className='cotizacion__total__div'>
-                  <span className='cotizacion__total__span'>TOTAL:{'  '} </span>
+                <div className="cotizacion__total__div">
+                  <span className="cotizacion__total__span">TOTAL:{"  "} </span>
                   $
                   {cotizacionSeleccionada.dynamicForm
                     ? totalDyFormated
                     : totalFormated}
                 </div>
                 <img
-                  className='certificaciones__img'
+                  className="certificaciones__img"
                   src={certificacionesImg}
-                  alt='Certificaciones'
+                  alt="Certificaciones"
                 />
               </div>
             </section>
-            <section className='observaciones__text'>
+            <section className="observaciones__text">
               <h5>OBSERVACIONES</h5>
-              <ul className='observaciones__ul'>
+              <ul className="observaciones__ul">
                 <li>Los precios pueden variar después de la visita técnica.</li>
                 <li>
                   La garantía se extiende por un año en la carpeta aplicada.
@@ -556,7 +556,7 @@ export const PDF = () => {
               </ul>
               <p
                 style={{
-                  fontFamily: 'GalanoGrotesqueBold',
+                  fontFamily: "GalanoGrotesqueBold",
                 }}
               >
                 La responsabilidad de Solupatch termina una vez firmada de
@@ -567,46 +567,46 @@ export const PDF = () => {
               </p>
             </section>
 
-            <section className='footer'>
-              <div className='footer__social'>
+            <section className="footer">
+              <div className="footer__social">
                 <a
-                  href='https://www.facebook.com/solupatch'
-                  target='_blank'
-                  rel='noreferrer'
+                  href="https://www.facebook.com/solupatch"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaFacebookF />
                 </a>
                 <a
-                  href='https://www.instagram.com/solupatch'
-                  target='_blank'
-                  rel='noreferrer'
+                  href="https://www.instagram.com/solupatch"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaInstagram />
                 </a>
                 <a
-                  href='https://www.instagram.com/solupatch'
-                  target='_blank'
-                  rel='noreferrer'
+                  href="https://www.instagram.com/solupatch"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaTiktok />
                 </a>
               </div>
-              <div className='footer__web'>
+              <div className="footer__web">
                 <a
-                  href='https://www.solupatch.com'
-                  target='_blank'
-                  rel='noreferrer'
+                  href="https://www.solupatch.com"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  <img src={solupatchWeb} alt='Solupatch Web' />
+                  <img src={solupatchWeb} alt="Solupatch Web" />
                 </a>
               </div>
             </section>
           </div>
         </div>
       ) : (
-        <div className='pdf__loader__spinner'>
-          <ClipLoader color='#fac000' size={50} />
-          <div className='pdf__loader__text'>Cargando...</div>
+        <div className="pdf__loader__spinner">
+          <ClipLoader color="#fac000" size={50} />
+          <div className="pdf__loader__text">Cargando...</div>
         </div>
       )}
     </div>

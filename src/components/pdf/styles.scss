@@ -7,7 +7,20 @@
 .pdf__header {
   display: flex;
   justify-content: space-between;
-  padding-block: 45px 10px;
+  padding-block: 45px 25px;
+  &--bacherey{
+    background-color: #15153B;
+    padding-block: 25px;
+    width: 120%;
+    margin-left: -70px;
+    & .pdf__header__datos{
+      color: #fff;
+      font-size: 1.3rem;
+      margin-right: 6.5rem;
+      margin-top: 2rem;
+      text-align: right;
+    }
+  }
   .pdf__header__img__datos {
     display: flex;
     flex-direction: column;
@@ -54,6 +67,19 @@
     padding-top: 25px;
     max-width: 350px;
     position: relative;
+    &__bacherey{
+      margin-top: 0px;
+      padding-top: 0px;
+      .pdf__header__datos{
+        margin-top: 0px;
+        &:first-child {
+          margin-top: 0px;
+        }
+      }
+      .pdf__header__datos1{
+        margin-top: 0px !important;        
+      }
+    }
     :first-child {
       margin-top: 10px;
       font-size: 1rem;
@@ -253,11 +279,17 @@
 .footer {
   margin-top: 0px;
   width: 120%;
-  background-color: #15153B;
   margin-left: -90px;
   display: flex;
   align-items: center;
   justify-content: end;
+  background-color: #fbc512;
+  &--bacherey {
+    background-color: #15153B;
+    margin-left: -70px;
+    margin-top: 105px;
+    padding-right: 3rem;
+  }
   .footer__social {
     display: flex;
     color: #fff;
