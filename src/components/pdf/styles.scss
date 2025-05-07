@@ -21,6 +21,19 @@
       text-align: right;
     }
   }
+  &--permamix{
+    background-color: transparent;
+    padding-block: 25px;
+    width: 120%;
+    margin-left: -70px;
+    & .pdf__header__datos{
+      color: #000;
+      font-size: 1.3rem;
+      margin-right: 6.5rem;
+      margin-top: 2rem;
+      text-align: right;
+    }
+  }
   .pdf__header__img__datos {
     display: flex;
     flex-direction: column;
@@ -162,6 +175,10 @@
     width: 100%;
     .cotizacion__title__thead {
       background-color: #fac000;
+      &--permamix{
+        background-color: red;
+        color: #fff;
+      }
       .cotizacion__title__tr-concepto {
         border: 1px solid rgba(0, 0, 0, 0.411);
       }
@@ -290,6 +307,12 @@
     margin-top: 105px;
     padding-right: 3rem;
   }
+  &--permamix {
+    background-color: #000;
+    margin-left: -70px;
+    margin-top: 105px;
+    padding-right: 3rem;
+  }
   .footer__social {
     display: flex;
     color: #fff;
@@ -300,6 +323,22 @@
     a {
       width: 40px;
       background-color: #fbc512;
+      color: #000;
+      font-size: 1.4rem;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        background-color: #fff;
+        color: #000;
+        transition: 0.3s all;
+      }
+    }
+    a.permamix-social {
+      width: 40px;
+      background-color: red;
       color: #000;
       font-size: 1.4rem;
       aspect-ratio: 1 / 1;

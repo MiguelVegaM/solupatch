@@ -474,6 +474,10 @@ export const Cotizaciones = () => {
                 (obj) => obj.seleccione === "Bacherey"
               )
                 ? `/pdf-bacherey/${info.row.original?.id}`
+                : info.row.original.dynamicForm.some(
+                    (obj) => obj.seleccione === "Permamix"
+                  )
+                ? `/pdf-permamix/${info.row.original?.id}`
                 : `/pdf/${info.row.original?.id}`
             }
             target="_blank"
